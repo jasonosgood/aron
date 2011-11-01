@@ -1,0 +1,31 @@
+# ARON 0.1
+
+import cronk.Cronk
+
+parent:Cronk 
+(
+	apple "abc"
+	banana 100.0
+	cherry 100
+	dewberry 2000-01-01T12:00:00
+	eggplant true
+	fig child:Cronk
+	grape
+	[
+		a:Cronk
+		b:Cronk
+		(
+			apple "abc"
+			banana 100.0
+			cherry 100
+			dewberry 2000-01-01T12:00:00
+			eggplant true
+		)
+	]
+	honeydew
+	{
+		first first:Cronk()
+		second second:Cronk
+	}
+	iyokan @parent
+)

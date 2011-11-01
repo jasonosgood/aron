@@ -1,0 +1,49 @@
+#Giraffe 0.1
+
+import martini.MainModel
+import martini.MainSearchForm
+import martini.MainResultsList
+import martini.MainResultsListItem
+
+MainModel
+(
+	title "Testify"
+	searchForm MainSearchForm
+	(
+		q ""
+		biennium "2011-12"
+	)
+	resultsList MainResultsList
+	(
+		item [
+			MainResultsListItem
+			(
+				blurb "This bill is about something really important. Continuiing description here, blah, blah."
+				age "11 days old"
+				title "HB 1000 Bill Title Here"
+				titleHref "/play/billnumber"
+			)
+			MainResultsListItem
+			(
+				blurb "This bill is about something really important. Continuiing description here, blah, blah."
+				age "11 days old"
+				title "HB 1001 Bill Title Here"
+				titleHref "/play/billnumber"
+			)
+			MainResultsListItem
+			(
+				blurb "This bill is about something really important. Continuiing description here, blah, blah."
+				age "11 days old"
+				title "HB 1002 Bill Title Here"
+				titleHref "/play/billnumber"
+			)
+			MainResultsListItem
+			(
+				blurb "This bill is about something really important. Continuiing description here, blah, blah."
+				age "11 days old"
+				title "HB 1003 Bill Title Here"
+				titleHref "/play/billnumber"
+			)
+		]
+	)
+)
