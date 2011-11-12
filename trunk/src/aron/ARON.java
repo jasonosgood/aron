@@ -6,21 +6,24 @@ package aron;
 
 	Appropriate open source license will go here.
 
-	Created: 06/08/2002 Jason Osgood <mrosgood@yahoo.com>
-	Updated: 10/01/2011 Jason Osgood <jason@jasonosgood.com> 
+	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
+	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
  */
 
+import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CharStream;
@@ -34,8 +37,17 @@ public class ARON
 	public static final void main( String[] args )
 		throws Exception
 	{
+		String filename = "./test/cronk/test1.aron";
+		File file = new File( filename );
 		ARON aron = new ARON();
-		FileReader reader = new FileReader( "./test/cronk/test1.aron" );
+		
+		aron.load( file );
+	}
+	
+	public boolean load( File file )
+		throws Exception
+	{
+		FileReader reader = new FileReader( file );
  
 		ParseTreeBuilder builder = new ParseTreeBuilder();
 		CharStream cs = new ANTLRReaderStream( reader );
@@ -50,19 +62,23 @@ public class ARON
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
-//			System.out.println( "string tree: " + builder.getTree().toStringTree() );
 		}
 		
-		ParseNode source = builder.getTree();
+		ParseNode root = builder.getTree();
 		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
 		ParseNode.addLexType( "Label", ARONLexer.Label );
-		aron.load( source );
-		Object parent = aron._registry.get( "parent" );
-		System.out.println( "done" );
+		process( root );
+		return !_registry.isEmpty();
 	}
 	
 	public int _anon = 0;
 	HashMap<String,Object> _registry = new HashMap<String,Object>();
+	
+	public Map<String,Object> getRegistry()
+	{
+		return _registry;
+	}
+	
 	public void register( String label, Object instance )
 	{
 		if( label == null )
@@ -85,7 +101,7 @@ public class ARON
     	}
 	}
 	
-	public void load( ParseNode source )
+	public void process( ParseNode source )
 		throws Exception
 	{
 		
@@ -122,7 +138,7 @@ public class ARON
         	for( ParseNode prop : propertyList )
         	{
         		String bean = prop.findFirstString( "Identifier" );
-        		System.out.println( "\t" + bean );
+//        		System.out.println( "\t" + bean );
         		try
         		{
 	        		ParseNode value = prop.findFirstNode( "value" );
@@ -187,11 +203,43 @@ public class ARON
 		throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
 	{
 		String name = "set" + capitalize( bean );
-		Class<?> clazz = instance.getClass();
-		Method setter = clazz.getMethod( name, type );
-		Object result = setter.invoke( instance, new Object[] { value } );
+		
+		for( Method method : instance.getClass().getMethods() )
+		{
+			if( method.getName().equals( name ))
+			{
+				for( Class<?> oof : method.getParameterTypes() )
+				{
+					if( oof.isAssignableFrom( type ) )
+					{
+						Object result = method.invoke( instance, new Object[] { value } );
+						return;
+					}
+					break;
+				}
+			}
+		}
+			
+		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "(" + type.getName() + ")" );
 	}
-	
+
+	public Object getter( Object instance, String bean ) 
+		throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
+	{
+		String name = "get" + capitalize( bean );
+		
+		for( Method method : instance.getClass().getMethods() )
+		{
+			if( method.getName().equals( name ))
+			{
+				return method.invoke( instance );
+			}
+		}
+		
+		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "()" );
+	}
+		
+
 	public void processValue( Object instance, String bean, ParseNode value ) 
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
@@ -249,33 +297,75 @@ public class ARON
 	public void processList( Object instance, String bean, ParseNode node )
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		String capitalized = capitalize( bean );
-		Method getter = instance.getClass().getMethod( "get" + capitalized );
-		Object list = getter.invoke( instance );
-		Method adder = list.getClass().getMethod( "add", Object.class );
-		List<ParseNode> children = node.findNodes( "childList/child" );
-		for( ParseNode child : children )
+		Object list = getter( instance, bean );
+		if( list instanceof Collection )
 		{
-			Object ugh = processChild( child );
-			Object result = adder.invoke( list, new Object[] { ugh } );
+			for( Method method : list.getClass().getMethods() )
+			{
+				if( method.getName().equals( "add" ))
+				{
+					for( Class<?> oof : method.getParameterTypes() )
+					{
+						if( oof.isAssignableFrom( Object.class ) )
+						{
+							List<ParseNode> children = node.findNodes( "childList/child" );
+							for( ParseNode child : children )
+							{
+								Object ugh = processChild( child );
+								Object result = method.invoke( list, ugh );
+							}
+							return;
+						}
+						break;
+					}
+				}
+			}
+			
+			throw new NoSuchMethodException( instance.getClass().getName() + ".add(java.lang.Object)" );
+		}
+		else
+		{
+			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Collection";
+			throw new IllegalArgumentException( msg );
 		}
 	}
 	
 	public void processAssoc( Object instance, String bean, ParseNode assoc )
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		String capitalized = capitalize( bean );
-		Method getter = instance.getClass().getMethod( "get" + capitalized );
-		Object map = getter.invoke( instance );
-		Method putter = map.getClass().getMethod( "put", new Class[] { Object.class, Object.class } );
-		List<ParseNode> entries = assoc.findNodes( "property" );
-		for( ParseNode entry : entries )
+		Object map = getter( instance, bean );
+		if( map instanceof Map )
 		{
-			String key = entry.findFirstString( "Identity" );
-			ParseNode child = entry.findFirstNode( "child" );
-			Object value = processChild( child );
-			Object result = putter.invoke( map, new Object[] { key, value } );
-		}	
+			for( Method method : map.getClass().getMethods() )
+			{
+				if( method.getName().equals( "put" ))
+				{
+					Class<?>[] types = method.getParameterTypes();
+					if( 
+						types.length == 2 
+						&& types[0].isAssignableFrom( Object.class )
+						&& types[1].isAssignableFrom( Object.class )
+					)
+					{
+						List<ParseNode> entries = assoc.findNodes( "property" );
+						for( ParseNode entry : entries )
+						{
+							String key = entry.findFirstString( "Identity" );
+							ParseNode child = entry.findFirstNode( "child" );
+							Object value = processChild( child );
+							Object result = method.invoke( map, key, value );
+						}	
+						return;
+					}
+				}
+			}
+			throw new NoSuchMethodException( instance.getClass().getName() + ".put(java.lang.Object,java.lang.Object)" );
+		}
+		else
+		{
+			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Map";
+			throw new IllegalArgumentException( msg );
+		}
 	}
 	
 	private ArrayList<String> importDefs;
