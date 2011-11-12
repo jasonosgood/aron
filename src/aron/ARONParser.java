@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g 2011-10-29 17:16:36
+// $ANTLR 3.4 /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g 2011-11-11 12:52:56
  
 package aron;
 
@@ -50,15 +50,15 @@ public class ARONParser extends DebugParser {
 
 
 public static final String[] ruleNames = new String[] {
-    "invalidRule", "synpred24_ARON", "floatList", "timestampList", "synpred16_ARON", 
-    "booleanList", "property", "synpred11_ARON", "synpred20_ARON", "synpred13_ARON", 
-    "synpred8_ARON", "synpred3_ARON", "synpred5_ARON", "synpred22_ARON", 
-    "list", "synpred12_ARON", "value", "synpred18_ARON", "child", "synpred15_ARON", 
-    "synpred9_ARON", "root", "assoc", "synpred21_ARON", "synpred6_ARON", 
-    "synpred17_ARON", "synpred2_ARON", "integerList", "synpred25_ARON", 
-    "klass", "synpred19_ARON", "synpred14_ARON", "synpred7_ARON", "synpred23_ARON", 
-    "synpred10_ARON", "synpred4_ARON", "synpred26_ARON", "childList", "stringList", 
-    "imports", "synpred1_ARON"
+    "invalidRule", "synpred12_ARON", "synpred3_ARON", "synpred22_ARON", 
+    "assoc", "synpred10_ARON", "list", "synpred6_ARON", "childList", "klass", 
+    "property", "synpred25_ARON", "synpred11_ARON", "synpred1_ARON", "synpred9_ARON", 
+    "synpred24_ARON", "synpred17_ARON", "synpred13_ARON", "synpred19_ARON", 
+    "synpred23_ARON", "synpred14_ARON", "synpred18_ARON", "booleanList", 
+    "integerList", "synpred15_ARON", "synpred8_ARON", "floatList", "synpred21_ARON", 
+    "stringList", "imports", "synpred4_ARON", "synpred7_ARON", "child", 
+    "value", "synpred16_ARON", "root", "synpred2_ARON", "synpred20_ARON", 
+    "synpred5_ARON", "synpred26_ARON", "timestampList"
 };
 
 public static final boolean[] decisionCanBacktrack = new boolean[] {
