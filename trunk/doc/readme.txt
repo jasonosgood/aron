@@ -16,3 +16,4 @@ Support inline fully declared classes (e.g. java.util.HashMap).
 Maybe have an include mechanism.
 Unit tests.
 Persist Java object graph to ARON format.
+add scalar type for URL, URL, fragments
