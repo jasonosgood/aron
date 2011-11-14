@@ -12,6 +12,9 @@ package aron;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -48,7 +51,19 @@ public class ARON
 		throws Exception
 	{
 		FileReader reader = new FileReader( file );
+		return load( reader );
+	}
  
+	public boolean load( InputStream in )
+		throws Exception
+	{
+		InputStreamReader reader = new InputStreamReader( in );
+		return load( reader );
+	}
+	
+	public boolean load( Reader reader )
+		throws Exception
+	{
 		ParseTreeBuilder builder = new ParseTreeBuilder();
 		CharStream cs = new ANTLRReaderStream( reader );
 		ARONLexer lexer = new ARONLexer( cs );
@@ -58,7 +73,7 @@ public class ARON
 		parser.root();
 		reader.close();
 
-		boolean displayTree = true;
+		boolean displayTree = false;
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
@@ -104,7 +119,6 @@ public class ARON
 	public void process( ParseNode source )
 		throws Exception
 	{
-		
 		List<ParseNode> klasses = source.findNodes( "root/imports/klass" );
 		for( ParseNode klass : klasses )
 		{
@@ -212,7 +226,7 @@ public class ARON
 				{
 					if( oof.isAssignableFrom( type ) )
 					{
-						Object result = method.invoke( instance, new Object[] { value } );
+						Object result = method.invoke( instance, value );
 						return;
 					}
 					break;
@@ -298,6 +312,10 @@ public class ARON
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
 		Object list = getter( instance, bean );
+		if( list == null )
+		{
+			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned nulls" );
+		}
 		if( list instanceof Collection )
 		{
 			for( Method method : list.getClass().getMethods() )
@@ -325,7 +343,7 @@ public class ARON
 		}
 		else
 		{
-			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Collection";
+			String msg = instance.getClass().getName() + ".get" + capitalize( bean ) + "() does not return a java.util.Collection";
 			throw new IllegalArgumentException( msg );
 		}
 	}
