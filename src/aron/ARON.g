@@ -152,6 +152,3 @@ Comment
 Whitespace 
   : ( '\t' | ' ' | '\r' | '\n' | ',' )+ { $channel = HIDDEN; }
   ;
-
-
-// done
