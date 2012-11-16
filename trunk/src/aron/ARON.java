@@ -45,6 +45,8 @@ public class ARON
 		ARON aron = new ARON();
 		
 		aron.load( file );
+		Object ugh = aron.getRegistry().get( "parent" );
+		System.out.println( ugh );
 	}
 	
 	public boolean load( File file )
@@ -368,7 +370,7 @@ public class ARON
 						List<ParseNode> entries = assoc.findNodes( "property" );
 						for( ParseNode entry : entries )
 						{
-							String key = entry.findFirstString( "Identity" );
+							String key = entry.findFirstString( "Identifier" );
 							ParseNode child = entry.findFirstNode( "child" );
 							Object value = processChild( child );
 							Object result = method.invoke( map, key, value );
