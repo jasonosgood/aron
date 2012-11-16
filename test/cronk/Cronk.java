@@ -11,23 +11,37 @@ package cronk;
 	Updated: 10/01/2011 Jason Osgood <jason@jasonosgood.com> 
 */
 
+import java.beans.XMLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Cronk
 {
+	public static void main( String[] args )
+		throws Exception
+	{
+		XMLEncoder encoder = new XMLEncoder( System.out );
+		Cronk cronk = new Cronk();
+		cronk.setApple( "abc" );
+		encoder.writeObject( cronk );
+		encoder.close();
+		
+	}
+
 	
 	String apple;
-	float banana;
+	float banana = 2.0f;
 	int cherry;
 	Date dewberry;
-	boolean eggplant;
+	boolean eggplant = true;
 	Cronk fig;
 	ArrayList<Cronk> grape = new ArrayList<Cronk>();
 	HashMap<String,Cronk> honeydew = new HashMap<String,Cronk>();
+	Season season = Season.winter;
 	
 	public String getApple() {
 		return apple;
