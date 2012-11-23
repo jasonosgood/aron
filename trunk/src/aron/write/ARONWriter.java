@@ -17,9 +17,6 @@ import java.lang.reflect.Modifier;
 
 import aron.ARON;
 
-import cronk.Cronk;
-import cronk.Season;
-
 public class 
 	ARONWriter 
 {
@@ -28,7 +25,6 @@ public class
 	{
 		OutputStreamWriter ugh = new OutputStreamWriter(System.out);
 		ARONWriter w = new ARONWriter( ugh);
-		w.write( Season.autumn );
 		
 		
 		String filename = "./test/cronk/test1.aron";
@@ -76,20 +72,16 @@ public class
 	public void write( Object value ) 
 		throws IOException
 	{
+		_writer.write( "# ARON 0.1" );
+		newline( 0 );
 		write( value, 0 );
-	}
-	
-	public void tabs( int i )
-		throws IOException
-	{
-		for( int nth = 0; nth < i; nth++ )
-		{
-			_writer.write( '\t' );
-		}
+		newline( 0 );
+		_writer.flush();
 	}
 	
 	SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
-	public void write( Object obj, int tabs ) 
+	
+	protected void write( Object obj, int tabs ) 
 		throws IOException
 	{
 		if( obj == null ) 
@@ -102,17 +94,17 @@ public class
 			
 			if( type.isArray() )
 			{
-				tabs( tabs );
+				newline( tabs );
 				_writer.write( '[' );
-				_writer.write( '\n' );
+				tabs++;
 				int len = java.lang.reflect.Array.getLength( obj );
 				for( int nth = 0; nth < len; nth++ )
 				{
 					Object item = java.lang.reflect.Array.get( obj, nth );
-					write( item, tabs + 1 );
-					_writer.write( '\n' );
+					newline( tabs );
+					write( item, tabs );
 				}
-				tabs( tabs );
+				tabs--;
 				_writer.write( ']' );
 			}
 			else if( Collection.class.isAssignableFrom( type ) )
@@ -120,40 +112,37 @@ public class
 				Collection<?> c = (Collection<?>) obj;
 				if( c.size() >  0 )
 				{
-					_writer.write( '\n' );
-					tabs--;
-					tabs( tabs );
+					newline( tabs );
 					_writer.write( '[' );
-					_writer.write( '\n' );
+					tabs++;
 					for( Object item : c )
 					{
-						write( item, tabs + 1 );
-						_writer.write( '\n' );
+						newline( tabs );
+						write( item, tabs );
 					}
-					tabs( tabs );
+					tabs--;
+					newline( tabs );
 					_writer.write( ']' );
 				}
 			}
 			else if( Map.class.isAssignableFrom( type ) )
 			{
-				_writer.write( '\n' );
-				tabs( tabs - 1 );
+				newline( tabs );
 				_writer.write( '{' );
-				_writer.write( '\n' );
+				tabs++;
 				// TODO: Support non-String values?
 				for( Map.Entry entry : ((Map<?, ?>) obj).entrySet()) 
 				{
 					Object key = entry.getKey();
 					if( key == null ) continue;
-					tabs( tabs );
+					newline( tabs );
 					_writer.write( key.toString() );
 					_writer.write( ' ' );
-					write( entry.getValue(), tabs + 1 );
-					_writer.write( '\n' );
+					write( entry.getValue(), tabs );
 				}
-				tabs( tabs - 1 );
+				tabs--;
+				newline( tabs );
 				_writer.write( '}' );
-				_writer.write( '\n' );
 			}
 			else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
 			{
@@ -193,7 +182,6 @@ public class
 			}
 			else
 			{
-				tabs( tabs );
 				_writer.write( type.getName() );
 				List<Field> fields = getFields( type );
 				Object dupe = null;
@@ -211,10 +199,8 @@ public class
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				_writer.write( '\n' );
-				tabs( tabs );
+				newline( tabs );
 				_writer.write( '(' );
-				_writer.write( '\n' );
 				tabs++;
 				for( Field field : fields )
 				{
@@ -229,11 +215,10 @@ public class
 						}
 						if( dirty )
 						{
-							tabs( tabs );
+							newline( tabs );
 							_writer.write( field.getName() );
 							_writer.write( ' ' );
-							write( spork, tabs + 1 );
-							_writer.write( '\n' );
+							write( spork, tabs );
 						}
 					} 
 					catch( IllegalArgumentException e ) 
@@ -248,14 +233,10 @@ public class
 					}
 				}
 				tabs--;
-				tabs( tabs );
+
+				newline( tabs );
 				_writer.write( ')' );
 			}
-		}
-		if( tabs < 1 )
-		{
-			_writer.write( '\n' );
-			_writer.flush();
 		}
 	}
 	
@@ -325,5 +306,13 @@ public class
 		}
 	}
 	
-
+	public void newline( int tabs )
+		throws IOException
+	{
+		_writer.write( '\n' );
+		for( int nth = 0; nth < tabs; nth++ )
+		{
+			_writer.write( '\t' );
+		}
+	}
 }
