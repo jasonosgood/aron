@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.lang.Number;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -24,7 +26,7 @@ public class
 		throws Exception
 	{
 		OutputStreamWriter ugh = new OutputStreamWriter(System.out);
-		ARONWriter w = new ARONWriter( ugh);
+		ARONWriter w = new ARONWriter( ugh );
 		
 		
 		String filename = "./test/cronk/test1.aron";
@@ -33,36 +35,35 @@ public class
 		
 		aron.load( file );
 		Object derp = aron.getRegistry().get( "parent" );
+	/*	
+		w.write( null );
+		w.write( 123 );
+		w.write( "a\"b\n\r\tc" );
+		int[] a = { 1, 2, 99 };
+		w.write( a );
+		w.write( true );
+		w.write( false );
+		w.write( 'c' );
 		
-//		w.write( null );
-//		w.write( 123 );
-//		w.write( "a\"b\n\r\tc" );
-//		int[] a = { 1, 2, 99 };
-//		w.write( a );
-//		w.write( true );
-//		w.write( false );
-//		w.write( 'c' );
-//		
-//		ArrayList<String> l = new ArrayList<String>();
-//		l.add( "x" );
-//		l.add( "y" );
-//		l.add( "z" );
-//		w.write( l );
-//		
-//		HashMap m = new HashMap();
-//		m.put( "a", "apple" );
-//		m.put( "b", "banana" );
-//		m.put( "c", "cherry" );
-//		w.write( m );
+		ArrayList<String> l = new ArrayList<String>();
+		l.add( "x" );
+		l.add( "y" );
+		l.add( "z" );
+		w.write( l );
 		
-//		w.write( new Date() );
-		
-//		Cronk cronk = new Cronk();
+		HashMap m = new HashMap();
+		m.put( "a", "apple" );
+		m.put( "b", "banana" );
+		m.put( "c", "cherry" );
+		w.write( m );
+		w.write( new Date() );
+		Cronk cronk = new Cronk();
+ */
 		w.write( derp );
 		ugh.close();
 	}
 
-	Writer _writer = null;
+	private Writer _writer = null;
 	
 	public ARONWriter( Writer writer )
 	{
@@ -73,12 +74,123 @@ public class
 		throws IOException
 	{
 		_writer.write( "# ARON 0.1" );
+		Set<Class> imports = getClassesUsed( value );
+		if( imports.size() > 0 )
+		{
+			newline( 0 );
+			for( Class klass : imports )
+			{
+				newline( 0 );
+				_writer.write( "import " );
+				_writer.write( klass.getName() );
+			}
+			newline( 0 );
+		}
+
 		newline( 0 );
 		write( value, 0 );
 		newline( 0 );
 		_writer.flush();
 	}
+		
+
+	public Set<Class> getClassesUsed( Object obj )
+	{
+		HashSet<Class> list = new HashSet<Class>();
+		listClasses( obj, list );
+		return list;
+	}
 	
+	public void listClasses( Object obj, Set<Class> list )
+	{
+		if( obj == null ) return;
+		
+		Class<? extends Object> type = obj.getClass();
+		
+		if( type.isArray() )
+		{
+			int len = java.lang.reflect.Array.getLength( obj );
+			for( int nth = 0; nth < len; nth++ )
+			{
+				Object item = java.lang.reflect.Array.get( obj, nth );
+				listClasses( item, list );
+			}
+		}
+		else if( Collection.class.isAssignableFrom( type ) )
+		{
+			Collection<?> c = (Collection<?>) obj;
+			if( c.size() >  0 )
+			{
+				for( Object item : c )
+				{
+					listClasses( item, list );
+				}
+			}
+		}
+		else if( Map.class.isAssignableFrom( type ) )
+		{
+			// TODO: Support non-String values?
+			for( Map.Entry entry : ((Map<?, ?>) obj).entrySet()) 
+			{
+				Object key = entry.getKey();
+				if( key == null ) continue;
+				listClasses( entry.getValue(), list );
+			}
+		}
+		else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
+		{
+			return;
+		}
+		else if( type == Boolean.class )
+		{
+			return;
+		}
+		else if( type == String.class )
+		{
+			return;
+		}
+		else if( type == Character.class )
+		{
+			return;
+		}
+		else if( type == Date.class )
+		{
+			return;
+		}
+		else if( Enum.class.isAssignableFrom( type ))
+		{
+			list.add( type );
+			return;
+		}
+		else
+		{
+			list.add( type );
+			
+			List<Field> fields = getFields( type );
+			for( Field field : fields )
+			{
+				try 
+				{
+					Object spork = field.get( obj );
+					if( spork != null )
+					{
+						listClasses( spork, list );
+					}
+				} 
+				catch( IllegalArgumentException e ) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				catch( IllegalAccessException e ) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
 	
 	protected void write( Object obj, int tabs ) 
@@ -184,10 +296,10 @@ public class
 			{
 				_writer.write( type.getName() );
 				List<Field> fields = getFields( type );
-				Object dupe = null;
+				Object vanilla = null;
 				try 
 				{
-					dupe = type.newInstance();
+					vanilla = type.newInstance();
 				}
 				catch( InstantiationException e1 ) 
 				{
@@ -208,9 +320,9 @@ public class
 					{
 						Object spork = field.get( obj );
 						boolean dirty = true;
-						if( dupe != null )
+						if( vanilla != null )
 						{
-							Object dung = field.get( dupe );
+							Object dung = field.get( vanilla );
 							dirty = !equals( spork, dung );
 						}
 						if( dirty )
@@ -275,10 +387,8 @@ public class
 			
 			type = type.getSuperclass();
 		}
-
 		return fields;
 	}
-
 
 	public void escape( char c ) 
 		throws IOException 
