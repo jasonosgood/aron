@@ -110,11 +110,11 @@ Digit
   ;
 
 Integer 
-  : ( Digit )+ 
+  : ('-')? ( Digit )+ 
   ;
   
 Float
-  : ( Digit )+ '.' ( Digit )* Exponent?
+  : ('-')? ( Digit )+ '.' ( Digit )* Exponent?
   | '.' ( Digit )+ Exponent?
   | ( Digit )+ Exponent
   ;
