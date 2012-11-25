@@ -1,4 +1,4 @@
-package cronk;
+package arondemo;
 
 /**
 	ARON - A Righteous Object Notation
@@ -18,16 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Cronk
+public class Demo
 {
 	String apple;
 	float banana = 2.0f;
 	int cherry;
 	Date dewberry;
 	boolean eggplant = true;
-	Cronk fig;
-	ArrayList<Cronk> grape = new ArrayList<Cronk>();
-	HashMap<String,Cronk> honeydew = new HashMap<String,Cronk>();
+	Demo fig;
+	ArrayList<Demo> grape = new ArrayList<Demo>();
+	HashMap<String,Demo> honeydew = new HashMap<String,Demo>();
 	Season season = Season.spring;
 	
 	public String getApple() {
@@ -60,17 +60,17 @@ public class Cronk
 	public void setEggplant(boolean eggplant) {
 		this.eggplant = eggplant;
 	}
-	public Cronk getFig() {
+	public Demo getFig() {
 		return fig;
 	}
-	public void setFig(Cronk fig) {
+	public void setFig(Demo fig) {
 		this.fig = fig;
 	}
-	public List<Cronk> getGrape()
+	public List<Demo> getGrape()
 	{
 		return grape;
 	}
-	public Map<String,Cronk> getHoneydew()
+	public Map<String,Demo> getHoneydew()
 	{
 		return honeydew;
 	}
@@ -79,4 +79,6 @@ public class Cronk
 	{
 		this.season = season;
 	}
+	
+	public Season getSeason() { return season; }
 }

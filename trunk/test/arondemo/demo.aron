@@ -1,0 +1,32 @@
+# ARON 0.1
+
+import arondemo.Demo
+
+parent:Demo 
+(
+	apple "abc"
+	banana 100.0
+	cherry 100
+	dewberry 2000-01-01T12:00:00
+	eggplant true
+	fig xyzzy:Demo
+	grape
+	[
+		a:Demo
+		b:Demo
+		(
+			apple "abc"
+			banana 100.0
+			cherry 100
+			dewberry 2000-01-01T12:00:00
+			eggplant true
+		)
+	]
+	honeydew
+	{
+		first Demo
+		second Demo
+	}
+//	iyokan @parent
+	season winter
+)

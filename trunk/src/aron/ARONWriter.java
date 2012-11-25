@@ -13,6 +13,7 @@ package aron;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.security.AccessControlException;
@@ -77,9 +78,22 @@ public class
 	
 	public ARONWriter( Writer writer )
 	{
+		if( writer == null )
+		{
+			throw new NullPointerException( "writer" );
+		}
 		_writer = writer;  
 	}
 
+	public ARONWriter( OutputStream out )
+	{
+		if( out == null )
+		{
+			throw new NullPointerException( "out" );
+		}
+		_writer = new OutputStreamWriter( out );
+	}
+	
 	public void write( Object value ) 
 		throws IOException
 	{
