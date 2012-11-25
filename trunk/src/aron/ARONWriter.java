@@ -1,4 +1,4 @@
-package aron.write;
+package aron;
 
 /**
 	ARON - A Righteous Object Notation
@@ -28,7 +28,6 @@ import java.lang.Number;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import aron.ARON;
 
 public class 
 	ARONWriter 
