@@ -1,8 +1,9 @@
 package arondemo;
 
 import java.io.File;
+import java.util.Map;
 
-import aron.ARON;
+import aron.ARONReader;
 import aron.ARONWriter;
 
 public class 
@@ -15,11 +16,16 @@ public class
 		String filename = "./test/arondemo/demo.aron";
 		File file = new File( filename );
 		
-		ARON aron = new ARON();		
-		aron.load( file );
+		ARONReader aron = new ARONReader();		
+		aron.read( file );
 		Fruit parent = (Fruit) aron.getRegistry().get( "parent" );
+		Map<String,Object> registry = aron.getRegistry();
+		for( Map.Entry<String, Object> entry : registry.entrySet() )
+		{
+			System.out.printf( "label: %s  class: %s\n", entry.getKey(), entry.getValue().getClass().getName() );
+		}
 		
-		System.out.println( "found parent: " + ( parent != null ));
+		System.out.println();
 		
 		ARONWriter writer = new ARONWriter( System.out );
 		writer.write( parent );

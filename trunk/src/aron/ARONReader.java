@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,36 +36,23 @@ import org.antlr.runtime.Token;
 
 // TODO: Report missing bean method
 
-public class ARON
+public class ARONReader
 {
-	public static final void main( String[] args )
-		throws Exception
-	{
-		ARON aron = new ARON();		
-		
-		String filename = "./test/cronk/test2.aron";
-		File file = new File( filename );
-		
-		aron.load( file );
-		Object ugh = aron.getRegistry().get( "parent" );
-		System.out.println( ugh );
-	}
-	
-	public boolean load( File file )
+	public boolean read( File file )
 		throws Exception
 	{
 		FileReader reader = new FileReader( file );
-		return load( reader );
+		return read( reader );
 	}
  
 	public boolean load( InputStream in )
 		throws Exception
 	{
 		InputStreamReader reader = new InputStreamReader( in );
-		return load( reader );
+		return read( reader );
 	}
 	
-	public boolean load( Reader reader )
+	public boolean read( Reader reader )
 		throws Exception
 	{
 		ParseTreeBuilder builder = new ParseTreeBuilder();
@@ -90,7 +78,7 @@ public class ARON
 	}
 	
 	public int _anon = 0;
-	HashMap<String,Object> _registry = new HashMap<String,Object>();
+	LinkedHashMap<String,Object> _registry = null;
 	
 	public Map<String,Object> getRegistry()
 	{
@@ -173,7 +161,7 @@ public class ARON
     			catch( Exception ee )
     			{
     	        	String literal = kid.findFirstString( "Identifier" );
-    	        	if( !egads( child, bean, literal ))
+    	        	if( !enumSetter( child, bean, literal ))
     	        	{
     	        		throw ee;
     	        	}
@@ -225,7 +213,7 @@ public class ARON
 		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "(" + type.getName() + ")" );
 	}
 
-	public boolean egads( Object instance, String bean, String literal ) 
+	public boolean enumSetter( Object instance, String bean, String literal ) 
 		throws 
 			EnumConstantNotPresentException, IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException
@@ -413,14 +401,14 @@ public class ARON
 		}
 	}
 	
-	private ArrayList<String> importDefs;
-	private HashMap<String, Class<?>> shortNames;
+	private ArrayList<String> _importDefs;
+	private HashMap<String, Class<?>> _shortNames;
 
-	public ARON()
+	public ARONReader()
 	{
-		importDefs = new ArrayList<String>( 4 );
-		shortNames = new HashMap<String, Class<?>>();
-		_registry = new HashMap<String, Object>();
+		_importDefs = new ArrayList<String>( 4 );
+		_shortNames = new HashMap<String, Class<?>>();
+		_registry = new LinkedHashMap<String, Object>();
 	}
 
 	public void imports( String clazzName )
@@ -429,7 +417,7 @@ public class ARON
 		Class<?> clazz = Class.forName( clazzName );
 		int nth = clazz.toString().lastIndexOf( (int) '.' );
 		String shortie = clazz.toString().substring( nth + 1 );
-		shortNames.put( shortie, clazz );
+		_shortNames.put( shortie, clazz );
 	}
 	
 	public Class<?> resolveClass( String name )
@@ -438,7 +426,7 @@ public class ARON
 		Class<?> result = null;
 		
 		// First see if we can get a hit on the short name
-		Object hit = shortNames.get( name );
+		Object hit = _shortNames.get( name );
 		if( hit != null )
 		{
 			result = (Class<?>) hit;
@@ -455,7 +443,7 @@ public class ARON
 
         if( result == null )
         {
-			Iterator<String> i = importDefs.iterator();
+			Iterator<String> i = _importDefs.iterator();
 
 			boolean success = false;
 
@@ -470,7 +458,7 @@ public class ARON
 
 					int nth = result.toString().lastIndexOf( (int) '.' );
 					String shortie = result.toString().substring( nth + 1 );
-					shortNames.put( shortie, result );
+					_shortNames.put( shortie, result );
 
 				}
 				catch( ClassNotFoundException cnfe ) {}

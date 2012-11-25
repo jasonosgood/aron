@@ -42,9 +42,9 @@ public class
 		
 		String filename = "./test/cronk/test2.aron";
 		File file = new File( filename );
-		ARON aron = new ARON();
+		ARONReader aron = new ARONReader();
 		
-		aron.load( file );
+		aron.read( file );
 		Object derp = aron.getRegistry().get( "parent" );
 	/*	
 		w.write( null );
