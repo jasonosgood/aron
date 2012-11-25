@@ -10,8 +10,9 @@ Derived from VRML-95. With most of the interesting bits removed.
 
 UPDATE
 
+10/24/2012 - Added Enum support.
 10/23/2012 - ARONWriter generates import declarations
-10/23/2012 - First cust of ARONWriter
+10/23/2012 - First cut of ARONWriter
 
 TODO
 

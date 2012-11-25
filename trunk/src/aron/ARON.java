@@ -40,9 +40,10 @@ public class ARON
 	public static final void main( String[] args )
 		throws Exception
 	{
-		String filename = "./test/cronk/test1.aron";
+		ARON aron = new ARON();		
+		
+		String filename = "./test/cronk/test2.aron";
 		File file = new File( filename );
-		ARON aron = new ARON();
 		
 		aron.load( file );
 		Object ugh = aron.getRegistry().get( "parent" );
@@ -135,88 +136,73 @@ public class ARON
 		}
 	}
 	
-	public Object processChild( ParseNode child )
+	public Object processChild( ParseNode node ) 
+		throws 
+			ClassNotFoundException, InstantiationException, IllegalAccessException, 
+			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
-    	Object instance = null;
-		String name = child.findFirstString( "Identifier" );
-		String label = child.findFirstString( "Label" );
-			
-        try
-        {
-        	Class<?> clazz = resolveClass( name );
-        	
-        	// TODO: Need check to ensure a zero param constructor exists
-        	instance = clazz.newInstance();
-        	register( label, instance );
-        	
-        	
-        	List<ParseNode> propertyList = child.findNodes( "property" );
-        	for( ParseNode prop : propertyList )
-        	{
-        		String bean = prop.findFirstString( "Identifier" );
-//        		System.out.println( "\t" + bean );
-        		try
-        		{
-	        		ParseNode value = prop.findFirstNode( "value" );
-	        		if( value != null )
-	        		{
-	        			processValue( instance, bean, value );
-	        		}
-	            		
-	        		ParseNode kid = prop.findFirstNode( "child" );
-	        		if( kid != null )
-	        		{
-	        			Object ugh = processChild( kid );
-	        			setter( instance, bean, ugh.getClass(), ugh );
-	    				continue;
-	        		}
-	        		
-	        		ParseNode list = prop.findFirstNode( "list" );
-	        		if( list != null )
-	        		{
-	        			processList( instance, bean, list );
-	        			continue;
-	        		}
-	        		
-	        		ParseNode assoc = prop.findFirstNode( "assoc" );
-	        		if( assoc != null )
-					{
-	        			processAssoc( instance, bean, assoc );
-	    				continue;
-					}
-        		}
-	        	catch( NoSuchMethodException e )
-	        	{
-	        		e.printStackTrace();
-	        	}
-        		catch( InvocationTargetException e )
-        		{
-	        		e.printStackTrace();
-        			
-        		}
-        	}
-        	
-        }
-        catch( IllegalAccessException e ) 
-        {
-    		e.printStackTrace();
+    	String name = node.findFirstString( "Identifier" );
+    	Class<?> clazz = resolveClass( name );
+    	
+    	// TODO: Need to first verify a zero param constructor exists
+    	Object child = clazz.newInstance();
+    	
+    	String label = node.findFirstString( "Label" );
+    	register( label, child );
+    	
+    	List<ParseNode> propertyList = node.findNodes( "property" );
+    	for( ParseNode prop : propertyList )
+    	{
+    		String bean = prop.findFirstString( "Identifier" );
 
-        }
-        catch( ClassNotFoundException e )
-        {
-    		e.printStackTrace();
-        	
-        }
-        catch( InstantiationException e ) 
-        {
-    		e.printStackTrace();
-        	
-        }
-        return instance;
+			ParseNode value = prop.findFirstNode( "value" );
+    		if( value != null )
+    		{
+    			processValue( child, bean, value );
+    			continue;
+    		}
+        		
+    		ParseNode kid = prop.findFirstNode( "child" );
+    		if( kid != null )
+    		{
+    			try
+    			{
+        			Object grandchild = processChild( kid );
+    				setter( child, bean, grandchild.getClass(), grandchild );
+    			}
+    			catch( Exception ee )
+    			{
+    	        	String literal = kid.findFirstString( "Identifier" );
+    	        	if( !egads( child, bean, literal ))
+    	        	{
+    	        		throw ee;
+    	        	}
+    			}
+    			continue;
+    		}
+	        		
+    		ParseNode list = prop.findFirstNode( "list" );
+    		if( list != null )
+    		{
+    			processList( child, bean, list );
+    			continue;
+    		}
+    		
+    		ParseNode assoc = prop.findFirstNode( "assoc" );
+    		if( assoc != null )
+			{
+    			processAssoc( child, bean, assoc );
+				continue;
+			}
+		}
+    	
+    	return child;
 	}
 
 	public void setter( Object instance, String bean, Class<?> type, Object value ) 
-		throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
+		throws 
+			NoSuchMethodException, IllegalArgumentException, 
+			IllegalAccessException, InvocationTargetException
 	{
 		String name = "set" + capitalize( bean );
 		
@@ -237,6 +223,43 @@ public class ARON
 		}
 			
 		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "(" + type.getName() + ")" );
+	}
+
+	public boolean egads( Object instance, String bean, String literal ) 
+		throws 
+			EnumConstantNotPresentException, IllegalArgumentException, 
+			IllegalAccessException, InvocationTargetException
+	{
+		String name = "set" + capitalize( bean );
+		
+		for( Method method : instance.getClass().getMethods() )
+		{
+			if( method.getName().equals( name ))
+			{
+				for( Class<?> paramType : method.getParameterTypes() )
+				{
+					if( paramType.isEnum() )
+					{
+						Class<? extends Enum> enumType = (Class<? extends Enum>) paramType;
+						
+						Object value = null;
+						try
+						{
+							value = Enum.valueOf( enumType, literal );
+						}
+						catch( IllegalArgumentException e )
+						{
+							throw new EnumConstantNotPresentException( enumType, literal );
+						}
+						Object result = method.invoke( instance, value );
+						return true;
+					}
+					break;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	public Object getter( Object instance, String bean ) 
@@ -311,7 +334,7 @@ public class ARON
 	}
 
 	public void processList( Object instance, String bean, ParseNode node )
-		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
 		Object list = getter( instance, bean );
 		if( list == null )
@@ -351,7 +374,9 @@ public class ARON
 	}
 	
 	public void processAssoc( Object instance, String bean, ParseNode assoc )
-		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+		throws 
+			IllegalArgumentException, NoSuchMethodException, IllegalAccessException, 
+			InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
 		Object map = getter( instance, bean );
 		if( map instanceof Map )
