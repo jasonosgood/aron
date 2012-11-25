@@ -41,7 +41,7 @@ public class Cronk
 	Cronk fig;
 	ArrayList<Cronk> grape = new ArrayList<Cronk>();
 	HashMap<String,Cronk> honeydew = new HashMap<String,Cronk>();
-	Season season = Season.winter;
+	Season season = Season.spring;
 	
 	public String getApple() {
 		return apple;
@@ -86,5 +86,10 @@ public class Cronk
 	public Map<String,Cronk> getHoneydew()
 	{
 		return honeydew;
+	}
+	
+	public void setSeason( Season season )
+	{
+		this.season = season;
 	}
 }

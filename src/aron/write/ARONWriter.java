@@ -1,5 +1,16 @@
 package aron.write;
 
+/**
+	ARON - A Righteous Object Notation
+	
+	Copyright (c) 2002, 2011 Jason Aaron Osgood, All rights reserved.
+	
+	Appropriate open source license will go here.
+	
+	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
+	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
+ */
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -29,7 +40,7 @@ public class
 		ARONWriter w = new ARONWriter( ugh );
 		
 		
-		String filename = "./test/cronk/test1.aron";
+		String filename = "./test/cronk/test2.aron";
 		File file = new File( filename );
 		ARON aron = new ARON();
 		
@@ -92,7 +103,6 @@ public class
 		newline( 0 );
 		_writer.flush();
 	}
-		
 
 	public Set<Class> getClassesUsed( Object obj )
 	{
