@@ -24,3 +24,7 @@ Unit tests.
 add scalar type for URL, URL, fragments
 cycle detection / avoidance
 cache duplicate vanilla objects and fields (if serialization performance ever matters)
+ARONReader exceptions report offending line number and character offset
+upgrade to ANTLR 4.x, rewriting grammar
+
+handle creating, expanding arrays

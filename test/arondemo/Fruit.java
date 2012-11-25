@@ -18,17 +18,17 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Demo
+public class Fruit
 {
 	String apple;
 	float banana = 2.0f;
 	int cherry;
 	Date dewberry;
 	boolean eggplant = true;
-	Demo fig;
-	ArrayList<Demo> grape = new ArrayList<Demo>();
-	HashMap<String,Demo> honeydew = new HashMap<String,Demo>();
-	Season season = Season.spring;
+	Fruit fig;
+	ArrayList<Fruit> grape = new ArrayList<Fruit>();
+	HashMap<String,Fruit> honeydew = new HashMap<String,Fruit>();
+	Season jasmine = Season.spring;
 	
 	public String getApple() {
 		return apple;
@@ -60,25 +60,25 @@ public class Demo
 	public void setEggplant(boolean eggplant) {
 		this.eggplant = eggplant;
 	}
-	public Demo getFig() {
+	public Fruit getFig() {
 		return fig;
 	}
-	public void setFig(Demo fig) {
+	public void setFig(Fruit fig) {
 		this.fig = fig;
 	}
-	public List<Demo> getGrape()
+	public List<Fruit> getGrape()
 	{
 		return grape;
 	}
-	public Map<String,Demo> getHoneydew()
+	public Map<String,Fruit> getHoneydew()
 	{
 		return honeydew;
 	}
 	
-	public void setSeason( Season season )
+	public void setJasmine( Season jasmine )
 	{
-		this.season = season;
+		this.jasmine = jasmine;
 	}
 	
-	public Season getSeason() { return season; }
+	public Season getJasmine() { return jasmine; }
 }

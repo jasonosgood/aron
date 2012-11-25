@@ -17,12 +17,11 @@ public class
 		
 		ARON aron = new ARON();		
 		aron.load( file );
-		Demo parent = (Demo) aron.getRegistry().get( "parent" );
+		Fruit parent = (Fruit) aron.getRegistry().get( "parent" );
 		
 		System.out.println( "found parent: " + ( parent != null ));
 		
 		ARONWriter writer = new ARONWriter( System.out );
 		writer.write( parent );
-	}
-		
+	}		
 }
