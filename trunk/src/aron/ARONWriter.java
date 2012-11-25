@@ -317,7 +317,7 @@ public class
 			}
 			else
 			{
-				_writer.write( type.getName() );
+				_writer.write( type.getSimpleName() );
 				List<Field> fields = getFields( type );
 				Object vanilla = null;
 				try 

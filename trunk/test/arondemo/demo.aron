@@ -1,32 +1,25 @@
 # ARON 0.1
 
-import arondemo.Demo
+import arondemo.Fruit
 
-parent:Demo 
+parent:Fruit 
 (
 	apple "abc"
-	banana 100.0
-	cherry 100
+	banana -100.0
+	cherry -100
 	dewberry 2000-01-01T12:00:00
 	eggplant true
-	fig xyzzy:Demo
+	fig xyzzy:Fruit
 	grape
 	[
-		a:Demo
-		b:Demo
-		(
-			apple "abc"
-			banana 100.0
-			cherry 100
-			dewberry 2000-01-01T12:00:00
-			eggplant true
-		)
+		item1:Fruit
+		item2:Fruit
 	]
 	honeydew
 	{
-		first Demo
-		second Demo
+		key1 Fruit ( apple "def" )
+		key2 Fruit ( apple "ghi" )
 	}
-//	iyokan @parent
-	season winter
+	iyokan @parent
+	jasmine winter
 )

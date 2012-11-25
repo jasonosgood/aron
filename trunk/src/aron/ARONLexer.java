@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g 2012-11-24 15:57:22
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g 2012-11-24 19:25:49
  
 package aron;
 
@@ -376,24 +376,42 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Integer;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:3: ( ( Digit )+ )
-            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:5: ( Digit )+
+            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:3: ( ( '-' )? ( Digit )+ )
+            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:5: ( '-' )? ( Digit )+
             {
-            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:5: ( Digit )+
-            int cnt4=0;
-            loop4:
-            do {
-                int alt4=2;
-                int LA4_0 = input.LA(1);
+            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:5: ( '-' )?
+            int alt4=2;
+            int LA4_0 = input.LA(1);
 
-                if ( ((LA4_0>='0' && LA4_0<='9')) ) {
-                    alt4=1;
+            if ( (LA4_0=='-') ) {
+                alt4=1;
+            }
+            switch (alt4) {
+                case 1 :
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:6: '-'
+                    {
+                    match('-'); 
+
+                    }
+                    break;
+
+            }
+
+            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:12: ( Digit )+
+            int cnt5=0;
+            loop5:
+            do {
+                int alt5=2;
+                int LA5_0 = input.LA(1);
+
+                if ( ((LA5_0>='0' && LA5_0<='9')) ) {
+                    alt5=1;
                 }
 
 
-                switch (alt4) {
+                switch (alt5) {
             	case 1 :
-            	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:7: Digit
+            	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:113:14: Digit
             	    {
             	    mDigit(); 
 
@@ -401,12 +419,12 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt4 >= 1 ) break loop4;
+            	    if ( cnt5 >= 1 ) break loop5;
                         EarlyExitException eee =
-                            new EarlyExitException(4, input);
+                            new EarlyExitException(5, input);
                         throw eee;
                 }
-                cnt4++;
+                cnt5++;
             } while (true);
 
 
@@ -425,28 +443,46 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Float;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:3: ( ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent )
-            int alt11=3;
-            alt11 = dfa11.predict(input);
-            switch (alt11) {
+            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:3: ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent )
+            int alt13=3;
+            alt13 = dfa13.predict(input);
+            switch (alt13) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:5: ( Digit )+ '.' ( Digit )* ( Exponent )?
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:5: ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )?
                     {
-                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:5: ( Digit )+
-                    int cnt5=0;
-                    loop5:
-                    do {
-                        int alt5=2;
-                        int LA5_0 = input.LA(1);
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:5: ( '-' )?
+                    int alt6=2;
+                    int LA6_0 = input.LA(1);
 
-                        if ( ((LA5_0>='0' && LA5_0<='9')) ) {
-                            alt5=1;
+                    if ( (LA6_0=='-') ) {
+                        alt6=1;
+                    }
+                    switch (alt6) {
+                        case 1 :
+                            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:6: '-'
+                            {
+                            match('-'); 
+
+                            }
+                            break;
+
+                    }
+
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:12: ( Digit )+
+                    int cnt7=0;
+                    loop7:
+                    do {
+                        int alt7=2;
+                        int LA7_0 = input.LA(1);
+
+                        if ( ((LA7_0>='0' && LA7_0<='9')) ) {
+                            alt7=1;
                         }
 
 
-                        switch (alt5) {
+                        switch (alt7) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:7: Digit
+                    	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:14: Digit
                     	    {
                     	    mDigit(); 
 
@@ -454,29 +490,29 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    if ( cnt5 >= 1 ) break loop5;
+                    	    if ( cnt7 >= 1 ) break loop7;
                                 EarlyExitException eee =
-                                    new EarlyExitException(5, input);
+                                    new EarlyExitException(7, input);
                                 throw eee;
                         }
-                        cnt5++;
+                        cnt7++;
                     } while (true);
 
                     match('.'); 
-                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:20: ( Digit )*
-                    loop6:
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:27: ( Digit )*
+                    loop8:
                     do {
-                        int alt6=2;
-                        int LA6_0 = input.LA(1);
+                        int alt8=2;
+                        int LA8_0 = input.LA(1);
 
-                        if ( ((LA6_0>='0' && LA6_0<='9')) ) {
-                            alt6=1;
+                        if ( ((LA8_0>='0' && LA8_0<='9')) ) {
+                            alt8=1;
                         }
 
 
-                        switch (alt6) {
+                        switch (alt8) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:22: Digit
+                    	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:29: Digit
                     	    {
                     	    mDigit(); 
 
@@ -484,20 +520,20 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop6;
+                    	    break loop8;
                         }
                     } while (true);
 
-                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:31: ( Exponent )?
-                    int alt7=2;
-                    int LA7_0 = input.LA(1);
+                    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:38: ( Exponent )?
+                    int alt9=2;
+                    int LA9_0 = input.LA(1);
 
-                    if ( (LA7_0=='E'||LA7_0=='e') ) {
-                        alt7=1;
+                    if ( (LA9_0=='E'||LA9_0=='e') ) {
+                        alt9=1;
                     }
-                    switch (alt7) {
+                    switch (alt9) {
                         case 1 :
-                            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:31: Exponent
+                            // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:117:38: Exponent
                             {
                             mExponent(); 
 
@@ -514,18 +550,18 @@ public class ARONLexer extends Lexer {
                     {
                     match('.'); 
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:118:9: ( Digit )+
-                    int cnt8=0;
-                    loop8:
+                    int cnt10=0;
+                    loop10:
                     do {
-                        int alt8=2;
-                        int LA8_0 = input.LA(1);
+                        int alt10=2;
+                        int LA10_0 = input.LA(1);
 
-                        if ( ((LA8_0>='0' && LA8_0<='9')) ) {
-                            alt8=1;
+                        if ( ((LA10_0>='0' && LA10_0<='9')) ) {
+                            alt10=1;
                         }
 
 
-                        switch (alt8) {
+                        switch (alt10) {
                     	case 1 :
                     	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:118:11: Digit
                     	    {
@@ -535,22 +571,22 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    if ( cnt8 >= 1 ) break loop8;
+                    	    if ( cnt10 >= 1 ) break loop10;
                                 EarlyExitException eee =
-                                    new EarlyExitException(8, input);
+                                    new EarlyExitException(10, input);
                                 throw eee;
                         }
-                        cnt8++;
+                        cnt10++;
                     } while (true);
 
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:118:20: ( Exponent )?
-                    int alt9=2;
-                    int LA9_0 = input.LA(1);
+                    int alt11=2;
+                    int LA11_0 = input.LA(1);
 
-                    if ( (LA9_0=='E'||LA9_0=='e') ) {
-                        alt9=1;
+                    if ( (LA11_0=='E'||LA11_0=='e') ) {
+                        alt11=1;
                     }
-                    switch (alt9) {
+                    switch (alt11) {
                         case 1 :
                             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:118:20: Exponent
                             {
@@ -568,18 +604,18 @@ public class ARONLexer extends Lexer {
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:119:5: ( Digit )+ Exponent
                     {
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:119:5: ( Digit )+
-                    int cnt10=0;
-                    loop10:
+                    int cnt12=0;
+                    loop12:
                     do {
-                        int alt10=2;
-                        int LA10_0 = input.LA(1);
+                        int alt12=2;
+                        int LA12_0 = input.LA(1);
 
-                        if ( ((LA10_0>='0' && LA10_0<='9')) ) {
-                            alt10=1;
+                        if ( ((LA12_0>='0' && LA12_0<='9')) ) {
+                            alt12=1;
                         }
 
 
-                        switch (alt10) {
+                        switch (alt12) {
                     	case 1 :
                     	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:119:7: Digit
                     	    {
@@ -589,12 +625,12 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    if ( cnt10 >= 1 ) break loop10;
+                    	    if ( cnt12 >= 1 ) break loop12;
                                 EarlyExitException eee =
-                                    new EarlyExitException(10, input);
+                                    new EarlyExitException(12, input);
                                 throw eee;
                         }
-                        cnt10++;
+                        cnt12++;
                     } while (true);
 
                     mExponent(); 
@@ -621,20 +657,20 @@ public class ARONLexer extends Lexer {
             {
             match('\"'); 
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:123:10: ( options {greedy=false; } : . )*
-            loop12:
+            loop14:
             do {
-                int alt12=2;
-                int LA12_0 = input.LA(1);
+                int alt14=2;
+                int LA14_0 = input.LA(1);
 
-                if ( (LA12_0=='\"') ) {
-                    alt12=2;
+                if ( (LA14_0=='\"') ) {
+                    alt14=2;
                 }
-                else if ( ((LA12_0>='\u0000' && LA12_0<='!')||(LA12_0>='#' && LA12_0<='\uFFFF')) ) {
-                    alt12=1;
+                else if ( ((LA14_0>='\u0000' && LA14_0<='!')||(LA14_0>='#' && LA14_0<='\uFFFF')) ) {
+                    alt14=1;
                 }
 
 
-                switch (alt12) {
+                switch (alt14) {
             	case 1 :
             	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:123:38: .
             	    {
@@ -644,7 +680,7 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop12;
+            	    break loop14;
                 }
             } while (true);
 
@@ -688,13 +724,13 @@ public class ARONLexer extends Lexer {
             mDigit(); 
             mDigit(); 
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:131:5: ( '+' Digit Digit ':' Digit Digit )?
-            int alt13=2;
-            int LA13_0 = input.LA(1);
+            int alt15=2;
+            int LA15_0 = input.LA(1);
 
-            if ( (LA13_0=='+') ) {
-                alt13=1;
+            if ( (LA15_0=='+') ) {
+                alt15=1;
             }
-            switch (alt13) {
+            switch (alt15) {
                 case 1 :
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:131:7: '+' Digit Digit ':' Digit Digit
                     {
@@ -739,17 +775,17 @@ public class ARONLexer extends Lexer {
                 throw mse;}
 
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:135:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
-            loop14:
+            loop16:
             do {
-                int alt14=2;
-                int LA14_0 = input.LA(1);
+                int alt16=2;
+                int LA16_0 = input.LA(1);
 
-                if ( ((LA14_0>='0' && LA14_0<='9')||(LA14_0>='A' && LA14_0<='Z')||LA14_0=='_'||(LA14_0>='a' && LA14_0<='z')) ) {
-                    alt14=1;
+                if ( ((LA16_0>='0' && LA16_0<='9')||(LA16_0>='A' && LA16_0<='Z')||LA16_0=='_'||(LA16_0>='a' && LA16_0<='z')) ) {
+                    alt16=1;
                 }
 
 
-                switch (alt14) {
+                switch (alt16) {
             	case 1 :
             	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:
             	    {
@@ -767,7 +803,7 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop14;
+            	    break loop16;
                 }
             } while (true);
 
@@ -800,17 +836,17 @@ public class ARONLexer extends Lexer {
                 throw mse;}
 
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:139:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
-            loop15:
+            loop17:
             do {
-                int alt15=2;
-                int LA15_0 = input.LA(1);
+                int alt17=2;
+                int LA17_0 = input.LA(1);
 
-                if ( ((LA15_0>='0' && LA15_0<='9')||(LA15_0>='A' && LA15_0<='Z')||(LA15_0>='a' && LA15_0<='z')) ) {
-                    alt15=1;
+                if ( ((LA17_0>='0' && LA17_0<='9')||(LA17_0>='A' && LA17_0<='Z')||(LA17_0>='a' && LA17_0<='z')) ) {
+                    alt17=1;
                 }
 
 
-                switch (alt15) {
+                switch (alt17) {
             	case 1 :
             	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:
             	    {
@@ -828,7 +864,7 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop15;
+            	    break loop17;
                 }
             } while (true);
 
@@ -863,17 +899,17 @@ public class ARONLexer extends Lexer {
                 throw mse;}
 
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:143:29: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
-            loop16:
+            loop18:
             do {
-                int alt16=2;
-                int LA16_0 = input.LA(1);
+                int alt18=2;
+                int LA18_0 = input.LA(1);
 
-                if ( ((LA16_0>='0' && LA16_0<='9')||(LA16_0>='A' && LA16_0<='Z')||(LA16_0>='a' && LA16_0<='z')) ) {
-                    alt16=1;
+                if ( ((LA18_0>='0' && LA18_0<='9')||(LA18_0>='A' && LA18_0<='Z')||(LA18_0>='a' && LA18_0<='z')) ) {
+                    alt18=1;
                 }
 
 
-                switch (alt16) {
+                switch (alt18) {
             	case 1 :
             	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:
             	    {
@@ -891,7 +927,7 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop16;
+            	    break loop18;
                 }
             } while (true);
 
@@ -912,49 +948,49 @@ public class ARONLexer extends Lexer {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:3: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
-            int alt20=2;
-            int LA20_0 = input.LA(1);
+            int alt22=2;
+            int LA22_0 = input.LA(1);
 
-            if ( (LA20_0=='/') ) {
-                int LA20_1 = input.LA(2);
+            if ( (LA22_0=='/') ) {
+                int LA22_1 = input.LA(2);
 
-                if ( (LA20_1=='/') ) {
-                    alt20=1;
+                if ( (LA22_1=='/') ) {
+                    alt22=1;
                 }
-                else if ( (LA20_1=='*') ) {
-                    alt20=2;
+                else if ( (LA22_1=='*') ) {
+                    alt22=2;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 20, 1, input);
+                        new NoViableAltException("", 22, 1, input);
 
                     throw nvae;
                 }
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 20, 0, input);
+                    new NoViableAltException("", 22, 0, input);
 
                 throw nvae;
             }
-            switch (alt20) {
+            switch (alt22) {
                 case 1 :
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:5: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
                     match("//"); 
 
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:10: (~ ( '\\n' | '\\r' ) )*
-                    loop17:
+                    loop19:
                     do {
-                        int alt17=2;
-                        int LA17_0 = input.LA(1);
+                        int alt19=2;
+                        int LA19_0 = input.LA(1);
 
-                        if ( ((LA17_0>='\u0000' && LA17_0<='\t')||(LA17_0>='\u000B' && LA17_0<='\f')||(LA17_0>='\u000E' && LA17_0<='\uFFFF')) ) {
-                            alt17=1;
+                        if ( ((LA19_0>='\u0000' && LA19_0<='\t')||(LA19_0>='\u000B' && LA19_0<='\f')||(LA19_0>='\u000E' && LA19_0<='\uFFFF')) ) {
+                            alt19=1;
                         }
 
 
-                        switch (alt17) {
+                        switch (alt19) {
                     	case 1 :
                     	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:10: ~ ( '\\n' | '\\r' )
                     	    {
@@ -972,18 +1008,18 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop17;
+                    	    break loop19;
                         }
                     } while (true);
 
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:24: ( '\\r' )?
-                    int alt18=2;
-                    int LA18_0 = input.LA(1);
+                    int alt20=2;
+                    int LA20_0 = input.LA(1);
 
-                    if ( (LA18_0=='\r') ) {
-                        alt18=1;
+                    if ( (LA20_0=='\r') ) {
+                        alt20=1;
                     }
-                    switch (alt18) {
+                    switch (alt20) {
                         case 1 :
                             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:147:24: '\\r'
                             {
@@ -1005,29 +1041,29 @@ public class ARONLexer extends Lexer {
                     match("/*"); 
 
                     // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:148:10: ( options {greedy=false; } : . )*
-                    loop19:
+                    loop21:
                     do {
-                        int alt19=2;
-                        int LA19_0 = input.LA(1);
+                        int alt21=2;
+                        int LA21_0 = input.LA(1);
 
-                        if ( (LA19_0=='*') ) {
-                            int LA19_1 = input.LA(2);
+                        if ( (LA21_0=='*') ) {
+                            int LA21_1 = input.LA(2);
 
-                            if ( (LA19_1=='/') ) {
-                                alt19=2;
+                            if ( (LA21_1=='/') ) {
+                                alt21=2;
                             }
-                            else if ( ((LA19_1>='\u0000' && LA19_1<='.')||(LA19_1>='0' && LA19_1<='\uFFFF')) ) {
-                                alt19=1;
+                            else if ( ((LA21_1>='\u0000' && LA21_1<='.')||(LA21_1>='0' && LA21_1<='\uFFFF')) ) {
+                                alt21=1;
                             }
 
 
                         }
-                        else if ( ((LA19_0>='\u0000' && LA19_0<=')')||(LA19_0>='+' && LA19_0<='\uFFFF')) ) {
-                            alt19=1;
+                        else if ( ((LA21_0>='\u0000' && LA21_0<=')')||(LA21_0>='+' && LA21_0<='\uFFFF')) ) {
+                            alt21=1;
                         }
 
 
-                        switch (alt19) {
+                        switch (alt21) {
                     	case 1 :
                     	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:148:38: .
                     	    {
@@ -1037,7 +1073,7 @@ public class ARONLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop19;
+                    	    break loop21;
                         }
                     } while (true);
 
@@ -1066,18 +1102,18 @@ public class ARONLexer extends Lexer {
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:153:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
             {
             // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:153:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
-            int cnt21=0;
-            loop21:
+            int cnt23=0;
+            loop23:
             do {
-                int alt21=2;
-                int LA21_0 = input.LA(1);
+                int alt23=2;
+                int LA23_0 = input.LA(1);
 
-                if ( ((LA21_0>='\t' && LA21_0<='\n')||LA21_0=='\r'||LA21_0==' '||LA21_0==',') ) {
-                    alt21=1;
+                if ( ((LA23_0>='\t' && LA23_0<='\n')||LA23_0=='\r'||LA23_0==' '||LA23_0==',') ) {
+                    alt23=1;
                 }
 
 
-                switch (alt21) {
+                switch (alt23) {
             	case 1 :
             	    // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:
             	    {
@@ -1095,12 +1131,12 @@ public class ARONLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt21 >= 1 ) break loop21;
+            	    if ( cnt23 >= 1 ) break loop23;
                         EarlyExitException eee =
-                            new EarlyExitException(21, input);
+                            new EarlyExitException(23, input);
                         throw eee;
                 }
-                cnt21++;
+                cnt23++;
             } while (true);
 
              _channel = HIDDEN; 
@@ -1117,9 +1153,9 @@ public class ARONLexer extends Lexer {
 
     public void mTokens() throws RecognitionException {
         // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:1:8: ( T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | Bool | Integer | Float | String | Timestamp | Identifier | Label | Reference | Comment | Whitespace )
-        int alt22=19;
-        alt22 = dfa22.predict(input);
-        switch (alt22) {
+        int alt24=19;
+        alt24 = dfa24.predict(input);
+        switch (alt24) {
             case 1 :
                 // /Users/jasonosgood/Projects/Camper/aron/src/aron/ARON.g:1:10: T__16
                 {
@@ -1259,158 +1295,160 @@ public class ARONLexer extends Lexer {
     }
 
 
-    protected DFA11 dfa11 = new DFA11(this);
-    protected DFA22 dfa22 = new DFA22(this);
-    static final String DFA11_eotS =
+    protected DFA13 dfa13 = new DFA13(this);
+    protected DFA24 dfa24 = new DFA24(this);
+    static final String DFA13_eotS =
         "\5\uffff";
-    static final String DFA11_eofS =
+    static final String DFA13_eofS =
         "\5\uffff";
-    static final String DFA11_minS =
-        "\2\56\3\uffff";
-    static final String DFA11_maxS =
-        "\1\71\1\145\3\uffff";
-    static final String DFA11_acceptS =
-        "\2\uffff\1\2\1\1\1\3";
-    static final String DFA11_specialS =
+    static final String DFA13_minS =
+        "\1\55\1\uffff\1\56\2\uffff";
+    static final String DFA13_maxS =
+        "\1\71\1\uffff\1\145\2\uffff";
+    static final String DFA13_acceptS =
+        "\1\uffff\1\1\1\uffff\1\2\1\3";
+    static final String DFA13_specialS =
         "\5\uffff}>";
-    static final String[] DFA11_transitionS = {
-            "\1\2\1\uffff\12\1",
-            "\1\3\1\uffff\12\1\13\uffff\1\4\37\uffff\1\4",
+    static final String[] DFA13_transitionS = {
+            "\1\1\1\3\1\uffff\12\2",
             "",
+            "\1\1\1\uffff\12\2\13\uffff\1\4\37\uffff\1\4",
             "",
             ""
     };
 
-    static final short[] DFA11_eot = DFA.unpackEncodedString(DFA11_eotS);
-    static final short[] DFA11_eof = DFA.unpackEncodedString(DFA11_eofS);
-    static final char[] DFA11_min = DFA.unpackEncodedStringToUnsignedChars(DFA11_minS);
-    static final char[] DFA11_max = DFA.unpackEncodedStringToUnsignedChars(DFA11_maxS);
-    static final short[] DFA11_accept = DFA.unpackEncodedString(DFA11_acceptS);
-    static final short[] DFA11_special = DFA.unpackEncodedString(DFA11_specialS);
-    static final short[][] DFA11_transition;
+    static final short[] DFA13_eot = DFA.unpackEncodedString(DFA13_eotS);
+    static final short[] DFA13_eof = DFA.unpackEncodedString(DFA13_eofS);
+    static final char[] DFA13_min = DFA.unpackEncodedStringToUnsignedChars(DFA13_minS);
+    static final char[] DFA13_max = DFA.unpackEncodedStringToUnsignedChars(DFA13_maxS);
+    static final short[] DFA13_accept = DFA.unpackEncodedString(DFA13_acceptS);
+    static final short[] DFA13_special = DFA.unpackEncodedString(DFA13_specialS);
+    static final short[][] DFA13_transition;
 
     static {
-        int numStates = DFA11_transitionS.length;
-        DFA11_transition = new short[numStates][];
+        int numStates = DFA13_transitionS.length;
+        DFA13_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA11_transition[i] = DFA.unpackEncodedString(DFA11_transitionS[i]);
+            DFA13_transition[i] = DFA.unpackEncodedString(DFA13_transitionS[i]);
         }
     }
 
-    class DFA11 extends DFA {
+    class DFA13 extends DFA {
 
-        public DFA11(BaseRecognizer recognizer) {
+        public DFA13(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 11;
-            this.eot = DFA11_eot;
-            this.eof = DFA11_eof;
-            this.min = DFA11_min;
-            this.max = DFA11_max;
-            this.accept = DFA11_accept;
-            this.special = DFA11_special;
-            this.transition = DFA11_transition;
+            this.decisionNumber = 13;
+            this.eot = DFA13_eot;
+            this.eof = DFA13_eof;
+            this.min = DFA13_min;
+            this.max = DFA13_max;
+            this.accept = DFA13_accept;
+            this.special = DFA13_special;
+            this.transition = DFA13_transition;
         }
         public String getDescription() {
-            return "116:1: Float : ( ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent );";
+            return "116:1: Float : ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent );";
         }
     }
-    static final String DFA22_eotS =
-        "\2\uffff\1\23\1\26\6\uffff\2\26\1\32\1\uffff\1\26\5\uffff\2\26\2"+
-        "\uffff\2\26\1\uffff\1\32\3\26\1\32\1\26\1\45\1\26\1\32\1\26\1\uffff"+
-        "\1\45\1\32\1\uffff\1\52\1\uffff";
-    static final String DFA22_eofS =
-        "\53\uffff";
-    static final String DFA22_minS =
-        "\1\11\1\uffff\2\60\6\uffff\2\60\1\56\1\uffff\1\60\5\uffff\2\60\2"+
-        "\uffff\2\60\1\uffff\1\56\3\60\1\56\3\60\1\55\1\60\1\uffff\1\60\1"+
-        "\56\1\uffff\1\60\1\uffff";
-    static final String DFA22_maxS =
-        "\1\175\1\uffff\1\71\1\172\6\uffff\2\172\1\145\1\uffff\1\172\5\uffff"+
-        "\2\172\2\uffff\2\172\1\uffff\1\145\3\172\1\145\3\172\1\145\1\172"+
-        "\1\uffff\1\172\1\145\1\uffff\1\172\1\uffff";
-    static final String DFA22_acceptS =
-        "\1\uffff\1\1\2\uffff\1\4\1\5\1\6\1\7\1\10\1\11\3\uffff\1\15\1\uffff"+
-        "\1\21\1\22\1\23\1\14\1\2\2\uffff\1\17\1\20\2\uffff\1\13\12\uffff"+
+    static final String DFA24_eotS =
+        "\2\uffff\1\23\1\30\6\uffff\2\30\1\uffff\1\34\1\uffff\1\30\5\uffff"+
+        "\2\30\2\uffff\2\30\1\34\1\uffff\1\34\3\30\1\34\1\30\1\47\1\30\1"+
+        "\34\1\30\1\uffff\1\47\1\34\1\uffff\1\54\1\uffff";
+    static final String DFA24_eofS =
+        "\55\uffff";
+    static final String DFA24_minS =
+        "\1\11\1\uffff\2\60\6\uffff\3\60\1\56\1\uffff\1\60\5\uffff\2\60\2"+
+        "\uffff\2\60\1\56\1\uffff\1\56\3\60\1\56\3\60\1\55\1\60\1\uffff\1"+
+        "\60\1\56\1\uffff\1\60\1\uffff";
+    static final String DFA24_maxS =
+        "\1\175\1\uffff\1\71\1\172\6\uffff\2\172\1\71\1\145\1\uffff\1\172"+
+        "\5\uffff\2\172\2\uffff\2\172\1\71\1\uffff\1\145\3\172\1\145\3\172"+
+        "\1\145\1\172\1\uffff\1\172\1\145\1\uffff\1\172\1\uffff";
+    static final String DFA24_acceptS =
+        "\1\uffff\1\1\2\uffff\1\4\1\5\1\6\1\7\1\10\1\11\4\uffff\1\15\1\uffff"+
+        "\1\21\1\22\1\23\1\2\1\14\2\uffff\1\20\1\17\3\uffff\1\13\12\uffff"+
         "\1\12\2\uffff\1\16\1\uffff\1\3";
-    static final String DFA22_specialS =
-        "\53\uffff}>";
-    static final String[] DFA22_transitionS = {
-            "\2\21\2\uffff\1\21\22\uffff\1\21\1\uffff\1\15\1\1\4\uffff\1"+
-            "\4\1\5\2\uffff\1\21\1\uffff\1\2\1\20\12\14\6\uffff\1\17\32\16"+
-            "\1\6\1\uffff\1\7\3\uffff\5\16\1\13\2\16\1\3\12\16\1\12\6\16"+
-            "\1\10\1\uffff\1\11",
+    static final String DFA24_specialS =
+        "\55\uffff}>";
+    static final String[] DFA24_transitionS = {
+            "\2\22\2\uffff\1\22\22\uffff\1\22\1\uffff\1\16\1\1\4\uffff\1"+
+            "\4\1\5\2\uffff\1\22\1\14\1\2\1\21\12\15\6\uffff\1\20\32\17\1"+
+            "\6\1\uffff\1\7\3\uffff\5\17\1\13\2\17\1\3\12\17\1\12\6\17\1"+
+            "\10\1\uffff\1\11",
             "",
-            "\12\22",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\14\25\1\24\15\25",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\21\25\1\30\10\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\1\31\31\25",
-            "\1\22\1\uffff\12\33\13\uffff\1\22\37\uffff\1\22",
-            "",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\32\25",
+            "\12\24",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\14\26\1\25\15\26",
             "",
             "",
             "",
             "",
             "",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\17\25\1\34\12\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\32\25",
+            "",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\21\26\1\31\10\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\1\32\31\26",
+            "\12\33",
+            "\1\24\1\uffff\12\35\13\uffff\1\24\37\uffff\1\24",
+            "",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\32\26",
             "",
             "",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\24\25\1\35\5\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\13\25\1\36\16\25",
             "",
-            "\1\22\1\uffff\12\37\13\uffff\1\22\37\uffff\1\22",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\16\25\1\40\13\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\4\25\1\41\25\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\22\25\1\42\7\25",
-            "\1\22\1\uffff\12\43\13\uffff\1\22\37\uffff\1\22",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\21\25\1\44\10\25",
-            "\12\25\1\27\6\uffff\32\25\4\uffff\1\26\1\uffff\32\25",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\4\25\1\46\25\25",
-            "\1\50\1\22\1\uffff\12\47\13\uffff\1\22\37\uffff\1\22",
-            "\12\25\1\27\6\uffff\32\25\6\uffff\23\25\1\51\6\25",
             "",
-            "\12\25\1\27\6\uffff\32\25\4\uffff\1\26\1\uffff\32\25",
-            "\1\22\1\uffff\12\47\13\uffff\1\22\37\uffff\1\22",
             "",
-            "\12\25\1\27\6\uffff\32\25\4\uffff\1\26\1\uffff\32\25",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\17\26\1\36\12\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\32\26",
+            "",
+            "",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\24\26\1\37\5\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\13\26\1\40\16\26",
+            "\1\24\1\uffff\12\33",
+            "",
+            "\1\24\1\uffff\12\41\13\uffff\1\24\37\uffff\1\24",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\16\26\1\42\13\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\4\26\1\43\25\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\22\26\1\44\7\26",
+            "\1\24\1\uffff\12\45\13\uffff\1\24\37\uffff\1\24",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\21\26\1\46\10\26",
+            "\12\26\1\27\6\uffff\32\26\4\uffff\1\30\1\uffff\32\26",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\4\26\1\50\25\26",
+            "\1\52\1\24\1\uffff\12\51\13\uffff\1\24\37\uffff\1\24",
+            "\12\26\1\27\6\uffff\32\26\6\uffff\23\26\1\53\6\26",
+            "",
+            "\12\26\1\27\6\uffff\32\26\4\uffff\1\30\1\uffff\32\26",
+            "\1\24\1\uffff\12\51\13\uffff\1\24\37\uffff\1\24",
+            "",
+            "\12\26\1\27\6\uffff\32\26\4\uffff\1\30\1\uffff\32\26",
             ""
     };
 
-    static final short[] DFA22_eot = DFA.unpackEncodedString(DFA22_eotS);
-    static final short[] DFA22_eof = DFA.unpackEncodedString(DFA22_eofS);
-    static final char[] DFA22_min = DFA.unpackEncodedStringToUnsignedChars(DFA22_minS);
-    static final char[] DFA22_max = DFA.unpackEncodedStringToUnsignedChars(DFA22_maxS);
-    static final short[] DFA22_accept = DFA.unpackEncodedString(DFA22_acceptS);
-    static final short[] DFA22_special = DFA.unpackEncodedString(DFA22_specialS);
-    static final short[][] DFA22_transition;
+    static final short[] DFA24_eot = DFA.unpackEncodedString(DFA24_eotS);
+    static final short[] DFA24_eof = DFA.unpackEncodedString(DFA24_eofS);
+    static final char[] DFA24_min = DFA.unpackEncodedStringToUnsignedChars(DFA24_minS);
+    static final char[] DFA24_max = DFA.unpackEncodedStringToUnsignedChars(DFA24_maxS);
+    static final short[] DFA24_accept = DFA.unpackEncodedString(DFA24_acceptS);
+    static final short[] DFA24_special = DFA.unpackEncodedString(DFA24_specialS);
+    static final short[][] DFA24_transition;
 
     static {
-        int numStates = DFA22_transitionS.length;
-        DFA22_transition = new short[numStates][];
+        int numStates = DFA24_transitionS.length;
+        DFA24_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA22_transition[i] = DFA.unpackEncodedString(DFA22_transitionS[i]);
+            DFA24_transition[i] = DFA.unpackEncodedString(DFA24_transitionS[i]);
         }
     }
 
-    class DFA22 extends DFA {
+    class DFA24 extends DFA {
 
-        public DFA22(BaseRecognizer recognizer) {
+        public DFA24(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 22;
-            this.eot = DFA22_eot;
-            this.eof = DFA22_eof;
-            this.min = DFA22_min;
-            this.max = DFA22_max;
-            this.accept = DFA22_accept;
-            this.special = DFA22_special;
-            this.transition = DFA22_transition;
+            this.decisionNumber = 24;
+            this.eot = DFA24_eot;
+            this.eof = DFA24_eof;
+            this.min = DFA24_min;
+            this.max = DFA24_max;
+            this.accept = DFA24_accept;
+            this.special = DFA24_special;
+            this.transition = DFA24_transition;
         }
         public String getDescription() {
             return "1:1: Tokens : ( T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | Bool | Integer | Float | String | Timestamp | Identifier | Label | Reference | Comment | Whitespace );";
