@@ -35,8 +35,6 @@ cache duplicate vanilla objects and fields (if serialization performance ever ma
 ARONReader exceptions report offending line number and character offset
 upgrade to ANTLR 4.x, rewriting grammar
 
-handle creating, expanding arrays
-
 HOW TO BUILD
 
 ARON is currently built using Eclipse and Edgar Espina's ANTR IDE. With the ANTLR 
