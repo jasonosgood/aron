@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.lang.Number;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -45,7 +46,7 @@ public class
 		ARONReader aron = new ARONReader();
 		
 		aron.read( file );
-		Object derp = aron.getRegistry().get( "parent" );
+		Object derp = aron.getLabelMap().get( "parent" );
 	/*	
 		w.write( null );
 		w.write( 123 );
@@ -94,9 +95,15 @@ public class
 		_writer = new OutputStreamWriter( out );
 	}
 	
+	private Stack<Object> _objectStack = new Stack<Object>();
 	public void write( Object value ) 
 		throws IOException
 	{
+		if( value == null )
+		{
+			throw new NullPointerException( "value" );
+		}
+		
 		_writer.write( "# ARON 0.1" );
 		Set<Class> imports = getClassesUsed( value );
 		if( imports.size() > 0 )
@@ -124,11 +131,15 @@ public class
 		return list;
 	}
 	
+	Stack<Class> _classStack = new Stack<Class>();
 	public void listClasses( Object obj, Set<Class> list )
 	{
 		if( obj == null ) return;
 		
 		Class<? extends Object> type = obj.getClass();
+		
+		if( _classStack.contains( type )) return;
+		_classStack.push( type );
 		
 		if( type.isArray() )
 		{
@@ -162,28 +173,28 @@ public class
 		}
 		else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
 		{
-			return;
+//			return;
 		}
 		else if( type == Boolean.class )
 		{
-			return;
+//			return;
 		}
 		else if( type == String.class )
 		{
-			return;
+//			return;
 		}
 		else if( type == Character.class )
 		{
-			return;
+//			return;
 		}
 		else if( type == Date.class )
 		{
-			return;
+//			return;
 		}
 		else if( Enum.class.isAssignableFrom( type ))
 		{
 			list.add( type );
-			return;
+//			return;
 		}
 		else
 		{
@@ -212,6 +223,7 @@ public class
 				}
 			}
 		}
+		_classStack.pop();
 	}
 
 	SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
@@ -222,157 +234,167 @@ public class
 		if( obj == null ) 
 		{
 			_writer.write( "null" );
+			return;
 		}
-		else
+		
+		if( _objectStack.contains( obj )) 
 		{
-			Class<?> type = obj.getClass();
-			
-			if( type.isArray() )
+			_writer.write( "null" );
+			return;
+		}
+		
+		_objectStack.push( obj );
+
+		Class<?> type = obj.getClass();
+		
+		if( type.isArray() )
+		{
+			newline( tabs );
+			_writer.write( '[' );
+			tabs++;
+			int len = java.lang.reflect.Array.getLength( obj );
+			for( int nth = 0; nth < len; nth++ )
+			{
+				Object item = java.lang.reflect.Array.get( obj, nth );
+				newline( tabs );
+				write( item, tabs );
+			}
+			tabs--;
+			_writer.write( ']' );
+		}
+		else if( Collection.class.isAssignableFrom( type ) )
+		{
+			Collection<?> c = (Collection<?>) obj;
+			if( c.size() >  0 )
 			{
 				newline( tabs );
 				_writer.write( '[' );
 				tabs++;
-				int len = java.lang.reflect.Array.getLength( obj );
-				for( int nth = 0; nth < len; nth++ )
+				for( Object item : c )
 				{
-					Object item = java.lang.reflect.Array.get( obj, nth );
 					newline( tabs );
 					write( item, tabs );
 				}
 				tabs--;
+				newline( tabs );
 				_writer.write( ']' );
 			}
-			else if( Collection.class.isAssignableFrom( type ) )
+		}
+		else if( Map.class.isAssignableFrom( type ) )
+		{
+			newline( tabs );
+			_writer.write( '{' );
+			tabs++;
+			// TODO: Support non-String values?
+			for( Map.Entry entry : ((Map<?, ?>) obj).entrySet()) 
 			{
-				Collection<?> c = (Collection<?>) obj;
-				if( c.size() >  0 )
-				{
-					newline( tabs );
-					_writer.write( '[' );
-					tabs++;
-					for( Object item : c )
-					{
-						newline( tabs );
-						write( item, tabs );
-					}
-					tabs--;
-					newline( tabs );
-					_writer.write( ']' );
-				}
-			}
-			else if( Map.class.isAssignableFrom( type ) )
-			{
+				Object key = entry.getKey();
+				if( key == null ) continue;
 				newline( tabs );
-				_writer.write( '{' );
-				tabs++;
-				// TODO: Support non-String values?
-				for( Map.Entry entry : ((Map<?, ?>) obj).entrySet()) 
-				{
-					Object key = entry.getKey();
-					if( key == null ) continue;
-					newline( tabs );
-					_writer.write( key.toString() );
-					_writer.write( ' ' );
-					write( entry.getValue(), tabs );
-				}
-				tabs--;
-				newline( tabs );
-				_writer.write( '}' );
+				_writer.write( key.toString() );
+				_writer.write( ' ' );
+				write( entry.getValue(), tabs );
 			}
-			else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
+			tabs--;
+			newline( tabs );
+			_writer.write( '}' );
+		}
+		else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
+		{
+			_writer.write( obj.toString() );
+		}
+		else if( type == Boolean.class )
+		{
+			_writer.write( obj.toString() );
+		}
+		else if( type == String.class )
+		{
+			_writer.write( '"' );
+			String text = obj.toString();
+			int bork = text.length();
+			for( int nth = 0; nth < bork; nth++ )
 			{
-				_writer.write( obj.toString() );
-			}
-			else if( type == Boolean.class )
-			{
-				_writer.write( obj.toString() );
-			}
-			else if( type == String.class )
-			{
-				_writer.write( '"' );
-				String text = obj.toString();
-				int bork = text.length();
-				for( int nth = 0; nth < bork; nth++ )
-				{
-					char c = text.charAt( nth );
-					escape( c );
-				}
-				_writer.write( '"' );
-			}
-			else if( type == Character.class )
-			{
-				_writer.write( '\'' );
-				char c = ((Character) obj).charValue();
+				char c = text.charAt( nth );
 				escape( c );
-				_writer.write( '\'' );
 			}
-			else if( type == Date.class )
+			_writer.write( '"' );
+		}
+		else if( type == Character.class )
+		{
+			_writer.write( '\'' );
+			char c = ((Character) obj).charValue();
+			escape( c );
+			_writer.write( '\'' );
+		}
+		else if( type == Date.class )
+		{
+			// TODO: Format
+			_writer.write( sdf.format( (Date) obj ) );
+		}
+		else if( Enum.class.isAssignableFrom( type ))
+		{
+			_writer.write( obj.toString() );
+		}
+		else
+		{
+			_writer.write( type.getSimpleName() );
+			List<Field> fields = getFields( type );
+			Object vanilla = null;
+			try 
 			{
-				// TODO: Format
-				_writer.write( sdf.format( (Date) obj ) );
+				vanilla = type.newInstance();
 			}
-			else if( Enum.class.isAssignableFrom( type ))
+			catch( InstantiationException e1 ) 
 			{
-				_writer.write( obj.toString() );
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			else
+			catch( IllegalAccessException e1 ) 
 			{
-				_writer.write( type.getSimpleName() );
-				List<Field> fields = getFields( type );
-				Object vanilla = null;
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			newline( tabs );
+			_writer.write( '(' );
+			tabs++;
+			for( Field field : fields )
+			{
 				try 
 				{
-					vanilla = type.newInstance();
-				}
-				catch( InstantiationException e1 ) 
-				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				catch( IllegalAccessException e1 ) 
-				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				newline( tabs );
-				_writer.write( '(' );
-				tabs++;
-				for( Field field : fields )
-				{
-					try 
+					Object spork = field.get( obj );
+					boolean dirty = true;
+					if( vanilla != null )
 					{
-						Object spork = field.get( obj );
-						boolean dirty = true;
-						if( vanilla != null )
-						{
-							Object dung = field.get( vanilla );
-							dirty = !equals( spork, dung );
-						}
-						if( dirty )
-						{
-							newline( tabs );
-							_writer.write( field.getName() );
-							_writer.write( ' ' );
-							write( spork, tabs );
-						}
-					} 
-					catch( IllegalArgumentException e ) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-					catch( IllegalAccessException e ) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Object dung = field.get( vanilla );
+						dirty = !equals( spork, dung );
 					}
+					if( dirty )
+					{
+						newline( tabs );
+						_writer.write( field.getName() );
+						_writer.write( ' ' );
+						write( spork, tabs );
+					}
+				} 
+				catch( IllegalArgumentException e ) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				catch( IllegalAccessException e ) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				tabs--;
-
-				newline( tabs );
-				_writer.write( ')' );
 			}
+			tabs--;
+
+			newline( tabs );
+			_writer.write( ')' );
 		}
+		
+		_objectStack.pop();
+
 	}
 	
 	public static boolean equals( Object x, Object y ) 

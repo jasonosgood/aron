@@ -18,8 +18,8 @@ public class
 		
 		ARONReader aron = new ARONReader();		
 		aron.read( file );
-		Fruit parent = (Fruit) aron.getRegistry().get( "parent" );
-		Map<String,Object> registry = aron.getRegistry();
+		Fruit parent = (Fruit) aron.getLabelMap().get( "parent" );
+		Map<String,Object> registry = aron.getLabelMap();
 		for( Map.Entry<String, Object> entry : registry.entrySet() )
 		{
 			System.out.printf( "label: %s  class: %s\n", entry.getKey(), entry.getValue().getClass().getName() );

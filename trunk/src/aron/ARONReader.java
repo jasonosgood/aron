@@ -73,36 +73,37 @@ public class ARONReader
 		ParseNode root = builder.getTree();
 		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
 		ParseNode.addLexType( "Label", ARONLexer.Label );
+		ParseNode.addLexType( "Reference", ARONLexer.Reference );
 		process( root );
-		return !_registry.isEmpty();
+		return !_labelMap.isEmpty();
 	}
 	
 	public int _anon = 0;
-	LinkedHashMap<String,Object> _registry = null;
+	LinkedHashMap<String,Object> _labelMap = null;
 	
-	public Map<String,Object> getRegistry()
+	public Map<String,Object> getLabelMap()
 	{
-		return _registry;
+		return _labelMap;
 	}
 	
 	public void register( String label, Object instance )
 	{
 		if( label == null )
 		{
-			label = "anon" + _anon++;
-			_registry.put( label, instance );
+			label = "unlabeled" + _anon++;
+			_labelMap.put( label, instance );
 		}
 		else
     	{
     		label = label.toLowerCase();
     		label = label.substring( 0, label.length() - 1 );
-			if( _registry.containsKey( label ))
+			if( _labelMap.containsKey( label ))
 			{
 				System.err.println( "Redefinition of label " + label + " not allowed." );
 			}
 			else
 			{
-				_registry.put( label, instance );
+				_labelMap.put( label, instance );
 			}
     	}
 	}
@@ -314,6 +315,13 @@ public class ARONReader
 			}
 			case ARONLexer.Reference:
 			{
+				String label = text.substring( 1 );
+				Object ref = getLabelMap().get( label);
+				if( ref == null )
+				{
+					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
+				}
+				setter( instance, bean, ref.getClass(), ref );
 				break;
 			}
 			default:
@@ -327,7 +335,7 @@ public class ARONReader
 		Object list = getter( instance, bean );
 		if( list == null )
 		{
-			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned nulls" );
+			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned null" );
 		}
 		if( list instanceof Collection )
 		{
@@ -408,7 +416,7 @@ public class ARONReader
 	{
 		_importDefs = new ArrayList<String>( 4 );
 		_shortNames = new HashMap<String, Class<?>>();
-		_registry = new LinkedHashMap<String, Object>();
+		_labelMap = new LinkedHashMap<String, Object>();
 	}
 
 	public void imports( String clazzName )
