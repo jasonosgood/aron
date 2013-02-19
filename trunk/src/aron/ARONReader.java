@@ -24,10 +24,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Stack;
 
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CharStream;
@@ -38,23 +38,26 @@ import org.antlr.runtime.Token;
 
 public class ARONReader
 {
-	public boolean read( File file )
+	public LabelNode read( File file )
 		throws Exception
 	{
 		FileReader reader = new FileReader( file );
 		return read( reader );
 	}
  
-	public boolean load( InputStream in )
+	public LabelNode read( InputStream in )
 		throws Exception
 	{
 		InputStreamReader reader = new InputStreamReader( in );
 		return read( reader );
 	}
 	
-	public boolean read( Reader reader )
+	public LabelNode read( Reader reader )
 		throws Exception
 	{
+		LabelNode labelRoot = new LabelNode( null, null );
+		_labelStack.push( labelRoot );
+
 		ParseTreeBuilder builder = new ParseTreeBuilder();
 		CharStream cs = new ANTLRReaderStream( reader );
 		ARONLexer lexer = new ARONLexer( cs );
@@ -70,42 +73,30 @@ public class ARONReader
 			System.out.println( builder.getTree().toParseTree() );
 		}
 		
-		ParseNode root = builder.getTree();
+		ParseNode parseRoot = builder.getTree();
 		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
 		ParseNode.addLexType( "Label", ARONLexer.Label );
 		ParseNode.addLexType( "Reference", ARONLexer.Reference );
-		process( root );
-		return !_labelMap.isEmpty();
+		process( parseRoot );
+		return _labelStack.get( 0 );
 	}
 	
 	public int _anon = 0;
-	LinkedHashMap<String,Object> _labelMap = null;
-	
-	public Map<String,Object> getLabelMap()
-	{
-		return _labelMap;
-	}
+
+	private Stack<LabelNode> _labelStack = new Stack<LabelNode>();
 	
 	public void register( String label, Object instance )
 	{
 		if( label == null )
 		{
 			label = "unlabeled" + _anon++;
-			_labelMap.put( label, instance );
 		}
-		else
-    	{
-    		label = label.toLowerCase();
-    		label = label.substring( 0, label.length() - 1 );
-			if( _labelMap.containsKey( label ))
-			{
-				System.err.println( "Redefinition of label " + label + " not allowed." );
-			}
-			else
-			{
-				_labelMap.put( label, instance );
-			}
-    	}
+		
+		label = label.substring( 0, label.length() - 1 );
+		LabelNode child = new LabelNode( label, instance );
+		LabelNode parent = _labelStack.peek();
+		parent.addChild( child );
+		_labelStack.push( child );
 	}
 	
 	public void process( ParseNode source )
@@ -301,7 +292,7 @@ public class ARONReader
 			}	
 			case ARONLexer.Timestamp:
 			{
-				SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT );
+				SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.ROOT );
 				try 
 				{
 					Date x = formatter.parse( text );
@@ -316,12 +307,13 @@ public class ARONReader
 			case ARONLexer.Reference:
 			{
 				String label = text.substring( 1 );
-				Object ref = getLabelMap().get( label);
-				if( ref == null )
+				LabelNode root = _labelStack.get( 0 );
+				Object found = root.find( label );
+				if( found == null )
 				{
 					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
 				}
-				setter( instance, bean, ref.getClass(), ref );
+				setter( instance, bean, found.getClass(), found );
 				break;
 			}
 			default:
@@ -416,7 +408,6 @@ public class ARONReader
 	{
 		_importDefs = new ArrayList<String>( 4 );
 		_shortNames = new HashMap<String, Class<?>>();
-		_labelMap = new LinkedHashMap<String, Object>();
 	}
 
 	public void imports( String clazzName )

@@ -7,7 +7,7 @@ parent:Cronk
 	apple "abc"
 	banana 100.0
 	cherry 100
-	dewberry 2000-01-01T12:00:00
+//	dewberry 2000-01-01T12:00:00
 	eggplant true
 //	fig child:Cronk
 	grape
@@ -18,8 +18,9 @@ parent:Cronk
 			apple "abc"
 			banana 100.0
 			cherry 100
-			dewberry 2000-01-01T12:00:00
+//			dewberry 2000-01-01T12:00:00
 			eggplant true
+			fig @parent
 		)
 	]
 	honeydew
@@ -27,6 +28,6 @@ parent:Cronk
 		first first:Cronk()
 		second second:Cronk
 	}
-//	iyokan @parent
 	season winter
+	zypher Cronk
 )
