@@ -41,12 +41,12 @@ public class
 		ARONWriter w = new ARONWriter( ugh );
 		
 		
-		String filename = "./test/cronk/test2.aron";
+		String filename = "./test/cronk/test1.aron";
 		File file = new File( filename );
 		ARONReader aron = new ARONReader();
 		
 		aron.read( file );
-		Object derp = aron.getLabelMap().get( "parent" );
+//		Object derp = aron.getRoot();
 	/*	
 		w.write( null );
 		w.write( 123 );
@@ -71,7 +71,7 @@ public class
 		w.write( new Date() );
 		Cronk cronk = new Cronk();
  */
-		w.write( derp );
+//		w.write( derp );
 		ugh.close();
 	}
 
