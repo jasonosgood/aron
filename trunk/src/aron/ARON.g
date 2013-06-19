@@ -119,9 +119,26 @@ Float
   | ( Digit )+ Exponent
   ;
   
-String 
-  : '\"' ( options {greedy=false;} : . )* '\"'
-  ;
+String
+@init { final StringBuilder buf = new StringBuilder(); }
+:
+    '"'
+    (
+    Escape[buf]
+    | i = ~( '\\' | '"' )  { buf.appendCodePoint(i); }
+    )*
+    '"'
+    { setText(buf.toString()); };
+
+fragment Escape[StringBuilder buf] :
+    '\\'
+    ( 
+    't' { buf.append('\t'); }
+    | 'n' { buf.append('\n'); }
+    | 'r' { buf.append('\r'); }
+    | '"' { buf.append('\"'); }
+    | '\\' { buf.append('\\'); }
+    );
 
 // ISO 8601 - Complete timestamp yyyy-MM-ddThh:mm:ss+hh:mm
 Timestamp 
