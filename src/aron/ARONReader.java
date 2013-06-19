@@ -274,7 +274,7 @@ public class ARONReader
 			}	
 			case ARONLexer.String:
 			{
-				text = text.substring( 1, text.length() - 1 );
+//				text = text.substring( 1, text.length() - 1 );
     			setter( instance, bean, String.class, text );
 				break;
 			}	
