@@ -4,11 +4,10 @@ import arondemo.Fruit
 
 parent:Fruit 
 (
-	apple "a\"bc"
-	/*
+	apple "abc\"\r\n\t\\"
 	banana -100.0
 	cherry -100
-	dewberry 2000-01-01T12:00:00
+	dewberry 2000-01-01
 	eggplant true
 	fig xyzzy:Fruit
 	grape
@@ -23,5 +22,4 @@ parent:Fruit
 	}
 	iyokan @parent
 	jasmine winter
-	*/
 )

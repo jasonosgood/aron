@@ -38,6 +38,22 @@ import org.antlr.runtime.Token;
 
 public class ARONReader
 {
+	private ArrayList<String> _importDefs;
+	private HashMap<String, Class<?>> _shortNames;
+	private ArrayList<SimpleDateFormat> _formatters = new ArrayList<SimpleDateFormat>();
+
+	public ARONReader()
+	{
+		_importDefs = new ArrayList<String>( 4 );
+		_shortNames = new HashMap<String, Class<?>>();
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssz", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd", Locale.ROOT ));
+	}
+
+
 	public LabelNode read( File file )
 		throws Exception
 	{
@@ -292,16 +308,26 @@ public class ARONReader
 			}	
 			case ARONLexer.Timestamp:
 			{
-				SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.ROOT );
-				try 
+				boolean fail = true;
+				for( SimpleDateFormat formatter : _formatters )
 				{
-					Date x = formatter.parse( text );
-					setter( instance, bean, Date.class, x );
-				} 
-				catch( ParseException e ) 
-				{
-					e.printStackTrace();
+					try 
+					{
+						Date x = formatter.parse( text );
+						setter( instance, bean, Date.class, x );
+						fail = false;
+						break;
+					} 
+					catch( ParseException e ) 
+					{
+						// do nothing
+					}
 				}
+				if( fail )
+				{
+					System.out.printf( "\ncannot parse date '%s', must be formatted '2000-01-01[T12:00:[00[Z]]]'", text );
+				}
+				
 				break;
 			}
 			case ARONLexer.Reference:
@@ -401,15 +427,6 @@ public class ARONReader
 		}
 	}
 	
-	private ArrayList<String> _importDefs;
-	private HashMap<String, Class<?>> _shortNames;
-
-	public ARONReader()
-	{
-		_importDefs = new ArrayList<String>( 4 );
-		_shortNames = new HashMap<String, Class<?>>();
-	}
-
 	public void imports( String clazzName )
 		throws ClassNotFoundException
 	{
