@@ -15,7 +15,8 @@ jason@jasonosgood.com
 zappini@gmail.com
 
 UPDATE
-
+06/20/2012 - More forgiving datetime parsing
+06/19/2012 - Escape characters within string literals, eg \n \r \t \\ \"
 10/24/2012 - Polished demo.
 10/24/2012 - Fixed bugs with negative numbers, using simple class names.
 10/24/2012 - Added Enum support.
@@ -35,7 +36,6 @@ cache duplicate vanilla objects and fields (if serialization performance ever ma
 ARONReader exceptions report offending line number and character offset
 upgrade to ANTLR 4.x, rewriting grammar
 
-parse escaped characters \r \n \t " ' 
 
 HOW TO BUILD
 
