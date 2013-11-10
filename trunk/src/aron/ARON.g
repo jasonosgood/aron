@@ -107,7 +107,7 @@ assoc
   ;
 
 override
-  : path method value
+  : path method ( value | child )
   ;
 
 path

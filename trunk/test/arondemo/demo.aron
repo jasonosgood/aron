@@ -4,6 +4,7 @@ import arondemo.Fruit
 
 parent:Fruit 
 (
+/*
 	apple "abc\"\r\n\t\\"
 	banana -100.0
 	cherry -100
@@ -20,6 +21,7 @@ parent:Fruit
 		key1 Fruit ( apple "def" )
 		key2 Fruit ( apple "ghi" )
 	}
-	iyokan @parent
+*/
+#	iyokan @parent
 	jasmine winter
 )

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-10 13:32:46
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-10 15:26:05
  
 package aron;
 
@@ -45,17 +45,17 @@ public class ARONParser extends DebugParser {
     // delegators
 
     public static final String[] ruleNames = new String[] {
-        "invalidRule", "childList", "root", "property", "timestampList", 
-        "synpred10_ARON", "synpred5_ARON", "synpred25_ARON", "includes", 
-        "synpred20_ARON", "synpred28_ARON", "synpred7_ARON", "imports", 
-        "synpred27_ARON", "synpred18_ARON", "synpred6_ARON", "synpred2_ARON", 
-        "synpred29_ARON", "synpred30_ARON", "stringList", "synpred24_ARON", 
-        "override", "value", "synpred15_ARON", "assoc", "synpred8_ARON", 
-        "synpred19_ARON", "child", "url", "synpred21_ARON", "synpred14_ARON", 
-        "path", "synpred23_ARON", "synpred17_ARON", "synpred11_ARON", "synpred16_ARON", 
-        "method", "synpred26_ARON", "synpred4_ARON", "integerList", "list", 
-        "synpred9_ARON", "floatList", "synpred13_ARON", "synpred12_ARON", 
-        "synpred22_ARON", "synpred1_ARON", "synpred3_ARON", "klass", "booleanList"
+        "invalidRule", "synpred13_ARON", "synpred16_ARON", "child", "childList", 
+        "synpred20_ARON", "synpred12_ARON", "method", "property", "imports", 
+        "path", "synpred14_ARON", "assoc", "klass", "floatList", "synpred23_ARON", 
+        "integerList", "synpred26_ARON", "value", "list", "synpred19_ARON", 
+        "synpred21_ARON", "synpred6_ARON", "synpred27_ARON", "synpred7_ARON", 
+        "synpred30_ARON", "synpred28_ARON", "synpred9_ARON", "timestampList", 
+        "synpred15_ARON", "synpred5_ARON", "synpred4_ARON", "override", 
+        "synpred11_ARON", "synpred31_ARON", "url", "synpred1_ARON", "includes", 
+        "synpred10_ARON", "synpred25_ARON", "stringList", "synpred18_ARON", 
+        "booleanList", "synpred29_ARON", "synpred3_ARON", "synpred2_ARON", 
+        "synpred17_ARON", "synpred8_ARON", "synpred24_ARON", "root", "synpred22_ARON"
     };
      
         public int ruleLevel = 0;
@@ -1570,7 +1570,7 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "override"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:1: override : path method value ;
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:1: override : path method ( value | child ) ;
     public final void override() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "override");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1578,10 +1578,10 @@ public class ARONParser extends DebugParser {
         dbg.location(109, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:3: ( path method value )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:3: ( path method ( value | child ) )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:5: path method value
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:5: path method ( value | child )
             {
             dbg.location(110,5);
             pushFollow(FOLLOW_path_in_override495);
@@ -1596,11 +1596,62 @@ public class ARONParser extends DebugParser {
             state._fsp--;
             if (state.failed) return ;
             dbg.location(110,17);
-            pushFollow(FOLLOW_value_in_override499);
-            value();
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:17: ( value | child )
+            int alt18=2;
+            try { dbg.enterSubRule(18);
+            try { dbg.enterDecision(18);
 
-            state._fsp--;
-            if (state.failed) return ;
+            int LA18_0 = input.LA(1);
+
+            if ( ((LA18_0>=Bool && LA18_0<=Reference)) ) {
+                alt18=1;
+            }
+            else if ( (LA18_0==Identifier||LA18_0==Label) ) {
+                alt18=2;
+            }
+            else {
+                if (state.backtracking>0) {state.failed=true; return ;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 18, 0, input);
+
+                dbg.recognitionException(nvae);
+                throw nvae;
+            }
+            } finally {dbg.exitDecision(18);}
+
+            switch (alt18) {
+                case 1 :
+                    dbg.enterAlt(1);
+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:19: value
+                    {
+                    dbg.location(110,19);
+                    pushFollow(FOLLOW_value_in_override501);
+                    value();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+
+                    }
+                    break;
+                case 2 :
+                    dbg.enterAlt(2);
+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:27: child
+                    {
+                    dbg.location(110,27);
+                    pushFollow(FOLLOW_child_in_override505);
+                    child();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+
+                    }
+                    break;
+
+            }
+            } finally {dbg.exitSubRule(18);}
+
 
             }
 
@@ -1641,47 +1692,47 @@ public class ARONParser extends DebugParser {
             {
             dbg.location(114,5);
             // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:5: ( Reference )+
-            int cnt18=0;
-            try { dbg.enterSubRule(18);
+            int cnt19=0;
+            try { dbg.enterSubRule(19);
 
-            loop18:
+            loop19:
             do {
-                int alt18=2;
-                try { dbg.enterDecision(18);
+                int alt19=2;
+                try { dbg.enterDecision(19);
 
-                int LA18_0 = input.LA(1);
+                int LA19_0 = input.LA(1);
 
-                if ( (LA18_0==Reference) ) {
-                    alt18=1;
+                if ( (LA19_0==Reference) ) {
+                    alt19=1;
                 }
 
 
-                } finally {dbg.exitDecision(18);}
+                } finally {dbg.exitDecision(19);}
 
-                switch (alt18) {
+                switch (alt19) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:7: Reference
             	    {
             	    dbg.location(114,7);
-            	    match(input,Reference,FOLLOW_Reference_in_path514); if (state.failed) return ;
+            	    match(input,Reference,FOLLOW_Reference_in_path522); if (state.failed) return ;
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt18 >= 1 ) break loop18;
+            	    if ( cnt19 >= 1 ) break loop19;
             	    if (state.backtracking>0) {state.failed=true; return ;}
                         EarlyExitException eee =
-                            new EarlyExitException(18, input);
+                            new EarlyExitException(19, input);
                         dbg.recognitionException(eee);
 
                         throw eee;
                 }
-                cnt18++;
+                cnt19++;
             } while (true);
-            } finally {dbg.exitSubRule(18);}
+            } finally {dbg.exitSubRule(19);}
 
 
             }
@@ -1723,49 +1774,49 @@ public class ARONParser extends DebugParser {
             {
             dbg.location(118,5);
             // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:5: ( '.' Identifier )+
-            int cnt19=0;
-            try { dbg.enterSubRule(19);
+            int cnt20=0;
+            try { dbg.enterSubRule(20);
 
-            loop19:
+            loop20:
             do {
-                int alt19=2;
-                try { dbg.enterDecision(19);
+                int alt20=2;
+                try { dbg.enterDecision(20);
 
-                int LA19_0 = input.LA(1);
+                int LA20_0 = input.LA(1);
 
-                if ( (LA19_0==20) ) {
-                    alt19=1;
+                if ( (LA20_0==20) ) {
+                    alt20=1;
                 }
 
 
-                } finally {dbg.exitDecision(19);}
+                } finally {dbg.exitDecision(20);}
 
-                switch (alt19) {
+                switch (alt20) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:7: '.' Identifier
             	    {
             	    dbg.location(118,7);
-            	    match(input,20,FOLLOW_20_in_method532); if (state.failed) return ;
+            	    match(input,20,FOLLOW_20_in_method540); if (state.failed) return ;
             	    dbg.location(118,11);
-            	    match(input,Identifier,FOLLOW_Identifier_in_method534); if (state.failed) return ;
+            	    match(input,Identifier,FOLLOW_Identifier_in_method542); if (state.failed) return ;
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt19 >= 1 ) break loop19;
+            	    if ( cnt20 >= 1 ) break loop20;
             	    if (state.backtracking>0) {state.failed=true; return ;}
                         EarlyExitException eee =
-                            new EarlyExitException(19, input);
+                            new EarlyExitException(20, input);
                         dbg.recognitionException(eee);
 
                         throw eee;
                 }
-                cnt19++;
+                cnt20++;
             } while (true);
-            } finally {dbg.exitSubRule(19);}
+            } finally {dbg.exitSubRule(20);}
 
 
             }
@@ -1836,10 +1887,11 @@ public class ARONParser extends DebugParser {
     public static final BitSet FOLLOW_property_in_assoc477 = new BitSet(new long[]{0x0000000008000010L});
     public static final BitSet FOLLOW_27_in_assoc482 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_path_in_override495 = new BitSet(new long[]{0x0000000000100000L});
-    public static final BitSet FOLLOW_method_in_override497 = new BitSet(new long[]{0x0000000000001F80L});
-    public static final BitSet FOLLOW_value_in_override499 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Reference_in_path514 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_20_in_method532 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_method534 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_method_in_override497 = new BitSet(new long[]{0x0000000000001FD0L});
+    public static final BitSet FOLLOW_value_in_override501 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_child_in_override505 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Reference_in_path522 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_20_in_method540 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_method542 = new BitSet(new long[]{0x0000000000100002L});
 
 }
