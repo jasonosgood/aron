@@ -15,6 +15,7 @@ jason@jasonosgood.com
 zappini@gmail.com
 
 UPDATE
+11/10/2013 - Added include and override features
 06/20/2012 - More forgiving datetime parsing
 06/19/2012 - Escape characters within string literals, eg \n \r \t \\ \"
 10/24/2012 - Polished demo.
@@ -27,8 +28,9 @@ TODO
 
 Add support for Reference values.
 Support inline fully declared classes (e.g. package.name.ClassName).
-X Maybe have an include mechanism.
+improve include mechanism to accept URLs for http:, file:
 Unit tests.
+omit import statements for enums when serializing to ARON
 
 add scalar type for URL, URL, fragments
 cycle detection / avoidance
