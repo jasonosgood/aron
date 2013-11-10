@@ -11,6 +11,7 @@ package aron;
  */
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -161,6 +162,10 @@ public class ARONReader
 			LabelNode root = _labelStack.get( 0 );
 			root.getChildren().addAll( childRoot.getChildren() );
 		}
+		else
+		{
+			throw new FileNotFoundException( child.toString() );
+		}
 	}
 		
 	public void imports( String clazzName )
@@ -236,9 +241,7 @@ public class ARONReader
 	}
 	
 	public void override( ParseNode node ) 
-		throws 
-			IllegalArgumentException, NoSuchMethodException, 
-			IllegalAccessException, InvocationTargetException
+		throws Exception
 	{
 		ParseNode pathNode = node.findFirstNode( "path" );
 		
@@ -260,10 +263,30 @@ public class ARONReader
 			String method = methodNode.toInputString();
 			method = method.substring( 1 );
 			
+			// Can either be a value or a child
 			ParseNode value = node.findFirstNode( "value" );
     		if( value != null )
     		{
     			processValue( found, method, value );
+    		}
+
+			ParseNode child = node.findFirstNode( "child" );
+    		if( child != null )
+    		{
+    			// TODO: fix this ugly cut & paste
+    			try
+    			{
+        			Object grandchild = processChild( child );
+    				setter( found, method, grandchild.getClass(), grandchild );
+    			}
+    			catch( Exception ee )
+    			{
+    	        	String literal = child.findFirstString( "Identifier" );
+    	        	if( !enumSetter( found, method, literal ))
+    	        	{
+    	        		throw ee;
+    	        	}
+    			}
     		}
 		}
 	}

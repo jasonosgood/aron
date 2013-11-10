@@ -15,6 +15,7 @@ jason@jasonosgood.com
 zappini@gmail.com
 
 UPDATE
+11/10/2013 - Override values can now be class instances, enums
 11/10/2013 - Added include and override features
 06/20/2012 - More forgiving datetime parsing
 06/19/2012 - Escape characters within string literals, eg \n \r \t \\ \"
@@ -31,6 +32,7 @@ Support inline fully declared classes (e.g. package.name.ClassName).
 improve include mechanism to accept URLs for http:, file:
 Unit tests.
 omit import statements for enums when serializing to ARON
+override page expression language for null, array element, map element 
 
 add scalar type for URL, URL, fragments
 cycle detection / avoidance
