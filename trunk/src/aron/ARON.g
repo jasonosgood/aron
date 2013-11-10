@@ -37,18 +37,30 @@ package aron;
 
 root
   : '# ARON 0.1\n' 
+  ( includes )*
   ( imports )*
-  ( child )+
+  ( child )*
+  ( override )*
   ;
 
-klass
-  : Identifier ( '.' Identifier )*
-  ;
-  
 imports
   : 'import' klass 
   ;
 
+// "root/imports/klass"
+klass
+  : Identifier ( '.' Identifier )*
+  ;
+  
+includes
+  : 'include' url 
+  ;
+
+// "root/includes/url"
+url
+  : Url
+  ;
+  
 child
   : ( Label )? Identifier ( '(' ( property )* ')' )?
   ;
@@ -92,6 +104,18 @@ childList : ( child )+ ;
   
 assoc
   : '{' ( property )* '}'
+  ;
+
+override
+  : path method value
+  ;
+
+path
+  : ( Reference )+
+  ;
+
+method
+  : ( '.' Identifier )+
   ;
 
 Bool
@@ -168,8 +192,12 @@ Reference
   : '@' ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*
   ;
 
+Url
+  : ( 'a'..'z' | 'A'..'Z' | '0'..'9' | '/' | '.' )*
+  ;
+  
 Comment
-  : '//' ~('\n'|'\r')* '\r'? '\n' { $channel=HIDDEN; }
+  : '#' ~('\n'|'\r')* '\r'? '\n' { $channel=HIDDEN; }
   | '/*' ( options {greedy=false;} : . )* '*/' { $channel=HIDDEN; }
   ;
 

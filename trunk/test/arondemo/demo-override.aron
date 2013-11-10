@@ -1,0 +1,6 @@
+# ARON 0.1
+
+include demo.aron
+import arondemo.Fruit
+
+@parent.apple "123456"

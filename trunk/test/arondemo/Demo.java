@@ -8,13 +8,15 @@ import aron.ARONWriter;
 import aron.LabelNode;
 
 public class 
-	Main 
+	Demo 
 {
 	public static final void main( String[] args )
 		throws Exception
 	{
-		
-		String filename = "./test/arondemo/demo.aron";
+		File pwd = new File( "." );
+		System.out.println( "root: " + pwd.getCanonicalPath() );
+//		String filename = "./test/arondemo/demo.aron";
+		String filename = "./test/arondemo/demo-override.aron";
 		File file = new File( filename );
 		
 		ARONReader aron = new ARONReader();		

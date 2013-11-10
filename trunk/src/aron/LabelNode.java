@@ -23,6 +23,11 @@ public class
 	
 	private ArrayList<LabelNode> _children = new ArrayList<LabelNode>();
 	
+	public List<LabelNode> getChildren()
+	{
+		return _children;
+	}
+	
 	public void addChild( LabelNode child )
 	{
 		if( child == null )
@@ -53,8 +58,12 @@ public class
 			query.add( atom );
 		}
 		
+		Object result = null; 
 		LabelNode found = find( this, query, 0 );
-		Object result = found.getObject();
+		if( found != null )
+		{
+			result = found.getObject();
+		}
 		return result;
 	}
 
@@ -77,5 +86,11 @@ public class
 			}
 		}
 		return null;
+	}
+	
+	public String toString()
+	{
+		
+		return String.format( "label: %s  object: [%s]  children count: %d", _label, _object, _children.size() );
 	}
 }

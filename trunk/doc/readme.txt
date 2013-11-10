@@ -27,7 +27,7 @@ TODO
 
 Add support for Reference values.
 Support inline fully declared classes (e.g. package.name.ClassName).
-Maybe have an include mechanism.
+X Maybe have an include mechanism.
 Unit tests.
 
 add scalar type for URL, URL, fragments
