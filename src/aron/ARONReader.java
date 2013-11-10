@@ -54,9 +54,12 @@ public class ARONReader
 	}
 
 
+	File _file = null;
+	
 	public LabelNode read( File file )
 		throws Exception
 	{
+		_file = file;
 		FileReader reader = new FileReader( file );
 		return read( reader );
 	}
@@ -83,7 +86,7 @@ public class ARONReader
 		parser.root();
 		reader.close();
 
-		boolean displayTree = false;
+		boolean displayTree = true;
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
@@ -118,20 +121,57 @@ public class ARONReader
 	public void process( ParseNode source )
 		throws Exception
 	{
+		List<ParseNode> includes = source.findNodes( "root/includes/url" );
+		
+		for( ParseNode include : includes )
+		{
+			String url = include.toInputString();
+			includes( url );
+		}
+
 		List<ParseNode> klasses = source.findNodes( "root/imports/klass" );
 		for( ParseNode klass : klasses )
 		{
 			String name = klass.toInputString();
 			imports( name );
 		}
-
+		
 		List<ParseNode> children = source.findNodes( "root/child" );
 		for( ParseNode child : children )
 		{
 			processChild( child );
 		}
+		
+		List<ParseNode> overrides = source.findNodes( "root/override" );
+		for( ParseNode override : overrides )
+		{
+			override( override );
+		}
 	}
 	
+	public void includes( String url )
+		throws Exception
+	{
+		File parent = _file.getParentFile();
+		File child = new File( parent, url );
+		if( child.exists() )
+		{
+			ARONReader aron = new ARONReader();
+			LabelNode childRoot = aron.read( child );
+			LabelNode root = _labelStack.get( 0 );
+			root.getChildren().addAll( childRoot.getChildren() );
+		}
+	}
+		
+	public void imports( String clazzName )
+		throws ClassNotFoundException
+	{
+		Class<?> clazz = Class.forName( clazzName );
+		int nth = clazz.toString().lastIndexOf( (int) '.' );
+		String shortie = clazz.toString().substring( nth + 1 );
+		_shortNames.put( shortie, clazz );
+	}
+		
 	public Object processChild( ParseNode node ) 
 		throws 
 			ClassNotFoundException, InstantiationException, IllegalAccessException, 
@@ -193,6 +233,39 @@ public class ARONReader
 		}
     	
     	return child;
+	}
+	
+	public void override( ParseNode node ) 
+		throws 
+			IllegalArgumentException, NoSuchMethodException, 
+			IllegalAccessException, InvocationTargetException
+	{
+		ParseNode pathNode = node.findFirstNode( "path" );
+		
+		for( Object object : pathNode.getChildren() )
+		{
+			Token token = (Token) object;
+			String text = token.getText();
+			String label = text.substring( 1 );
+			LabelNode root = _labelStack.get( 0 );
+			Object found = root.find( label );
+			if( found == null )
+			{
+				String msg = String.format( "Reference to label '%s' not found (line: %d:%d)", label, token.getLine(), token.getCharPositionInLine() );
+				throw new IllegalArgumentException( msg );
+			}
+
+
+			ParseNode methodNode = node.findFirstNode( "method" );
+			String method = methodNode.toInputString();
+			method = method.substring( 1 );
+			
+			ParseNode value = node.findFirstNode( "value" );
+    		if( value != null )
+    		{
+    			processValue( found, method, value );
+    		}
+		}
 	}
 
 	public void setter( Object instance, String bean, Class<?> type, Object value ) 
@@ -265,6 +338,7 @@ public class ARONReader
 		
 		for( Method method : instance.getClass().getMethods() )
 		{
+//			System.out.println( method.toString() );
 			if( method.getName().equals( name ))
 			{
 				return method.invoke( instance );
@@ -351,6 +425,8 @@ public class ARONReader
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
 		Object list = getter( instance, bean );
+		
+		// TODO: Optionally initialize null list references
 		if( list == null )
 		{
 			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned null" );
@@ -426,16 +502,7 @@ public class ARONReader
 			throw new IllegalArgumentException( msg );
 		}
 	}
-	
-	public void imports( String clazzName )
-		throws ClassNotFoundException
-	{
-		Class<?> clazz = Class.forName( clazzName );
-		int nth = clazz.toString().lastIndexOf( (int) '.' );
-		String shortie = clazz.toString().substring( nth + 1 );
-		_shortNames.put( shortie, clazz );
-	}
-	
+
 	public Class<?> resolveClass( String name )
 		throws ClassNotFoundException
 	{
@@ -491,5 +558,10 @@ public class ARONReader
     {
         if (propertyName.length() == 0) return null;
         return propertyName.substring( 0, 1 ).toUpperCase() + propertyName.substring( 1 );
+    }
+    
+    public String toString()
+    {
+    	return String.format( "file: %s", _file );
     }
 }
