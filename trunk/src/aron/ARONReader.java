@@ -18,6 +18,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,24 +59,40 @@ public class ARONReader
 	}
 
 
-	File _file = null;
+	URI _uri = null;
 	
 	public LabelNode read( File file )
 		throws Exception
 	{
-		_file = file;
-		FileReader reader = new FileReader( file );
-		return read( reader );
+		URI uri = file.toURI();
+		return read( uri );
 	}
  
-	public LabelNode read( InputStream in )
+	public LabelNode read( URL url )
 		throws Exception
 	{
-		InputStreamReader reader = new InputStreamReader( in );
-		return read( reader );
+		URI uri = url.toURI();
+		return read( uri );
 	}
 	
-	public LabelNode read( Reader reader )
+	public LabelNode read( URI uri )
+		throws Exception
+	{
+		_uri = uri;
+		InputStream in = uri.toURL().openStream();
+		InputStreamReader reader = new InputStreamReader( in );
+		return read( reader );
+		
+	}
+	
+//	public LabelNode read( InputStream in )
+//		throws Exception
+//	{
+//		InputStreamReader reader = new InputStreamReader( in );
+//		return read( reader );
+//	}
+	
+	private LabelNode read( Reader reader )
 		throws Exception
 	{
 		LabelNode labelRoot = new LabelNode( null, null );
@@ -87,7 +107,7 @@ public class ARONReader
 		parser.root();
 		reader.close();
 
-		boolean displayTree = true;
+		boolean displayTree = false;
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
@@ -153,18 +173,19 @@ public class ARONReader
 	public void includes( String url )
 		throws Exception
 	{
-		File parent = _file.getParentFile();
-		File child = new File( parent, url );
-		if( child.exists() )
+		Path parent = Paths.get( _uri );
+		Path sibling = parent.resolveSibling( url );
+		File file = sibling.toFile();	
+		if( file.exists() )
 		{
 			ARONReader aron = new ARONReader();
-			LabelNode childRoot = aron.read( child );
+			LabelNode childRoot = aron.read( file );
 			LabelNode root = _labelStack.get( 0 );
 			root.getChildren().addAll( childRoot.getChildren() );
 		}
 		else
 		{
-			throw new FileNotFoundException( child.toString() );
+			throw new FileNotFoundException( file.toString() );
 		}
 	}
 		
@@ -585,6 +606,6 @@ public class ARONReader
     
     public String toString()
     {
-    	return String.format( "file: %s", _file );
+    	return _uri == null ? "<inputstream>" : _uri.toString();
     }
 }
