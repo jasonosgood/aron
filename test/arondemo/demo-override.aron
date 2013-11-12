@@ -3,8 +3,8 @@
 include demo.aron
 import arondemo.Fruit
 
-# @parent.apple "123456"
+@parent.apple "123456"
 
-# @parent.iyokan Fruit
+@parent.iyokan lovely:Fruit
 
-@parent.jasmine summer
+# @parent.jasmine summer
