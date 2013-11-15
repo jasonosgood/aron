@@ -30,6 +30,8 @@ public class Fruit
 	HashMap<String,Fruit> honeydew = new HashMap<String,Fruit>();
 	Fruit iyokan;
 	Season jasmine = Season.spring;
+	ArrayList<Integer> kale = new ArrayList<Integer>();
+	
 	
 	public String getApple() {
 		return apple;
@@ -58,19 +60,24 @@ public class Fruit
 	public boolean isEggplant() {
 		return eggplant;
 	}
+	
 	public void setEggplant(boolean eggplant) {
 		this.eggplant = eggplant;
 	}
+	
 	public Fruit getFig() {
 		return fig;
 	}
+	
 	public void setFig(Fruit fig) {
 		this.fig = fig;
 	}
+	
 	public List<Fruit> getGrape()
 	{
 		return grape;
 	}
+	
 	public Map<String,Fruit> getHoneydew()
 	{
 		return honeydew;
@@ -87,4 +94,9 @@ public class Fruit
 	}
 	
 	public Season getJasmine() { return jasmine; }
+	
+	public List<Integer> getKale()
+	{
+		return kale;
+	}
 }

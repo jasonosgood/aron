@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-10 15:26:05
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-14 18:17:43
  
 package aron;
 
@@ -13,9 +13,10 @@ import org.antlr.runtime.debug.*;
 import java.io.IOException;
 public class ARONParser extends DebugParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Identifier", "Url", "Label", "Bool", "Integer", "Float", "String", "Timestamp", "Reference", "Digit", "Exponent", "Escape", "Comment", "Whitespace", "'# ARON 0.1\\n'", "'import'", "'.'", "'include'", "'('", "')'", "'['", "']'", "'{'", "'}'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Identifier", "Url", "Label", "Bool", "Integer", "Float", "String", "Timestamp", "Reference", "Digit", "Exponent", "Escape", "Comment", "Whitespace", "'# ARON 0.1\\n'", "'import'", "'.'", "'include'", "'('", "')'", "'null'", "'['", "']'", "'{'", "'}'"
     };
     public static final int Bool=7;
+    public static final int T__28=28;
     public static final int T__27=27;
     public static final int T__26=26;
     public static final int T__25=25;
@@ -45,17 +46,18 @@ public class ARONParser extends DebugParser {
     // delegators
 
     public static final String[] ruleNames = new String[] {
-        "invalidRule", "synpred13_ARON", "synpred16_ARON", "child", "childList", 
-        "synpred20_ARON", "synpred12_ARON", "method", "property", "imports", 
-        "path", "synpred14_ARON", "assoc", "klass", "floatList", "synpred23_ARON", 
-        "integerList", "synpred26_ARON", "value", "list", "synpred19_ARON", 
-        "synpred21_ARON", "synpred6_ARON", "synpred27_ARON", "synpred7_ARON", 
-        "synpred30_ARON", "synpred28_ARON", "synpred9_ARON", "timestampList", 
-        "synpred15_ARON", "synpred5_ARON", "synpred4_ARON", "override", 
-        "synpred11_ARON", "synpred31_ARON", "url", "synpred1_ARON", "includes", 
-        "synpred10_ARON", "synpred25_ARON", "stringList", "synpred18_ARON", 
-        "booleanList", "synpred29_ARON", "synpred3_ARON", "synpred2_ARON", 
-        "synpred17_ARON", "synpred8_ARON", "synpred24_ARON", "root", "synpred22_ARON"
+        "invalidRule", "timestampList", "synpred11_ARON", "synpred14_ARON", 
+        "synpred18_ARON", "synpred31_ARON", "synpred10_ARON", "imports", 
+        "emptyList", "assoc", "synpred12_ARON", "synpred30_ARON", "list", 
+        "override", "method", "floatList", "url", "synpred21_ARON", "synpred24_ARON", 
+        "synpred32_ARON", "synpred17_ARON", "synpred19_ARON", "synpred4_ARON", 
+        "child", "synpred25_ARON", "synpred5_ARON", "includes", "synpred28_ARON", 
+        "property", "synpred26_ARON", "synpred33_ARON", "synpred7_ARON", 
+        "value", "synpred13_ARON", "path", "synpred3_ARON", "synpred2_ARON", 
+        "synpred9_ARON", "synpred29_ARON", "booleanList", "root", "synpred35_ARON", 
+        "klass", "stringList", "synpred8_ARON", "synpred23_ARON", "synpred16_ARON", 
+        "synpred27_ARON", "synpred34_ARON", "synpred1_ARON", "synpred15_ARON", 
+        "synpred6_ARON", "synpred22_ARON", "integerList", "childList", "synpred20_ARON"
     };
      
         public int ruleLevel = 0;
@@ -671,6 +673,7 @@ public class ARONParser extends DebugParser {
             case String:
             case Timestamp:
             case Reference:
+            case 24:
                 {
                 alt9=1;
                 }
@@ -681,12 +684,12 @@ public class ARONParser extends DebugParser {
                 alt9=2;
                 }
                 break;
-            case 24:
+            case 25:
                 {
                 alt9=3;
                 }
                 break;
-            case 26:
+            case 27:
                 {
                 alt9=4;
                 }
@@ -788,7 +791,7 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "value"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:77:1: value : ( Bool | Integer | Float | String | Timestamp | Reference );
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:77:1: value : ( Bool | Integer | Float | String | Timestamp | Reference | 'null' );
     public final void value() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "value");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -796,13 +799,13 @@ public class ARONParser extends DebugParser {
         dbg.location(77, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:78:3: ( Bool | Integer | Float | String | Timestamp | Reference )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:78:3: ( Bool | Integer | Float | String | Timestamp | Reference | 'null' )
             dbg.enterAlt(1);
 
             // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:
             {
             dbg.location(78,3);
-            if ( (input.LA(1)>=Bool && input.LA(1)<=Reference) ) {
+            if ( (input.LA(1)>=Bool && input.LA(1)<=Reference)||input.LA(1)==24 ) {
                 input.consume();
                 state.errorRecovery=false;state.failed=false;
             }
@@ -823,7 +826,7 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(84, 3);
+        dbg.location(85, 3);
 
         }
         finally {
@@ -838,67 +841,72 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "list"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:87:1: list : '[' ( integerList | floatList | timestampList | booleanList | childList )? ']' ;
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:88:1: list : ( emptyList | '[' ( integerList | floatList | timestampList | booleanList | childList )? ']' );
     public final void list() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "list");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(87, 1);
+        dbg.location(88, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:88:3: ( '[' ( integerList | floatList | timestampList | booleanList | childList )? ']' )
-            dbg.enterAlt(1);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:3: ( emptyList | '[' ( integerList | floatList | timestampList | booleanList | childList )? ']' )
+            int alt11=2;
+            try { dbg.enterDecision(11);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:88:5: '[' ( integerList | floatList | timestampList | booleanList | childList )? ']'
-            {
-            dbg.location(88,5);
-            match(input,24,FOLLOW_24_in_list325); if (state.failed) return ;
-            dbg.location(89,5);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:5: ( integerList | floatList | timestampList | booleanList | childList )?
-            int alt10=6;
-            try { dbg.enterSubRule(10);
-            try { dbg.enterDecision(10);
+            int LA11_0 = input.LA(1);
 
-            switch ( input.LA(1) ) {
-                case Integer:
-                    {
-                    alt10=1;
+            if ( (LA11_0==25) ) {
+                int LA11_1 = input.LA(2);
+
+                if ( (LA11_1==26) ) {
+                    int LA11_2 = input.LA(3);
+
+                    if ( (synpred18_ARON()) ) {
+                        alt11=1;
                     }
-                    break;
-                case Float:
-                    {
-                    alt10=2;
+                    else if ( (true) ) {
+                        alt11=2;
                     }
-                    break;
-                case Timestamp:
-                    {
-                    alt10=3;
+                    else {
+                        if (state.backtracking>0) {state.failed=true; return ;}
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 11, 2, input);
+
+                        dbg.recognitionException(nvae);
+                        throw nvae;
                     }
-                    break;
-                case Bool:
-                    {
-                    alt10=4;
-                    }
-                    break;
-                case Identifier:
-                case Label:
-                    {
-                    alt10=5;
-                    }
-                    break;
+                }
+                else if ( (LA11_1==Identifier||(LA11_1>=Label && LA11_1<=Float)||LA11_1==Timestamp) ) {
+                    alt11=2;
+                }
+                else {
+                    if (state.backtracking>0) {state.failed=true; return ;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 11, 1, input);
+
+                    dbg.recognitionException(nvae);
+                    throw nvae;
+                }
             }
+            else {
+                if (state.backtracking>0) {state.failed=true; return ;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 11, 0, input);
 
-            } finally {dbg.exitDecision(10);}
+                dbg.recognitionException(nvae);
+                throw nvae;
+            }
+            } finally {dbg.exitDecision(11);}
 
-            switch (alt10) {
+            switch (alt11) {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:7: integerList
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:5: emptyList
                     {
-                    dbg.location(89,7);
-                    pushFollow(FOLLOW_integerList_in_list333);
-                    integerList();
+                    dbg.location(89,5);
+                    pushFollow(FOLLOW_emptyList_in_list331);
+                    emptyList();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -908,68 +916,129 @@ public class ARONParser extends DebugParser {
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:90:7: floatList
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:90:5: '[' ( integerList | floatList | timestampList | booleanList | childList )? ']'
                     {
-                    dbg.location(90,7);
-                    pushFollow(FOLLOW_floatList_in_list342);
-                    floatList();
+                    dbg.location(90,5);
+                    match(input,25,FOLLOW_25_in_list337); if (state.failed) return ;
+                    dbg.location(91,5);
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:91:5: ( integerList | floatList | timestampList | booleanList | childList )?
+                    int alt10=6;
+                    try { dbg.enterSubRule(10);
+                    try { dbg.enterDecision(10);
 
-                    state._fsp--;
-                    if (state.failed) return ;
+                    switch ( input.LA(1) ) {
+                        case Integer:
+                            {
+                            alt10=1;
+                            }
+                            break;
+                        case Float:
+                            {
+                            alt10=2;
+                            }
+                            break;
+                        case Timestamp:
+                            {
+                            alt10=3;
+                            }
+                            break;
+                        case Bool:
+                            {
+                            alt10=4;
+                            }
+                            break;
+                        case Identifier:
+                        case Label:
+                            {
+                            alt10=5;
+                            }
+                            break;
+                    }
+
+                    } finally {dbg.exitDecision(10);}
+
+                    switch (alt10) {
+                        case 1 :
+                            dbg.enterAlt(1);
+
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:91:7: integerList
+                            {
+                            dbg.location(91,7);
+                            pushFollow(FOLLOW_integerList_in_list345);
+                            integerList();
+
+                            state._fsp--;
+                            if (state.failed) return ;
+
+                            }
+                            break;
+                        case 2 :
+                            dbg.enterAlt(2);
+
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:92:7: floatList
+                            {
+                            dbg.location(92,7);
+                            pushFollow(FOLLOW_floatList_in_list354);
+                            floatList();
+
+                            state._fsp--;
+                            if (state.failed) return ;
+
+                            }
+                            break;
+                        case 3 :
+                            dbg.enterAlt(3);
+
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:93:7: timestampList
+                            {
+                            dbg.location(93,7);
+                            pushFollow(FOLLOW_timestampList_in_list362);
+                            timestampList();
+
+                            state._fsp--;
+                            if (state.failed) return ;
+
+                            }
+                            break;
+                        case 4 :
+                            dbg.enterAlt(4);
+
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:94:7: booleanList
+                            {
+                            dbg.location(94,7);
+                            pushFollow(FOLLOW_booleanList_in_list370);
+                            booleanList();
+
+                            state._fsp--;
+                            if (state.failed) return ;
+
+                            }
+                            break;
+                        case 5 :
+                            dbg.enterAlt(5);
+
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:95:7: childList
+                            {
+                            dbg.location(95,7);
+                            pushFollow(FOLLOW_childList_in_list378);
+                            childList();
+
+                            state._fsp--;
+                            if (state.failed) return ;
+
+                            }
+                            break;
 
                     }
-                    break;
-                case 3 :
-                    dbg.enterAlt(3);
+                    } finally {dbg.exitSubRule(10);}
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:91:7: timestampList
-                    {
-                    dbg.location(91,7);
-                    pushFollow(FOLLOW_timestampList_in_list350);
-                    timestampList();
-
-                    state._fsp--;
-                    if (state.failed) return ;
-
-                    }
-                    break;
-                case 4 :
-                    dbg.enterAlt(4);
-
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:92:7: booleanList
-                    {
-                    dbg.location(92,7);
-                    pushFollow(FOLLOW_booleanList_in_list358);
-                    booleanList();
-
-                    state._fsp--;
-                    if (state.failed) return ;
-
-                    }
-                    break;
-                case 5 :
-                    dbg.enterAlt(5);
-
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:93:7: childList
-                    {
-                    dbg.location(93,7);
-                    pushFollow(FOLLOW_childList_in_list366);
-                    childList();
-
-                    state._fsp--;
-                    if (state.failed) return ;
+                    dbg.location(97,5);
+                    match(input,26,FOLLOW_26_in_list391); if (state.failed) return ;
 
                     }
                     break;
 
             }
-            } finally {dbg.exitSubRule(10);}
-
-            dbg.location(95,5);
-            match(input,25,FOLLOW_25_in_list379); if (state.failed) return ;
-
-            }
-
         }
         catch (RecognitionException re) {
             reportError(re);
@@ -977,7 +1046,7 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(96, 3);
+        dbg.location(98, 3);
 
         }
         finally {
@@ -991,64 +1060,24 @@ public class ARONParser extends DebugParser {
     // $ANTLR end "list"
 
 
-    // $ANTLR start "stringList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:98:1: stringList : ( String )+ ;
-    public final void stringList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "stringList");
+    // $ANTLR start "emptyList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:1: emptyList : '[' ']' ;
+    public final void emptyList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "emptyList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(98, 1);
+        dbg.location(100, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:98:12: ( ( String )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:3: ( '[' ']' )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:98:14: ( String )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:5: '[' ']'
             {
-            dbg.location(98,14);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:98:14: ( String )+
-            int cnt11=0;
-            try { dbg.enterSubRule(11);
-
-            loop11:
-            do {
-                int alt11=2;
-                try { dbg.enterDecision(11);
-
-                int LA11_0 = input.LA(1);
-
-                if ( (LA11_0==String) ) {
-                    alt11=1;
-                }
-
-
-                } finally {dbg.exitDecision(11);}
-
-                switch (alt11) {
-            	case 1 :
-            	    dbg.enterAlt(1);
-
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:98:16: String
-            	    {
-            	    dbg.location(98,16);
-            	    match(input,String,FOLLOW_String_in_stringList392); if (state.failed) return ;
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt11 >= 1 ) break loop11;
-            	    if (state.backtracking>0) {state.failed=true; return ;}
-                        EarlyExitException eee =
-                            new EarlyExitException(11, input);
-                        dbg.recognitionException(eee);
-
-                        throw eee;
-                }
-                cnt11++;
-            } while (true);
-            } finally {dbg.exitSubRule(11);}
-
+            dbg.location(101,5);
+            match(input,25,FOLLOW_25_in_emptyList406); if (state.failed) return ;
+            dbg.location(101,9);
+            match(input,26,FOLLOW_26_in_emptyList408); if (state.failed) return ;
 
             }
 
@@ -1059,36 +1088,36 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(98, 26);
+        dbg.location(102, 3);
 
         }
         finally {
-            dbg.exitRule(getGrammarFileName(), "stringList");
+            dbg.exitRule(getGrammarFileName(), "emptyList");
             decRuleLevel();
             if ( getRuleLevel()==0 ) {dbg.terminate();}
         }
 
         return ;
     }
-    // $ANTLR end "stringList"
+    // $ANTLR end "emptyList"
 
 
-    // $ANTLR start "integerList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:99:1: integerList : ( Integer )+ ;
-    public final void integerList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "integerList");
+    // $ANTLR start "stringList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:104:1: stringList : ( String )+ ;
+    public final void stringList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "stringList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(99, 1);
+        dbg.location(104, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:99:13: ( ( Integer )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:104:12: ( ( String )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:99:15: ( Integer )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:104:14: ( String )+
             {
-            dbg.location(99,15);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:99:15: ( Integer )+
+            dbg.location(104,14);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:104:14: ( String )+
             int cnt12=0;
             try { dbg.enterSubRule(12);
 
@@ -1099,7 +1128,7 @@ public class ARONParser extends DebugParser {
 
                 int LA12_0 = input.LA(1);
 
-                if ( (LA12_0==Integer) ) {
+                if ( (LA12_0==String) ) {
                     alt12=1;
                 }
 
@@ -1110,10 +1139,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:99:17: Integer
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:104:16: String
             	    {
-            	    dbg.location(99,17);
-            	    match(input,Integer,FOLLOW_Integer_in_integerList405); if (state.failed) return ;
+            	    dbg.location(104,16);
+            	    match(input,String,FOLLOW_String_in_stringList421); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1141,36 +1170,36 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(99, 28);
+        dbg.location(104, 26);
 
         }
         finally {
-            dbg.exitRule(getGrammarFileName(), "integerList");
+            dbg.exitRule(getGrammarFileName(), "stringList");
             decRuleLevel();
             if ( getRuleLevel()==0 ) {dbg.terminate();}
         }
 
         return ;
     }
-    // $ANTLR end "integerList"
+    // $ANTLR end "stringList"
 
 
-    // $ANTLR start "floatList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:1: floatList : ( Float )+ ;
-    public final void floatList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "floatList");
+    // $ANTLR start "integerList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:1: integerList : ( Integer )+ ;
+    public final void integerList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "integerList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(100, 1);
+        dbg.location(105, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:11: ( ( Float )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:13: ( ( Integer )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:13: ( Float )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:15: ( Integer )+
             {
-            dbg.location(100,13);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:13: ( Float )+
+            dbg.location(105,15);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:15: ( Integer )+
             int cnt13=0;
             try { dbg.enterSubRule(13);
 
@@ -1181,7 +1210,7 @@ public class ARONParser extends DebugParser {
 
                 int LA13_0 = input.LA(1);
 
-                if ( (LA13_0==Float) ) {
+                if ( (LA13_0==Integer) ) {
                     alt13=1;
                 }
 
@@ -1192,10 +1221,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:100:15: Float
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:17: Integer
             	    {
-            	    dbg.location(100,15);
-            	    match(input,Float,FOLLOW_Float_in_floatList418); if (state.failed) return ;
+            	    dbg.location(105,17);
+            	    match(input,Integer,FOLLOW_Integer_in_integerList434); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1223,36 +1252,36 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(100, 24);
+        dbg.location(105, 28);
 
         }
         finally {
-            dbg.exitRule(getGrammarFileName(), "floatList");
+            dbg.exitRule(getGrammarFileName(), "integerList");
             decRuleLevel();
             if ( getRuleLevel()==0 ) {dbg.terminate();}
         }
 
         return ;
     }
-    // $ANTLR end "floatList"
+    // $ANTLR end "integerList"
 
 
-    // $ANTLR start "timestampList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:1: timestampList : ( Timestamp )+ ;
-    public final void timestampList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "timestampList");
+    // $ANTLR start "floatList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:1: floatList : ( Float )+ ;
+    public final void floatList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "floatList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(101, 1);
+        dbg.location(106, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:15: ( ( Timestamp )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:11: ( ( Float )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:17: ( Timestamp )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:13: ( Float )+
             {
-            dbg.location(101,17);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:17: ( Timestamp )+
+            dbg.location(106,13);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:13: ( Float )+
             int cnt14=0;
             try { dbg.enterSubRule(14);
 
@@ -1263,7 +1292,7 @@ public class ARONParser extends DebugParser {
 
                 int LA14_0 = input.LA(1);
 
-                if ( (LA14_0==Timestamp) ) {
+                if ( (LA14_0==Float) ) {
                     alt14=1;
                 }
 
@@ -1274,10 +1303,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:101:19: Timestamp
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:15: Float
             	    {
-            	    dbg.location(101,19);
-            	    match(input,Timestamp,FOLLOW_Timestamp_in_timestampList431); if (state.failed) return ;
+            	    dbg.location(106,15);
+            	    match(input,Float,FOLLOW_Float_in_floatList447); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1305,36 +1334,36 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(101, 32);
+        dbg.location(106, 24);
 
         }
         finally {
-            dbg.exitRule(getGrammarFileName(), "timestampList");
+            dbg.exitRule(getGrammarFileName(), "floatList");
             decRuleLevel();
             if ( getRuleLevel()==0 ) {dbg.terminate();}
         }
 
         return ;
     }
-    // $ANTLR end "timestampList"
+    // $ANTLR end "floatList"
 
 
-    // $ANTLR start "booleanList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:102:1: booleanList : ( Bool )+ ;
-    public final void booleanList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "booleanList");
+    // $ANTLR start "timestampList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:107:1: timestampList : ( Timestamp )+ ;
+    public final void timestampList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "timestampList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(102, 1);
+        dbg.location(107, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:102:13: ( ( Bool )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:107:15: ( ( Timestamp )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:102:15: ( Bool )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:107:17: ( Timestamp )+
             {
-            dbg.location(102,15);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:102:15: ( Bool )+
+            dbg.location(107,17);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:107:17: ( Timestamp )+
             int cnt15=0;
             try { dbg.enterSubRule(15);
 
@@ -1345,7 +1374,7 @@ public class ARONParser extends DebugParser {
 
                 int LA15_0 = input.LA(1);
 
-                if ( (LA15_0==Bool) ) {
+                if ( (LA15_0==Timestamp) ) {
                     alt15=1;
                 }
 
@@ -1356,10 +1385,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:102:17: Bool
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:107:19: Timestamp
             	    {
-            	    dbg.location(102,17);
-            	    match(input,Bool,FOLLOW_Bool_in_booleanList444); if (state.failed) return ;
+            	    dbg.location(107,19);
+            	    match(input,Timestamp,FOLLOW_Timestamp_in_timestampList460); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1387,36 +1416,36 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(102, 25);
+        dbg.location(107, 32);
 
         }
         finally {
-            dbg.exitRule(getGrammarFileName(), "booleanList");
+            dbg.exitRule(getGrammarFileName(), "timestampList");
             decRuleLevel();
             if ( getRuleLevel()==0 ) {dbg.terminate();}
         }
 
         return ;
     }
-    // $ANTLR end "booleanList"
+    // $ANTLR end "timestampList"
 
 
-    // $ANTLR start "childList"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:103:1: childList : ( child )+ ;
-    public final void childList() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "childList");
+    // $ANTLR start "booleanList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:108:1: booleanList : ( Bool )+ ;
+    public final void booleanList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "booleanList");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(103, 1);
+        dbg.location(108, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:103:11: ( ( child )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:108:13: ( ( Bool )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:103:13: ( child )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:108:15: ( Bool )+
             {
-            dbg.location(103,13);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:103:13: ( child )+
+            dbg.location(108,15);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:108:15: ( Bool )+
             int cnt16=0;
             try { dbg.enterSubRule(16);
 
@@ -1427,7 +1456,7 @@ public class ARONParser extends DebugParser {
 
                 int LA16_0 = input.LA(1);
 
-                if ( (LA16_0==Identifier||LA16_0==Label) ) {
+                if ( (LA16_0==Bool) ) {
                     alt16=1;
                 }
 
@@ -1438,14 +1467,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:103:15: child
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:108:17: Bool
             	    {
-            	    dbg.location(103,15);
-            	    pushFollow(FOLLOW_child_in_childList457);
-            	    child();
-
-            	    state._fsp--;
-            	    if (state.failed) return ;
+            	    dbg.location(108,17);
+            	    match(input,Bool,FOLLOW_Bool_in_booleanList473); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1473,7 +1498,93 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(103, 24);
+        dbg.location(108, 25);
+
+        }
+        finally {
+            dbg.exitRule(getGrammarFileName(), "booleanList");
+            decRuleLevel();
+            if ( getRuleLevel()==0 ) {dbg.terminate();}
+        }
+
+        return ;
+    }
+    // $ANTLR end "booleanList"
+
+
+    // $ANTLR start "childList"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:1: childList : ( child )+ ;
+    public final void childList() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "childList");
+        if ( getRuleLevel()==0 ) {dbg.commence();}
+        incRuleLevel();
+        dbg.location(109, 1);
+
+        try {
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:11: ( ( child )+ )
+            dbg.enterAlt(1);
+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:13: ( child )+
+            {
+            dbg.location(109,13);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:13: ( child )+
+            int cnt17=0;
+            try { dbg.enterSubRule(17);
+
+            loop17:
+            do {
+                int alt17=2;
+                try { dbg.enterDecision(17);
+
+                int LA17_0 = input.LA(1);
+
+                if ( (LA17_0==Identifier||LA17_0==Label) ) {
+                    alt17=1;
+                }
+
+
+                } finally {dbg.exitDecision(17);}
+
+                switch (alt17) {
+            	case 1 :
+            	    dbg.enterAlt(1);
+
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:15: child
+            	    {
+            	    dbg.location(109,15);
+            	    pushFollow(FOLLOW_child_in_childList486);
+            	    child();
+
+            	    state._fsp--;
+            	    if (state.failed) return ;
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt17 >= 1 ) break loop17;
+            	    if (state.backtracking>0) {state.failed=true; return ;}
+                        EarlyExitException eee =
+                            new EarlyExitException(17, input);
+                        dbg.recognitionException(eee);
+
+                        throw eee;
+                }
+                cnt17++;
+            } while (true);
+            } finally {dbg.exitSubRule(17);}
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        dbg.location(109, 24);
 
         }
         finally {
@@ -1488,47 +1599,47 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "assoc"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:105:1: assoc : '{' ( property )* '}' ;
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:111:1: assoc : '{' ( property )* '}' ;
     public final void assoc() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "assoc");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(105, 1);
+        dbg.location(111, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:3: ( '{' ( property )* '}' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:112:3: ( '{' ( property )* '}' )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:5: '{' ( property )* '}'
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:112:5: '{' ( property )* '}'
             {
-            dbg.location(106,5);
-            match(input,26,FOLLOW_26_in_assoc473); if (state.failed) return ;
-            dbg.location(106,9);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:9: ( property )*
-            try { dbg.enterSubRule(17);
+            dbg.location(112,5);
+            match(input,27,FOLLOW_27_in_assoc502); if (state.failed) return ;
+            dbg.location(112,9);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:112:9: ( property )*
+            try { dbg.enterSubRule(18);
 
-            loop17:
+            loop18:
             do {
-                int alt17=2;
-                try { dbg.enterDecision(17);
+                int alt18=2;
+                try { dbg.enterDecision(18);
 
-                int LA17_0 = input.LA(1);
+                int LA18_0 = input.LA(1);
 
-                if ( (LA17_0==Identifier) ) {
-                    alt17=1;
+                if ( (LA18_0==Identifier) ) {
+                    alt18=1;
                 }
 
 
-                } finally {dbg.exitDecision(17);}
+                } finally {dbg.exitDecision(18);}
 
-                switch (alt17) {
+                switch (alt18) {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:106:11: property
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:112:11: property
             	    {
-            	    dbg.location(106,11);
-            	    pushFollow(FOLLOW_property_in_assoc477);
+            	    dbg.location(112,11);
+            	    pushFollow(FOLLOW_property_in_assoc506);
             	    property();
 
             	    state._fsp--;
@@ -1538,13 +1649,13 @@ public class ARONParser extends DebugParser {
             	    break;
 
             	default :
-            	    break loop17;
+            	    break loop18;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(17);}
+            } finally {dbg.exitSubRule(18);}
 
-            dbg.location(106,23);
-            match(input,27,FOLLOW_27_in_assoc482); if (state.failed) return ;
+            dbg.location(112,23);
+            match(input,28,FOLLOW_28_in_assoc511); if (state.failed) return ;
 
             }
 
@@ -1555,7 +1666,7 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(107, 3);
+        dbg.location(113, 3);
 
         }
         finally {
@@ -1570,63 +1681,84 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "override"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:109:1: override : path method ( value | child ) ;
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:115:1: override : path method ( value | child | list | assoc ) ;
     public final void override() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "override");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(109, 1);
+        dbg.location(115, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:3: ( path method ( value | child ) )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:3: ( path method ( value | child | list | assoc ) )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:5: path method ( value | child )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:5: path method ( value | child | list | assoc )
             {
-            dbg.location(110,5);
-            pushFollow(FOLLOW_path_in_override495);
+            dbg.location(116,5);
+            pushFollow(FOLLOW_path_in_override524);
             path();
 
             state._fsp--;
             if (state.failed) return ;
-            dbg.location(110,10);
-            pushFollow(FOLLOW_method_in_override497);
+            dbg.location(116,10);
+            pushFollow(FOLLOW_method_in_override526);
             method();
 
             state._fsp--;
             if (state.failed) return ;
-            dbg.location(110,17);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:17: ( value | child )
-            int alt18=2;
-            try { dbg.enterSubRule(18);
-            try { dbg.enterDecision(18);
+            dbg.location(116,17);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:17: ( value | child | list | assoc )
+            int alt19=4;
+            try { dbg.enterSubRule(19);
+            try { dbg.enterDecision(19);
 
-            int LA18_0 = input.LA(1);
-
-            if ( ((LA18_0>=Bool && LA18_0<=Reference)) ) {
-                alt18=1;
-            }
-            else if ( (LA18_0==Identifier||LA18_0==Label) ) {
-                alt18=2;
-            }
-            else {
+            switch ( input.LA(1) ) {
+            case Bool:
+            case Integer:
+            case Float:
+            case String:
+            case Timestamp:
+            case Reference:
+            case 24:
+                {
+                alt19=1;
+                }
+                break;
+            case Identifier:
+            case Label:
+                {
+                alt19=2;
+                }
+                break;
+            case 25:
+                {
+                alt19=3;
+                }
+                break;
+            case 27:
+                {
+                alt19=4;
+                }
+                break;
+            default:
                 if (state.backtracking>0) {state.failed=true; return ;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 18, 0, input);
+                    new NoViableAltException("", 19, 0, input);
 
                 dbg.recognitionException(nvae);
                 throw nvae;
             }
-            } finally {dbg.exitDecision(18);}
 
-            switch (alt18) {
+            } finally {dbg.exitDecision(19);}
+
+            switch (alt19) {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:19: value
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:19: value
                     {
-                    dbg.location(110,19);
-                    pushFollow(FOLLOW_value_in_override501);
+                    dbg.location(116,19);
+                    pushFollow(FOLLOW_value_in_override530);
                     value();
 
                     state._fsp--;
@@ -1637,11 +1769,39 @@ public class ARONParser extends DebugParser {
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:110:27: child
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:27: child
                     {
-                    dbg.location(110,27);
-                    pushFollow(FOLLOW_child_in_override505);
+                    dbg.location(116,27);
+                    pushFollow(FOLLOW_child_in_override534);
                     child();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+
+                    }
+                    break;
+                case 3 :
+                    dbg.enterAlt(3);
+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:35: list
+                    {
+                    dbg.location(116,35);
+                    pushFollow(FOLLOW_list_in_override538);
+                    list();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+
+                    }
+                    break;
+                case 4 :
+                    dbg.enterAlt(4);
+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:116:42: assoc
+                    {
+                    dbg.location(116,42);
+                    pushFollow(FOLLOW_assoc_in_override542);
+                    assoc();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -1650,7 +1810,7 @@ public class ARONParser extends DebugParser {
                     break;
 
             }
-            } finally {dbg.exitSubRule(18);}
+            } finally {dbg.exitSubRule(19);}
 
 
             }
@@ -1662,7 +1822,7 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(111, 3);
+        dbg.location(117, 3);
 
         }
         finally {
@@ -1677,103 +1837,21 @@ public class ARONParser extends DebugParser {
 
 
     // $ANTLR start "path"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:113:1: path : ( Reference )+ ;
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:119:1: path : ( Reference )+ ;
     public final void path() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "path");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(113, 1);
+        dbg.location(119, 1);
 
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:3: ( ( Reference )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:120:3: ( ( Reference )+ )
             dbg.enterAlt(1);
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:5: ( Reference )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:120:5: ( Reference )+
             {
-            dbg.location(114,5);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:5: ( Reference )+
-            int cnt19=0;
-            try { dbg.enterSubRule(19);
-
-            loop19:
-            do {
-                int alt19=2;
-                try { dbg.enterDecision(19);
-
-                int LA19_0 = input.LA(1);
-
-                if ( (LA19_0==Reference) ) {
-                    alt19=1;
-                }
-
-
-                } finally {dbg.exitDecision(19);}
-
-                switch (alt19) {
-            	case 1 :
-            	    dbg.enterAlt(1);
-
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:114:7: Reference
-            	    {
-            	    dbg.location(114,7);
-            	    match(input,Reference,FOLLOW_Reference_in_path522); if (state.failed) return ;
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt19 >= 1 ) break loop19;
-            	    if (state.backtracking>0) {state.failed=true; return ;}
-                        EarlyExitException eee =
-                            new EarlyExitException(19, input);
-                        dbg.recognitionException(eee);
-
-                        throw eee;
-                }
-                cnt19++;
-            } while (true);
-            } finally {dbg.exitSubRule(19);}
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        dbg.location(115, 3);
-
-        }
-        finally {
-            dbg.exitRule(getGrammarFileName(), "path");
-            decRuleLevel();
-            if ( getRuleLevel()==0 ) {dbg.terminate();}
-        }
-
-        return ;
-    }
-    // $ANTLR end "path"
-
-
-    // $ANTLR start "method"
-    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:117:1: method : ( '.' Identifier )+ ;
-    public final void method() throws RecognitionException {
-        try { dbg.enterRule(getGrammarFileName(), "method");
-        if ( getRuleLevel()==0 ) {dbg.commence();}
-        incRuleLevel();
-        dbg.location(117, 1);
-
-        try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:3: ( ( '.' Identifier )+ )
-            dbg.enterAlt(1);
-
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:5: ( '.' Identifier )+
-            {
-            dbg.location(118,5);
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:5: ( '.' Identifier )+
+            dbg.location(120,5);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:120:5: ( Reference )+
             int cnt20=0;
             try { dbg.enterSubRule(20);
 
@@ -1784,7 +1862,7 @@ public class ARONParser extends DebugParser {
 
                 int LA20_0 = input.LA(1);
 
-                if ( (LA20_0==20) ) {
+                if ( (LA20_0==Reference) ) {
                     alt20=1;
                 }
 
@@ -1795,12 +1873,10 @@ public class ARONParser extends DebugParser {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:118:7: '.' Identifier
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:120:7: Reference
             	    {
-            	    dbg.location(118,7);
-            	    match(input,20,FOLLOW_20_in_method540); if (state.failed) return ;
-            	    dbg.location(118,11);
-            	    match(input,Identifier,FOLLOW_Identifier_in_method542); if (state.failed) return ;
+            	    dbg.location(120,7);
+            	    match(input,Reference,FOLLOW_Reference_in_path559); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1828,7 +1904,91 @@ public class ARONParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(119, 3);
+        dbg.location(121, 3);
+
+        }
+        finally {
+            dbg.exitRule(getGrammarFileName(), "path");
+            decRuleLevel();
+            if ( getRuleLevel()==0 ) {dbg.terminate();}
+        }
+
+        return ;
+    }
+    // $ANTLR end "path"
+
+
+    // $ANTLR start "method"
+    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:123:1: method : ( '.' Identifier )+ ;
+    public final void method() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "method");
+        if ( getRuleLevel()==0 ) {dbg.commence();}
+        incRuleLevel();
+        dbg.location(123, 1);
+
+        try {
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:124:3: ( ( '.' Identifier )+ )
+            dbg.enterAlt(1);
+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:124:5: ( '.' Identifier )+
+            {
+            dbg.location(124,5);
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:124:5: ( '.' Identifier )+
+            int cnt21=0;
+            try { dbg.enterSubRule(21);
+
+            loop21:
+            do {
+                int alt21=2;
+                try { dbg.enterDecision(21);
+
+                int LA21_0 = input.LA(1);
+
+                if ( (LA21_0==20) ) {
+                    alt21=1;
+                }
+
+
+                } finally {dbg.exitDecision(21);}
+
+                switch (alt21) {
+            	case 1 :
+            	    dbg.enterAlt(1);
+
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:124:7: '.' Identifier
+            	    {
+            	    dbg.location(124,7);
+            	    match(input,20,FOLLOW_20_in_method577); if (state.failed) return ;
+            	    dbg.location(124,11);
+            	    match(input,Identifier,FOLLOW_Identifier_in_method579); if (state.failed) return ;
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt21 >= 1 ) break loop21;
+            	    if (state.backtracking>0) {state.failed=true; return ;}
+                        EarlyExitException eee =
+                            new EarlyExitException(21, input);
+                        dbg.recognitionException(eee);
+
+                        throw eee;
+                }
+                cnt21++;
+            } while (true);
+            } finally {dbg.exitSubRule(21);}
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        dbg.location(125, 3);
 
         }
         finally {
@@ -1841,7 +2001,42 @@ public class ARONParser extends DebugParser {
     }
     // $ANTLR end "method"
 
+    // $ANTLR start synpred18_ARON
+    public final void synpred18_ARON_fragment() throws RecognitionException {   
+        // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:5: ( emptyList )
+        dbg.enterAlt(1);
+
+        // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:89:5: emptyList
+        {
+        dbg.location(89,5);
+        pushFollow(FOLLOW_emptyList_in_synpred18_ARON331);
+        emptyList();
+
+        state._fsp--;
+        if (state.failed) return ;
+
+        }
+    }
+    // $ANTLR end synpred18_ARON
+
     // Delegated rules
+
+    public final boolean synpred18_ARON() {
+        state.backtracking++;
+        dbg.beginBacktrack(state.backtracking);
+        int start = input.mark();
+        try {
+            synpred18_ARON_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        dbg.endBacktrack(state.backtracking, success);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
 
 
  
@@ -1864,34 +2059,40 @@ public class ARONParser extends DebugParser {
     public static final BitSet FOLLOW_22_in_child203 = new BitSet(new long[]{0x0000000000800010L});
     public static final BitSet FOLLOW_property_in_child207 = new BitSet(new long[]{0x0000000000800010L});
     public static final BitSet FOLLOW_23_in_child212 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_property228 = new BitSet(new long[]{0x0000000005001FD0L});
+    public static final BitSet FOLLOW_Identifier_in_property228 = new BitSet(new long[]{0x000000000B001FD0L});
     public static final BitSet FOLLOW_value_in_property236 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_child_in_property244 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_list_in_property252 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_assoc_in_property260 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_value0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_24_in_list325 = new BitSet(new long[]{0x0000000002000BD0L});
-    public static final BitSet FOLLOW_integerList_in_list333 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_floatList_in_list342 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_timestampList_in_list350 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_booleanList_in_list358 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_childList_in_list366 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_25_in_list379 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_String_in_stringList392 = new BitSet(new long[]{0x0000000000000402L});
-    public static final BitSet FOLLOW_Integer_in_integerList405 = new BitSet(new long[]{0x0000000000000102L});
-    public static final BitSet FOLLOW_Float_in_floatList418 = new BitSet(new long[]{0x0000000000000202L});
-    public static final BitSet FOLLOW_Timestamp_in_timestampList431 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_Bool_in_booleanList444 = new BitSet(new long[]{0x0000000000000082L});
-    public static final BitSet FOLLOW_child_in_childList457 = new BitSet(new long[]{0x0000000000000052L});
-    public static final BitSet FOLLOW_26_in_assoc473 = new BitSet(new long[]{0x0000000008000010L});
-    public static final BitSet FOLLOW_property_in_assoc477 = new BitSet(new long[]{0x0000000008000010L});
-    public static final BitSet FOLLOW_27_in_assoc482 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_path_in_override495 = new BitSet(new long[]{0x0000000000100000L});
-    public static final BitSet FOLLOW_method_in_override497 = new BitSet(new long[]{0x0000000000001FD0L});
-    public static final BitSet FOLLOW_value_in_override501 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_child_in_override505 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Reference_in_path522 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_20_in_method540 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_method542 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_emptyList_in_list331 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_25_in_list337 = new BitSet(new long[]{0x0000000004000BD0L});
+    public static final BitSet FOLLOW_integerList_in_list345 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_floatList_in_list354 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_timestampList_in_list362 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_booleanList_in_list370 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_childList_in_list378 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_list391 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_25_in_emptyList406 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_emptyList408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_String_in_stringList421 = new BitSet(new long[]{0x0000000000000402L});
+    public static final BitSet FOLLOW_Integer_in_integerList434 = new BitSet(new long[]{0x0000000000000102L});
+    public static final BitSet FOLLOW_Float_in_floatList447 = new BitSet(new long[]{0x0000000000000202L});
+    public static final BitSet FOLLOW_Timestamp_in_timestampList460 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_Bool_in_booleanList473 = new BitSet(new long[]{0x0000000000000082L});
+    public static final BitSet FOLLOW_child_in_childList486 = new BitSet(new long[]{0x0000000000000052L});
+    public static final BitSet FOLLOW_27_in_assoc502 = new BitSet(new long[]{0x0000000010000010L});
+    public static final BitSet FOLLOW_property_in_assoc506 = new BitSet(new long[]{0x0000000010000010L});
+    public static final BitSet FOLLOW_28_in_assoc511 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_path_in_override524 = new BitSet(new long[]{0x0000000000100000L});
+    public static final BitSet FOLLOW_method_in_override526 = new BitSet(new long[]{0x000000000B001FD0L});
+    public static final BitSet FOLLOW_value_in_override530 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_child_in_override534 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_list_in_override538 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_assoc_in_override542 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Reference_in_path559 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_20_in_method577 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_method579 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_emptyList_in_synpred18_ARON331 = new BitSet(new long[]{0x0000000000000002L});
 
 }
