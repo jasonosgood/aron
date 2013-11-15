@@ -78,6 +78,8 @@ public class ARONReader
 	public LabelNode read( URI uri )
 		throws Exception
 	{
+		System.out.println( "reading " + uri );
+
 		_uri = uri;
 		InputStream in = uri.toURL().openStream();
 		InputStreamReader reader = new InputStreamReader( in );
@@ -284,7 +286,7 @@ public class ARONReader
 			String method = methodNode.toInputString();
 			method = method.substring( 1 );
 			
-			// Can either be a value or a child
+			// Can either be a value, child, list, or assoc
 			ParseNode value = node.findFirstNode( "value" );
     		if( value != null )
     		{
@@ -309,6 +311,13 @@ public class ARONReader
     	        	}
     			}
     		}
+
+    		ParseNode list = node.findFirstNode( "list" );
+    		if( list != null )
+    		{
+    			processList( found, method, list );
+    		}
+
 		}
 	}
 
@@ -325,7 +334,7 @@ public class ARONReader
 			{
 				for( Class<?> oof : method.getParameterTypes() )
 				{
-					if( oof.isAssignableFrom( type ) )
+					if( oof.isAssignableFrom( type ) || value == null )
 					{
 						Object result = method.invoke( instance, value );
 						return;
@@ -461,6 +470,10 @@ public class ARONReader
 				break;
 			}
 			default:
+				if( "null".equals( text ))
+				{
+					setter( instance, bean, Object.class, null );
+				}
 				break;
 		}
 	}
@@ -485,12 +498,18 @@ public class ARONReader
 					{
 						if( oof.isAssignableFrom( Object.class ) )
 						{
-							List<ParseNode> children = node.findNodes( "childList/child" );
-							for( ParseNode child : children )
+							List<ParseNode> childList = node.findNodes( "childList/child" );
+							for( ParseNode child : childList )
 							{
 								Object ugh = processChild( child );
 								Object result = method.invoke( list, ugh );
 							}
+//							List<ParseNode> integerList = node.findNodes(expression)( "integerList" );
+//							for( ParseNode child : integerList )
+//							{
+//								Object ugh = processChild( child );
+//								Object result = method.invoke( list, ugh );
+//							}
 							return;
 						}
 						break;

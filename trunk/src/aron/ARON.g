@@ -81,11 +81,13 @@ value
   | String
   | Timestamp
   | Reference
+  | 'null'
   ;
 
 // TODO: List of assoc, list of list
 list
-  : '['
+  : emptyList
+  | '['
     ( integerList 
     | floatList
     | timestampList
@@ -93,6 +95,10 @@ list
     | childList
     )?
     ']'
+  ;
+  
+emptyList
+  : '[' ']'
   ;
 
 stringList : ( String )+ ;
@@ -107,7 +113,7 @@ assoc
   ;
 
 override
-  : path method ( value | child )
+  : path method ( value | child | list | assoc )
   ;
 
 path
@@ -167,6 +173,7 @@ fragment Escape[StringBuilder buf]
   )
   ;
 
+
 // ISO 8601 - Complete timestamp yyyy-MM-ddThh:mm:ss+hh:mm
 Timestamp 
   : Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit 
@@ -197,7 +204,7 @@ Url
   ;
   
 Comment
-  : '#' ~('\n'|'\r')* '\r'? '\n' { $channel=HIDDEN; }
+  : '#' ~('\n'|'\r')*  { $channel=HIDDEN; }
   | '/*' ( options {greedy=false;} : . )* '*/' { $channel=HIDDEN; }
   ;
 
