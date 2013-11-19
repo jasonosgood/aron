@@ -92,6 +92,7 @@ list
     | floatList
     | timestampList
     | booleanList
+    | stringList
     | childList
     )?
     ']'
@@ -101,11 +102,11 @@ emptyList
   : '[' ']'
   ;
 
-stringList : ( String )+ ;
 integerList : ( Integer )+ ;
 floatList : ( Float )+ ;
 timestampList : ( Timestamp )+ ;
-booleanList : ( Bool )+ ;
+booleanList : ( Boolean )+ ;
+stringList : ( String )+ ;
 childList : ( child )+ ;
   
 assoc
@@ -124,7 +125,7 @@ method
   : ( '.' Identifier )+
   ;
 
-Bool
+Boolean
   : 'true'
   | 'false'
   ;

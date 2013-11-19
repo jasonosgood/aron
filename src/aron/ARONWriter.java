@@ -30,6 +30,7 @@ import java.lang.Number;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+// TODO: empty lists must write brackets, eg "property []" 
 
 public class 
 	ARONWriter 

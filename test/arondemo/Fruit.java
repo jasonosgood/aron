@@ -32,6 +32,10 @@ public class Fruit
 	Season jasmine = Season.spring;
 	ArrayList<Integer> kale = new ArrayList<Integer>();
 	
+	public Fruit()
+	{
+		kale.add( 100 );
+	}
 	
 	public String getApple() {
 		return apple;
