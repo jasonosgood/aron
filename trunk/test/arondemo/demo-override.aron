@@ -8,6 +8,7 @@ import arondemo.Fruit
 # @parent.iyokan lovely:Fruit
 
 # @parent.iyokan null
-@parent.grape []
+# @parent.grape []
 # @parent.grape [ Fruit ( apple "fuji" ) ]
 # @parent.jasmine summer
+@parent.kale [4 5]

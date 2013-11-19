@@ -109,7 +109,7 @@ public class ARONReader
 		parser.root();
 		reader.close();
 
-		boolean displayTree = false;
+		boolean displayTree = true;
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
@@ -435,25 +435,9 @@ public class ARONReader
 			}	
 			case ARONLexer.Timestamp:
 			{
-				boolean fail = true;
-				for( SimpleDateFormat formatter : _formatters )
-				{
-					try 
-					{
-						Date x = formatter.parse( text );
-						setter( instance, bean, Date.class, x );
-						fail = false;
-						break;
-					} 
-					catch( ParseException e ) 
-					{
-						// do nothing
-					}
-				}
-				if( fail )
-				{
-					System.out.printf( "\ncannot parse date '%s', must be formatted '2000-01-01[T12:00:[00[Z]]]'", text );
-				}
+				Date x = parseDate( text );
+
+				setter( instance, bean, Date.class, x );
 				
 				break;
 			}
@@ -483,46 +467,144 @@ public class ARONReader
 	{
 		Object list = getter( instance, bean );
 		
-		// TODO: Optionally initialize null list references
+		// TODO: initialize null list references
 		if( list == null )
 		{
 			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned null" );
 		}
-		if( list instanceof Collection )
-		{
-			for( Method method : list.getClass().getMethods() )
-			{
-				if( method.getName().equals( "add" ))
-				{
-					for( Class<?> oof : method.getParameterTypes() )
-					{
-						if( oof.isAssignableFrom( Object.class ) )
-						{
-							List<ParseNode> childList = node.findNodes( "childList/child" );
-							for( ParseNode child : childList )
-							{
-								Object ugh = processChild( child );
-								Object result = method.invoke( list, ugh );
-							}
-//							List<ParseNode> integerList = node.findNodes(expression)( "integerList" );
-//							for( ParseNode child : integerList )
-//							{
-//								Object ugh = processChild( child );
-//								Object result = method.invoke( list, ugh );
-//							}
-							return;
-						}
-						break;
-					}
-				}
-			}
-			
-			throw new NoSuchMethodException( instance.getClass().getName() + ".add(java.lang.Object)" );
-		}
-		else
+		
+		if( !( list instanceof Collection ))
 		{
 			String msg = instance.getClass().getName() + ".get" + capitalize( bean ) + "() does not return a java.util.Collection";
 			throw new IllegalArgumentException( msg );
+		}
+
+		ParseNode emptyList  = node.findFirstNode( "emptyList" );
+		if( emptyList != null )
+		{
+			Method method = list.getClass().getMethod( "clear" );
+			if( method == null )
+			{
+				throw new NoSuchMethodException( instance.getClass().getName() + ".clear()" );
+			}
+			Object result = method.invoke( list );
+			return;
+		}
+		
+		Method method = list.getClass().getMethod( "add", Object.class );
+		if( method == null )
+		{
+			throw new NoSuchMethodException( instance.getClass().getName() + ".add(java.lang.Object)" );
+		}
+		
+		
+		{
+			ParseNode integerList  = node.findFirstNode( "integerList" );
+			if( integerList != null )
+			{
+				for( Object temp : integerList.getChildren() )
+				{
+					if( temp instanceof Token )
+					{
+						Token token = (Token) temp;
+						if( token.getType() == ARONLexer.Integer )
+						{
+							String text = token.getText();
+							Integer value = Integer.parseInt( text );
+							Object result = method.invoke( list, value );
+						}
+					}
+				}
+			}
+		}
+		
+		{
+			ParseNode floatList  = node.findFirstNode( "floatList" );
+			if( floatList != null )
+			{
+				for( Object temp : floatList.getChildren() )
+				{
+					if( temp instanceof Token )
+					{
+						Token token = (Token) temp;
+						if( token.getType() == ARONLexer.Float )
+						{
+							String text = token.getText();
+							Float value = Float.parseFloat( text );
+							Object result = method.invoke( list, value );
+						}
+					}
+				}
+			}
+		}
+		
+		{
+			ParseNode timestampList  = node.findFirstNode( "timestampList" );
+			if( timestampList != null )
+			{
+				for( Object temp : timestampList.getChildren() )
+				{
+					if( temp instanceof Token )
+					{
+						Token token = (Token) temp;
+						if( token.getType() == ARONLexer.Timestamp )
+						{
+							String text = token.getText();
+							Date value = parseDate( text );
+							Object result = method.invoke( list, value );
+						}
+					}
+				}
+			}
+		}
+		
+		
+		{
+			ParseNode booleanList  = node.findFirstNode( "booleanList" );
+			if( booleanList != null )
+			{
+				for( Object temp : booleanList.getChildren() )
+				{
+					if( temp instanceof Token )
+					{
+						Token token = (Token) temp;
+						if( token.getType() == ARONLexer.Boolean )
+						{
+							String text = token.getText();
+							Boolean value = Boolean.parseBoolean( text );
+							Object result = method.invoke( list, value );
+						}
+					}
+				}
+			}
+		}
+		
+		{
+			ParseNode stringList  = node.findFirstNode( "stringList" );
+			if( stringList != null )
+			{
+				for( Object temp : stringList.getChildren() )
+				{
+					if( temp instanceof Token )
+					{
+						Token token = (Token) temp;
+						if( token.getType() == ARONLexer.String )
+						{
+							String text = token.getText();
+							Object result = method.invoke( list, text );
+						}
+					}
+				}
+			}
+		}
+		
+		{
+			List<ParseNode> childList = node.findNodes( "childList/child" );
+			for( ParseNode child : childList )
+			{
+				Object ugh = processChild( child );
+				Object result = method.invoke( list, ugh );
+			}
 		}
 	}
 	
@@ -621,6 +703,24 @@ public class ARONReader
     {
         if (propertyName.length() == 0) return null;
         return propertyName.substring( 0, 1 ).toUpperCase() + propertyName.substring( 1 );
+    }
+    
+    public Date parseDate( String text )
+    	throws DateFormatException
+    {
+		for( SimpleDateFormat formatter : _formatters )
+		{
+			try 
+			{
+				Date date = formatter.parse( text );
+				return date;
+			} 
+			catch( ParseException e ) 
+			{
+				// do nothing
+			}
+		}
+		throw new DateFormatException( text );
     }
     
     public String toString()
