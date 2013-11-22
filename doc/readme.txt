@@ -15,6 +15,7 @@ jason@jasonosgood.com
 zappini@gmail.com
 
 UPDATE
+11/21/2013 - Actually coded support for all scalar lists
 11/10/2013 - Override values can now be class instances, enums
 11/10/2013 - Added include and override features
 06/20/2012 - More forgiving datetime parsing
