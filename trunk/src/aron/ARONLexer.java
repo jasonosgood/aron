@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-14 18:17:43
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g 2013-11-19 05:11:28
  
 package aron;
 
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ARONLexer extends Lexer {
-    public static final int Bool=7;
     public static final int T__28=28;
     public static final int T__27=27;
     public static final int T__26=26;
@@ -29,6 +28,7 @@ public class ARONLexer extends Lexer {
     public static final int T__19=19;
     public static final int T__18=18;
     public static final int Comment=16;
+    public static final int Boolean=7;
     public static final int Timestamp=11;
     public static final int String=10;
     public static final int Whitespace=17;
@@ -273,12 +273,12 @@ public class ARONLexer extends Lexer {
     }
     // $ANTLR end "T__28"
 
-    // $ANTLR start "Bool"
-    public final void mBool() throws RecognitionException {
+    // $ANTLR start "Boolean"
+    public final void mBoolean() throws RecognitionException {
         try {
-            int _type = Bool;
+            int _type = Boolean;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:128:3: ( 'true' | 'false' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:129:3: ( 'true' | 'false' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -296,7 +296,7 @@ public class ARONLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:128:5: 'true'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:129:5: 'true'
                     {
                     match("true"); 
 
@@ -304,7 +304,7 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:129:5: 'false'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:130:5: 'false'
                     {
                     match("false"); 
 
@@ -319,13 +319,13 @@ public class ARONLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "Bool"
+    // $ANTLR end "Boolean"
 
     // $ANTLR start "Exponent"
     public final void mExponent() throws RecognitionException {
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:134:3: ( ( 'e' | 'E' ) ( '+' | '-' )? ( Digit )+ )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:134:5: ( 'e' | 'E' ) ( '+' | '-' )? ( Digit )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:135:3: ( ( 'e' | 'E' ) ( '+' | '-' )? ( Digit )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:135:5: ( 'e' | 'E' ) ( '+' | '-' )? ( Digit )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -336,7 +336,7 @@ public class ARONLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:134:15: ( '+' | '-' )?
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:135:15: ( '+' | '-' )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -362,7 +362,7 @@ public class ARONLexer extends Lexer {
 
             }
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:134:26: ( Digit )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:135:26: ( Digit )+
             int cnt3=0;
             loop3:
             do {
@@ -376,7 +376,7 @@ public class ARONLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:134:28: Digit
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:135:28: Digit
             	    {
             	    mDigit(); 
 
@@ -404,8 +404,8 @@ public class ARONLexer extends Lexer {
     // $ANTLR start "Digit"
     public final void mDigit() throws RecognitionException {
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:139:3: ( '0' .. '9' )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:139:5: '0' .. '9'
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:140:3: ( '0' .. '9' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:140:5: '0' .. '9'
             {
             matchRange('0','9'); 
 
@@ -422,10 +422,10 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Integer;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:3: ( ( '-' )? ( Digit )+ )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:5: ( '-' )? ( Digit )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:3: ( ( '-' )? ( Digit )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:5: ( '-' )? ( Digit )+
             {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:5: ( '-' )?
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:5: ( '-' )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -434,7 +434,7 @@ public class ARONLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:6: '-'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:6: '-'
                     {
                     match('-'); 
 
@@ -443,7 +443,7 @@ public class ARONLexer extends Lexer {
 
             }
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:12: ( Digit )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:12: ( Digit )+
             int cnt5=0;
             loop5:
             do {
@@ -457,7 +457,7 @@ public class ARONLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:143:14: Digit
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:144:14: Digit
             	    {
             	    mDigit(); 
 
@@ -489,14 +489,14 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Float;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:3: ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:3: ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent )
             int alt13=3;
             alt13 = dfa13.predict(input);
             switch (alt13) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:5: ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:5: ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )?
                     {
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:5: ( '-' )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:5: ( '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -505,7 +505,7 @@ public class ARONLexer extends Lexer {
                     }
                     switch (alt6) {
                         case 1 :
-                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:6: '-'
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:6: '-'
                             {
                             match('-'); 
 
@@ -514,7 +514,7 @@ public class ARONLexer extends Lexer {
 
                     }
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:12: ( Digit )+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:12: ( Digit )+
                     int cnt7=0;
                     loop7:
                     do {
@@ -528,7 +528,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:14: Digit
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:14: Digit
                     	    {
                     	    mDigit(); 
 
@@ -545,7 +545,7 @@ public class ARONLexer extends Lexer {
                     } while (true);
 
                     match('.'); 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:27: ( Digit )*
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:27: ( Digit )*
                     loop8:
                     do {
                         int alt8=2;
@@ -558,7 +558,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt8) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:29: Digit
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:29: Digit
                     	    {
                     	    mDigit(); 
 
@@ -570,7 +570,7 @@ public class ARONLexer extends Lexer {
                         }
                     } while (true);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:38: ( Exponent )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:38: ( Exponent )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -579,7 +579,7 @@ public class ARONLexer extends Lexer {
                     }
                     switch (alt9) {
                         case 1 :
-                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:147:38: Exponent
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:38: Exponent
                             {
                             mExponent(); 
 
@@ -592,10 +592,10 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:5: '.' ( Digit )+ ( Exponent )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:5: '.' ( Digit )+ ( Exponent )?
                     {
                     match('.'); 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:9: ( Digit )+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:9: ( Digit )+
                     int cnt10=0;
                     loop10:
                     do {
@@ -609,7 +609,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt10) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:11: Digit
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:11: Digit
                     	    {
                     	    mDigit(); 
 
@@ -625,7 +625,7 @@ public class ARONLexer extends Lexer {
                         cnt10++;
                     } while (true);
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:20: ( Exponent )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:20: ( Exponent )?
                     int alt11=2;
                     int LA11_0 = input.LA(1);
 
@@ -634,7 +634,7 @@ public class ARONLexer extends Lexer {
                     }
                     switch (alt11) {
                         case 1 :
-                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:148:20: Exponent
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:20: Exponent
                             {
                             mExponent(); 
 
@@ -647,9 +647,9 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:5: ( Digit )+ Exponent
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:150:5: ( Digit )+ Exponent
                     {
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:5: ( Digit )+
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:150:5: ( Digit )+
                     int cnt12=0;
                     loop12:
                     do {
@@ -663,7 +663,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt12) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:149:7: Digit
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:150:7: Digit
                     	    {
                     	    mDigit(); 
 
@@ -701,11 +701,11 @@ public class ARONLexer extends Lexer {
             int i;
 
              final StringBuilder buf = new StringBuilder(); 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:154:3: ( '\"' ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )* '\"' )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:155:3: '\"' ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )* '\"'
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:155:3: ( '\"' ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )* '\"' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:156:3: '\"' ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )* '\"'
             {
             match('\"'); 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:156:3: ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:157:3: ( Escape[buf] | i=~ ( '\\\\' | '\"' ) )*
             loop14:
             do {
                 int alt14=3;
@@ -721,14 +721,14 @@ public class ARONLexer extends Lexer {
 
                 switch (alt14) {
             	case 1 :
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:157:5: Escape[buf]
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:158:5: Escape[buf]
             	    {
             	    mEscape(buf); 
 
             	    }
             	    break;
             	case 2 :
-            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:158:7: i=~ ( '\\\\' | '\"' )
+            	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:159:7: i=~ ( '\\\\' | '\"' )
             	    {
             	    i= input.LA(1);
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
@@ -766,11 +766,11 @@ public class ARONLexer extends Lexer {
     // $ANTLR start "Escape"
     public final void mEscape(StringBuilder buf) throws RecognitionException {
         try {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:165:3: ( '\\\\' ( 't' | 'n' | 'r' | '\"' | '\\\\' ) )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:166:3: '\\\\' ( 't' | 'n' | 'r' | '\"' | '\\\\' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:166:3: ( '\\\\' ( 't' | 'n' | 'r' | '\"' | '\\\\' ) )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:167:3: '\\\\' ( 't' | 'n' | 'r' | '\"' | '\\\\' )
             {
             match('\\'); 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:167:3: ( 't' | 'n' | 'r' | '\"' | '\\\\' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:168:3: ( 't' | 'n' | 'r' | '\"' | '\\\\' )
             int alt15=5;
             switch ( input.LA(1) ) {
             case 't':
@@ -807,7 +807,7 @@ public class ARONLexer extends Lexer {
 
             switch (alt15) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:168:5: 't'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:169:5: 't'
                     {
                     match('t'); 
                      buf.append('\t'); 
@@ -815,7 +815,7 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:169:7: 'n'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:170:7: 'n'
                     {
                     match('n'); 
                      buf.append('\n'); 
@@ -823,7 +823,7 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:170:7: 'r'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:171:7: 'r'
                     {
                     match('r'); 
                      buf.append('\r'); 
@@ -831,7 +831,7 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:171:7: '\"'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:172:7: '\"'
                     {
                     match('\"'); 
                      buf.append('\"'); 
@@ -839,7 +839,7 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:172:7: '\\\\'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:173:7: '\\\\'
                     {
                     match('\\'); 
                      buf.append('\\'); 
@@ -863,8 +863,8 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Timestamp;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:179:3: ( Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )? )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:179:5: Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )?
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:180:3: ( Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )? )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:180:5: Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )?
             {
             mDigit(); 
             mDigit(); 
@@ -876,7 +876,7 @@ public class ARONLexer extends Lexer {
             match('-'); 
             mDigit(); 
             mDigit(); 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:180:5: ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )?
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:181:5: ( 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )? )?
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -885,7 +885,7 @@ public class ARONLexer extends Lexer {
             }
             switch (alt18) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:181:6: 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:182:6: 'T' Digit Digit ':' Digit Digit ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )?
                     {
                     match('T'); 
                     mDigit(); 
@@ -893,7 +893,7 @@ public class ARONLexer extends Lexer {
                     match(':'); 
                     mDigit(); 
                     mDigit(); 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:183:6: ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )?
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:184:6: ( ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )? )?
                     int alt17=2;
                     int LA17_0 = input.LA(1);
 
@@ -902,12 +902,12 @@ public class ARONLexer extends Lexer {
                     }
                     switch (alt17) {
                         case 1 :
-                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:184:7: ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )?
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:185:7: ':' Digit Digit ( '+' Digit Digit ':' Digit Digit )?
                             {
                             match(':'); 
                             mDigit(); 
                             mDigit(); 
-                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:185:7: ( '+' Digit Digit ':' Digit Digit )?
+                            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:186:7: ( '+' Digit Digit ':' Digit Digit )?
                             int alt16=2;
                             int LA16_0 = input.LA(1);
 
@@ -916,7 +916,7 @@ public class ARONLexer extends Lexer {
                             }
                             switch (alt16) {
                                 case 1 :
-                                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:185:9: '+' Digit Digit ':' Digit Digit
+                                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:186:9: '+' Digit Digit ':' Digit Digit
                                     {
                                     match('+'); 
                                     mDigit(); 
@@ -958,8 +958,8 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Identifier;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:191:3: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:191:5: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:192:3: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:192:5: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -970,7 +970,7 @@ public class ARONLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:191:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:192:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop19:
             do {
                 int alt19=2;
@@ -1019,8 +1019,8 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Label;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:195:3: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* ':' )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:195:5: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* ':'
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:196:3: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* ':' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:196:5: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* ':'
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -1031,7 +1031,7 @@ public class ARONLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:195:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:196:25: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop20:
             do {
                 int alt20=2;
@@ -1081,8 +1081,8 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Reference;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:199:3: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:199:5: '@' ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:200:3: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:200:5: '@' ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             match('@'); 
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
@@ -1094,7 +1094,7 @@ public class ARONLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:199:29: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:200:29: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop21:
             do {
                 int alt21=2;
@@ -1143,10 +1143,10 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Url;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:203:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )* )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:203:5: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:204:3: ( ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )* )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:204:5: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )*
             {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:203:5: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )*
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:204:5: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '/' | '.' )*
             loop22:
             do {
                 int alt22=2;
@@ -1195,7 +1195,7 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:207:3: ( '#' (~ ( '\\n' | '\\r' ) )* | '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:3: ( '#' (~ ( '\\n' | '\\r' ) )* | '/*' ( options {greedy=false; } : . )* '*/' )
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -1213,10 +1213,10 @@ public class ARONLexer extends Lexer {
             }
             switch (alt25) {
                 case 1 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:207:5: '#' (~ ( '\\n' | '\\r' ) )*
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:5: '#' (~ ( '\\n' | '\\r' ) )*
                     {
                     match('#'); 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:207:9: (~ ( '\\n' | '\\r' ) )*
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:9: (~ ( '\\n' | '\\r' ) )*
                     loop23:
                     do {
                         int alt23=2;
@@ -1229,7 +1229,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt23) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:207:9: ~ ( '\\n' | '\\r' )
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:9: ~ ( '\\n' | '\\r' )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -1254,11 +1254,11 @@ public class ARONLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:5: '/*' ( options {greedy=false; } : . )* '*/'
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:209:5: '/*' ( options {greedy=false; } : . )* '*/'
                     {
                     match("/*"); 
 
-                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:10: ( options {greedy=false; } : . )*
+                    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:209:10: ( options {greedy=false; } : . )*
                     loop24:
                     do {
                         int alt24=2;
@@ -1283,7 +1283,7 @@ public class ARONLexer extends Lexer {
 
                         switch (alt24) {
                     	case 1 :
-                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:208:38: .
+                    	    // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:209:38: .
                     	    {
                     	    matchAny(); 
 
@@ -1316,10 +1316,10 @@ public class ARONLexer extends Lexer {
         try {
             int _type = Whitespace;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:213:3: ( ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+ )
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:213:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:214:3: ( ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+ )
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:214:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
             {
-            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:213:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
+            // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:214:5: ( '\\t' | ' ' | '\\r' | '\\n' | ',' )+
             int cnt26=0;
             loop26:
             do {
@@ -1370,7 +1370,7 @@ public class ARONLexer extends Lexer {
     // $ANTLR end "Whitespace"
 
     public void mTokens() throws RecognitionException {
-        // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:8: ( T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | Bool | Integer | Float | String | Timestamp | Identifier | Label | Reference | Url | Comment | Whitespace )
+        // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:8: ( T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | Boolean | Integer | Float | String | Timestamp | Identifier | Label | Reference | Url | Comment | Whitespace )
         int alt27=22;
         alt27 = dfa27.predict(input);
         switch (alt27) {
@@ -1452,77 +1452,77 @@ public class ARONLexer extends Lexer {
                 }
                 break;
             case 12 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:76: Bool
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:76: Boolean
                 {
-                mBool(); 
+                mBoolean(); 
 
                 }
                 break;
             case 13 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:81: Integer
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:84: Integer
                 {
                 mInteger(); 
 
                 }
                 break;
             case 14 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:89: Float
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:92: Float
                 {
                 mFloat(); 
 
                 }
                 break;
             case 15 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:95: String
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:98: String
                 {
                 mString(); 
 
                 }
                 break;
             case 16 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:102: Timestamp
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:105: Timestamp
                 {
                 mTimestamp(); 
 
                 }
                 break;
             case 17 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:112: Identifier
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:115: Identifier
                 {
                 mIdentifier(); 
 
                 }
                 break;
             case 18 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:123: Label
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:126: Label
                 {
                 mLabel(); 
 
                 }
                 break;
             case 19 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:129: Reference
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:132: Reference
                 {
                 mReference(); 
 
                 }
                 break;
             case 20 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:139: Url
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:142: Url
                 {
                 mUrl(); 
 
                 }
                 break;
             case 21 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:143: Comment
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:146: Comment
                 {
                 mComment(); 
 
                 }
                 break;
             case 22 :
-                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:151: Whitespace
+                // /Users/jasonosgood/Projects/workspace/aron/src/aron/ARON.g:1:154: Whitespace
                 {
                 mWhitespace(); 
 
@@ -1586,7 +1586,7 @@ public class ARONLexer extends Lexer {
             this.transition = DFA13_transition;
         }
         public String getDescription() {
-            return "146:1: Float : ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent );";
+            return "147:1: Float : ( ( '-' )? ( Digit )+ '.' ( Digit )* ( Exponent )? | '.' ( Digit )+ ( Exponent )? | ( Digit )+ Exponent );";
         }
     }
     static final String DFA27_eotS =
@@ -1736,7 +1736,7 @@ public class ARONLexer extends Lexer {
             this.transition = DFA27_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | Bool | Integer | Float | String | Timestamp | Identifier | Label | Reference | Url | Comment | Whitespace );";
+            return "1:1: Tokens : ( T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | Boolean | Integer | Float | String | Timestamp | Identifier | Label | Reference | Url | Comment | Whitespace );";
         }
     }
  

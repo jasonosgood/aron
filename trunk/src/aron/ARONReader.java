@@ -409,7 +409,7 @@ public class ARONReader
 		String text = token.getText();
 		switch( token.getType() )
 		{
-			case ARONLexer.Bool:
+			case ARONLexer.Boolean:
 			{
     			Boolean x = Boolean.valueOf( text );
     			setter( instance, bean, boolean.class, x );

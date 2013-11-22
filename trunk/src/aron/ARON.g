@@ -75,7 +75,7 @@ property
   ;
   
 value
-  : Bool
+  : Boolean
   | Integer
   | Float
   | String
