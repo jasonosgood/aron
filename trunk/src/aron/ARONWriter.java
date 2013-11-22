@@ -266,10 +266,10 @@ public class
 		else if( Collection.class.isAssignableFrom( type ) )
 		{
 			Collection<?> c = (Collection<?>) obj;
+			newline( tabs );
+			_writer.write( '[' );
 			if( c.size() >  0 )
 			{
-				newline( tabs );
-				_writer.write( '[' );
 				tabs++;
 				for( Object item : c )
 				{
@@ -277,9 +277,9 @@ public class
 					write( item, tabs );
 				}
 				tabs--;
-				newline( tabs );
-				_writer.write( ']' );
 			}
+			newline( tabs );
+			_writer.write( ']' );
 		}
 		else if( Map.class.isAssignableFrom( type ) )
 		{
