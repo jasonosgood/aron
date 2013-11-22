@@ -112,9 +112,13 @@ public class
 			newline( 0 );
 			for( Class klass : imports )
 			{
-				newline( 0 );
-				_writer.write( "import " );
-				_writer.write( klass.getName() );
+				// TODO: This may not be right / ideal. eg when an enum has instance variables, ARONReader may need import
+				if( !klass.isEnum() )
+				{
+					newline( 0 );
+					_writer.write( "import " );
+					_writer.write( klass.getName() );
+				}
 			}
 			newline( 0 );
 		}

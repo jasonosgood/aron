@@ -31,6 +31,10 @@ public class Fruit
 	Fruit iyokan;
 	Season jasmine = Season.spring;
 	ArrayList<Integer> kale = new ArrayList<Integer>();
+	ArrayList<Float> lime = new ArrayList<Float>();
+	ArrayList<Boolean> mango = new ArrayList<Boolean>();
+	ArrayList<Date> nectarine = new ArrayList<Date>();
+	ArrayList<String> orange = new ArrayList<String>();
 	
 	public Fruit()
 	{
@@ -103,4 +107,10 @@ public class Fruit
 	{
 		return kale;
 	}
+	
+	public List<Float> getLime() { return lime; }
+	public List<Boolean> getMango() { return mango; }
+	public List<Date> getNectarine() { return nectarine; }
+	public List<String> getOrange() { return orange; }
+
 }
