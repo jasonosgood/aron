@@ -51,8 +51,9 @@ public class ARONReader
 	{
 		_importDefs = new ArrayList<String>( 4 );
 		_shortNames = new HashMap<String, Class<?>>();
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssz", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssX", Locale.ROOT ));
+		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd", Locale.ROOT ));
@@ -109,7 +110,7 @@ public class ARONReader
 		parser.root();
 		reader.close();
 
-		boolean displayTree = true;
+		boolean displayTree = false;
 		if( displayTree )
 		{
 			System.out.println( builder.getTree().toParseTree() );
