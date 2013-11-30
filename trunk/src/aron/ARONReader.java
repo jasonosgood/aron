@@ -88,13 +88,6 @@ public class ARONReader
 		
 	}
 	
-//	public LabelNode read( InputStream in )
-//		throws Exception
-//	{
-//		InputStreamReader reader = new InputStreamReader( in );
-//		return read( reader );
-//	}
-	
 	private LabelNode read( Reader reader )
 		throws Exception
 	{
@@ -121,6 +114,7 @@ public class ARONReader
 		ParseNode.addLexType( "Label", ARONLexer.Label );
 		ParseNode.addLexType( "Reference", ARONLexer.Reference );
 		process( parseRoot );
+		
 		return _labelStack.get( 0 );
 	}
 	
@@ -261,6 +255,8 @@ public class ARONReader
 			}
 		}
     	
+    	_labelStack.pop();
+    	
     	return child;
 	}
 	
@@ -327,25 +323,32 @@ public class ARONReader
 			NoSuchMethodException, IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException
 	{
-		String name = "set" + capitalize( bean );
+		String[] names = new String[]
+		{
+			"set" + capitalize( bean ),
+			"set" + bean.toUpperCase()
+		};
 		
 		for( Method method : instance.getClass().getMethods() )
 		{
-			if( method.getName().equals( name ))
+			for( String name : names )
 			{
-				for( Class<?> oof : method.getParameterTypes() )
+				if( method.getName().equals( name ))
 				{
-					if( oof.isAssignableFrom( type ) || value == null )
+					for( Class<?> oof : method.getParameterTypes() )
 					{
-						Object result = method.invoke( instance, value );
-						return;
+						if( oof.isAssignableFrom( type ) || value == null )
+						{
+							Object result = method.invoke( instance, value );
+							return;
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}
 			
-		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "(" + type.getName() + ")" );
+		throw new NoSuchMethodException( instance.getClass().getName() + "." + names[0] + "(" + type.getName() + ")" );
 	}
 
 	public boolean enumSetter( Object instance, String bean, String literal ) 

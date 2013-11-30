@@ -3,9 +3,20 @@
 include demo.aron
 import arondemo.Fruit
 
+lovely:Fruit
+(
+	apple "lovely"
+)
+
+crush:Fruit
+(
+	apple "crush"
+)
+
 # @parent.apple "123456"
 
-# @parent.iyokan lovely:Fruit
+@parent.iyokan @lovely
+@parent.iyokan @crush
 
 # @parent.iyokan null
 # @parent.grape []
