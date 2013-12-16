@@ -43,12 +43,22 @@ import org.antlr.runtime.Token;
 
 public class ARONReader
 {
+	private int _nestLevel = -1;
+	public int getNestLevel() { return _nestLevel; }
+	public void setNestLevel( int nestLevel ) { _nestLevel = nestLevel; }
+	
 	private ArrayList<String> _importDefs;
 	private HashMap<String, Class<?>> _shortNames;
 	private ArrayList<SimpleDateFormat> _formatters = new ArrayList<SimpleDateFormat>();
 
 	public ARONReader()
 	{
+		this( 0 );
+	}
+
+	public ARONReader( int nestLevel )
+	{
+		setNestLevel( nestLevel );
 		_importDefs = new ArrayList<String>( 4 );
 		_shortNames = new HashMap<String, Class<?>>();
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ROOT ));
@@ -58,7 +68,6 @@ public class ARONReader
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd", Locale.ROOT ));
 	}
-
 
 	URI _uri = null;
 	
@@ -79,7 +88,21 @@ public class ARONReader
 	public LabelNode read( URI uri )
 		throws Exception
 	{
-		System.out.println( "reading " + uri );
+		int level = getNestLevel();
+		if( level > 0 )
+		{
+			while( level > 0 )
+			{
+				System.out.print( "  " );
+				level--;
+			}
+			System.out.print( "including " );
+		}
+		else
+		{
+			System.out.print( "reading " );
+		}
+		System.out.println( uri );
 
 		_uri = uri;
 		InputStream in = uri.toURL().openStream();
@@ -175,7 +198,8 @@ public class ARONReader
 		File file = sibling.toFile();	
 		if( file.exists() )
 		{
-			ARONReader aron = new ARONReader();
+			int nestLevel = getNestLevel() + 1;
+			ARONReader aron = new ARONReader( nestLevel );
 			LabelNode childRoot = aron.read( file );
 			LabelNode root = _labelStack.get( 0 );
 			root.getChildren().addAll( childRoot.getChildren() );
