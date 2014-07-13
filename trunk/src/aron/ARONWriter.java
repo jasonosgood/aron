@@ -11,10 +11,13 @@ package aron;
 	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
  */
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.security.AccessControlException;
 import java.text.SimpleDateFormat;
@@ -27,7 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.lang.Number;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 // TODO: empty lists must write brackets, eg "property []" 
@@ -345,20 +350,43 @@ public class
 			_writer.write( type.getSimpleName() );
 			List<Field> fields = getFields( type );
 			Object vanilla = null;
-			try 
+			try
 			{
-				vanilla = type.newInstance();
+				Constructor<?> c = type.getDeclaredConstructor();
+				c.setAccessible( true );
+				vanilla = c.newInstance();
 			}
-			catch( InstantiationException e1 ) 
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			catch( IllegalAccessException e1 ) 
+			catch( NoSuchMethodException e )
 			{
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
+			catch( SecurityException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch( InstantiationException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch( IllegalAccessException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch( IllegalArgumentException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch( InvocationTargetException e )
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			newline( tabs );
 			_writer.write( '(' );
 			tabs++;
@@ -418,7 +446,7 @@ public class
 				int modifiers = field.getModifiers();
 				if( Modifier.isTransient( modifiers ) ) continue;
 				if( Modifier.isStatic( modifiers ) ) continue;
-				
+//				if( Modifier.isPrivate( modifiers ))
 				if( field.isSynthetic() ) continue;
 				
 				if( !field.isAccessible() ) 
@@ -473,6 +501,22 @@ public class
 		for( int nth = 0; nth < tabs; nth++ )
 		{
 			_writer.write( '\t' );
+		}
+	}
+	
+	public static String toString( Object o )
+	{
+		try 
+		{
+			StringWriter sw = new StringWriter();
+			ARONWriter writer = new ARONWriter( sw );
+			writer.write( o );
+			return sw.toString();
+		} 
+		catch( IOException e ) 
+		{
+			e.printStackTrace();
+			return "error";
 		}
 	}
 }
