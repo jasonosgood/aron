@@ -11,6 +11,7 @@ package arondemo;
 	Updated: 10/01/2011 Jason Osgood <jason@jasonosgood.com> 
 */
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 public class Fruit
 {
+	
 	String apple;
 	float banana = 2.0f;
 	int cherry;

@@ -12,7 +12,6 @@ package aron;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -221,6 +220,7 @@ public class ARONReader
 		
 	public Object processChild( ParseNode node ) 
 		throws 
+			ARONException,
 			ClassNotFoundException, InstantiationException, IllegalAccessException, 
 			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
@@ -236,48 +236,10 @@ public class ARONReader
     	List<ParseNode> propertyList = node.findNodes( "property" );
     	for( ParseNode prop : propertyList )
     	{
-    		String bean = prop.findFirstString( "Identifier" );
-
-			ParseNode value = prop.findFirstNode( "value" );
-    		if( value != null )
-    		{
-    			processValue( child, bean, value );
-    			continue;
-    		}
-        		
-    		ParseNode kid = prop.findFirstNode( "child" );
-    		if( kid != null )
-    		{
-    			try
-    			{
-        			Object grandchild = processChild( kid );
-    				setter( child, bean, grandchild.getClass(), grandchild );
-    			}
-    			catch( Exception ee )
-    			{
-    	        	String literal = kid.findFirstString( "Identifier" );
-    	        	if( !enumSetter( child, bean, literal ))
-    	        	{
-    	        		throw ee;
-    	        	}
-    			}
-    			continue;
-    		}
-	        		
-    		ParseNode list = prop.findFirstNode( "list" );
-    		if( list != null )
-    		{
-    			processList( child, bean, list );
-    			continue;
-    		}
-    		
-    		ParseNode assoc = prop.findFirstNode( "assoc" );
-    		if( assoc != null )
-			{
-    			processAssoc( child, bean, assoc );
-				continue;
-			}
-		}
+    		String method = prop.findFirstString( "Identifier" );
+    		ParseNode value = prop.findFirstNode( "value" );
+    		processValue( child, method, value );
+    	}
     	
     	_labelStack.pop();
     	
@@ -307,53 +269,88 @@ public class ARONReader
 			String method = methodNode.toInputString();
 			method = method.substring( 1 );
 			
-			// Can either be a value, child, list, or assoc
 			ParseNode value = node.findFirstNode( "value" );
-    		if( value != null )
-    		{
-    			processValue( found, method, value );
-    		}
-
-			ParseNode child = node.findFirstNode( "child" );
-    		if( child != null )
-    		{
-    			// TODO: fix this ugly cut & paste
-    			try
-    			{
-        			Object grandchild = processChild( child );
-    				setter( found, method, grandchild.getClass(), grandchild );
-    			}
-    			catch( Exception ee )
-    			{
-    	        	String literal = child.findFirstString( "Identifier" );
-    	        	if( !enumSetter( found, method, literal ))
-    	        	{
-    	        		throw ee;
-    	        	}
-    			}
-    		}
-
-    		ParseNode list = node.findFirstNode( "list" );
-    		if( list != null )
-    		{
-    			processList( found, method, list );
-    		}
-
+    		processValue( found, method, value );
+		}
+	}
+	
+	public void processValue( Object bean, String method, ParseNode value ) 
+		throws ARONException
+//			ClassNotFoundException, InstantiationException, IllegalAccessException, 
+//			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
+	{
+		ParseNode temp = value.findFirstNode( "*" );
+		
+		try
+		{
+			switch( temp.getRule() )
+			{
+				case "scalar":
+					Object scalar = processScalar( temp );
+					setter( bean, method, scalar );
+					break;
+					
+				case "child":
+	    			try
+	    			{
+	        			Object grandchild = processChild( temp );
+	    				setter( bean, method, grandchild );
+	    			}
+	    			catch( Exception ee )
+	    			{
+	    	        	String literal = temp.findFirstString( "Identifier" );
+	    	        	if( !enumSetter( bean, method, literal ))
+	    	        	{
+	    	        		throw ee;
+	    	        	}
+	    			}
+	    			break;
+	    			
+				case "list":
+					processList( bean, method, temp );
+	    			break;
+	    			
+				case "map":
+					processMap( bean, method, temp );
+					break;
+					
+				default:					
+					// this probably can't ever happen
+					throw new IllegalArgumentException( "unrecognized value subrule " + temp.getRule() );
+			}
+		}
+		catch( Exception e )
+		{
+			throw new ARONException( value, e );
 		}
 	}
 
-	public void setter( Object instance, String bean, Class<?> type, Object value ) 
+//	public void setter( Object bean, String property, Class<?> type, Object value ) 
+	public void setter( Object bean, String property,  Object value ) 
 		throws 
 			NoSuchMethodException, IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException
 	{
+		if( bean instanceof Map )
+		{
+			Map map = (Map) bean;
+			map.put( property, value );
+			return;
+		}
+
+		Class type = null;
+		if( value != null ) {
+			type = value.getClass();
+		}
+		
+
 		String[] names = new String[]
 		{
-			"set" + capitalize( bean ),
-			"set" + bean.toUpperCase()
+			"set" + capitalize( property ),
+			"set" + property.toUpperCase()
 		};
 		
-		for( Method method : instance.getClass().getMethods() )
+		for( Method method : bean.getClass().getMethods() )
 		{
 			for( String name : names )
 			{
@@ -361,9 +358,28 @@ public class ARONReader
 				{
 					for( Class<?> oof : method.getParameterTypes() )
 					{
+						switch( oof.getName() )
+						{
+							case "int":
+								oof = Integer.class;
+								break;
+								
+							case "float":
+								oof = Float.class;
+								break;
+								
+							case "boolean":
+								oof = Boolean.class;
+								break;
+								
+							default:
+								break;
+								
+						}
+						
 						if( oof.isAssignableFrom( type ) || value == null )
 						{
-							Object result = method.invoke( instance, value );
+							Object result = method.invoke( bean, value );
 							return;
 						}
 						break;
@@ -372,7 +388,7 @@ public class ARONReader
 			}
 		}
 			
-		throw new NoSuchMethodException( instance.getClass().getName() + "." + names[0] + "(" + type.getName() + ")" );
+		throw new NoSuchMethodException( bean.getClass().getName() + "." + names[0] + "(" + type.getName() + ")" );
 	}
 
 	public boolean enumSetter( Object instance, String bean, String literal ) 
@@ -419,7 +435,6 @@ public class ARONReader
 		
 		for( Method method : instance.getClass().getMethods() )
 		{
-//			System.out.println( method.toString() );
 			if( method.getName().equals( name ))
 			{
 				return method.invoke( instance );
@@ -429,8 +444,7 @@ public class ARONReader
 		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "()" );
 	}
 		
-
-	public void processValue( Object instance, String bean, ParseNode value ) 
+	public Object processScalar( ParseNode value ) 
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
 		Token token = value.getToken( 0 );
@@ -440,34 +454,26 @@ public class ARONReader
 			case ARONLexer.Boolean:
 			{
     			Boolean x = Boolean.valueOf( text );
-    			setter( instance, bean, boolean.class, x );
-				break;
+    			return x;
 			}	
 			case ARONLexer.String:
 			{
-//				text = text.substring( 1, text.length() - 1 );
-    			setter( instance, bean, String.class, text );
-				break;
+				return text;
 			}	
 			case ARONLexer.Float:
 			{
 				Float x = Float.valueOf( text );
-				setter( instance, bean, float.class, x );
-				break;
+    			return x;
 			}	
 			case ARONLexer.Integer:
 			{
 				Integer x = Integer.valueOf( text );
-				setter( instance, bean, int.class, x );
-				break;
+    			return x;
 			}	
 			case ARONLexer.Timestamp:
 			{
 				Date x = parseDate( text );
-
-				setter( instance, bean, Date.class, x );
-				
-				break;
+    			return x;
 			}
 			case ARONLexer.Reference:
 			{
@@ -478,202 +484,115 @@ public class ARONReader
 				{
 					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
 				}
-				setter( instance, bean, found.getClass(), found );
-				break;
+				return found;
 			}
 			default:
-				if( "null".equals( text ))
-				{
-					setter( instance, bean, Object.class, null );
-				}
-				break;
+				return null;
 		}
 	}
 
-	public void processList( Object instance, String bean, ParseNode node )
-		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException
+	// TODO: initialize null list references
+	public void processList( Object bean, String property, ParseNode node ) 
+		throws 
+			ARONException,
+			NoSuchMethodException, IllegalArgumentException, IllegalAccessException, 
+			InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
-		Object list = getter( instance, bean );
+		Object temp = getter( bean, property );
 		
-		// TODO: initialize null list references
-		if( list == null )
+		if( temp == null )
 		{
-			throw new NullPointerException( instance.getClass().getName() + ".get" + capitalize( bean ) + "() returned null" );
+			throw new NullPointerException( bean.getClass().getName() + ".get" + capitalize( property ) + "() returned null" );
 		}
 		
-		if( !( list instanceof Collection ))
+		if( !( temp instanceof Collection ))
 		{
-			String msg = instance.getClass().getName() + ".get" + capitalize( bean ) + "() does not return a java.util.Collection";
+			String msg = bean.getClass().getName() + ".get" + capitalize( property ) + "() does not return a subclass of java.util.Collection";
 			throw new IllegalArgumentException( msg );
 		}
 
+		Collection collection = (Collection) temp;
+		
 		ParseNode emptyList  = node.findFirstNode( "emptyList" );
 		if( emptyList != null )
 		{
-			Method method = list.getClass().getMethod( "clear" );
-			if( method == null )
-			{
-				throw new NoSuchMethodException( instance.getClass().getName() + ".clear()" );
-			}
-			Object result = method.invoke( list );
+			collection.clear();
 			return;
 		}
 		
-		Method method = list.getClass().getMethod( "add", Object.class );
-		if( method == null )
+		ParseNode childList = node.findFirstNode( "childList" );
+		if( childList != null )
 		{
-			throw new NoSuchMethodException( instance.getClass().getName() + ".add(java.lang.Object)" );
-		}
-		
-		
-		{
-			ParseNode integerList  = node.findFirstNode( "integerList" );
-			if( integerList != null )
-			{
-				for( Object temp : integerList.getChildren() )
-				{
-					if( temp instanceof Token )
-					{
-						Token token = (Token) temp;
-						if( token.getType() == ARONLexer.Integer )
-						{
-							String text = token.getText();
-							Integer value = Integer.parseInt( text );
-							Object result = method.invoke( list, value );
-						}
-					}
-				}
-			}
-		}
-		
-		{
-			ParseNode floatList  = node.findFirstNode( "floatList" );
-			if( floatList != null )
-			{
-				for( Object temp : floatList.getChildren() )
-				{
-					if( temp instanceof Token )
-					{
-						Token token = (Token) temp;
-						if( token.getType() == ARONLexer.Float )
-						{
-							String text = token.getText();
-							Float value = Float.parseFloat( text );
-							Object result = method.invoke( list, value );
-						}
-					}
-				}
-			}
-		}
-		
-		{
-			ParseNode timestampList  = node.findFirstNode( "timestampList" );
-			if( timestampList != null )
-			{
-				for( Object temp : timestampList.getChildren() )
-				{
-					if( temp instanceof Token )
-					{
-						Token token = (Token) temp;
-						if( token.getType() == ARONLexer.Timestamp )
-						{
-							String text = token.getText();
-							Date value = parseDate( text );
-							Object result = method.invoke( list, value );
-						}
-					}
-				}
-			}
-		}
-		
-		
-		{
-			ParseNode booleanList  = node.findFirstNode( "booleanList" );
-			if( booleanList != null )
-			{
-				for( Object temp : booleanList.getChildren() )
-				{
-					if( temp instanceof Token )
-					{
-						Token token = (Token) temp;
-						if( token.getType() == ARONLexer.Boolean )
-						{
-							String text = token.getText();
-							Boolean value = Boolean.parseBoolean( text );
-							Object result = method.invoke( list, value );
-						}
-					}
-				}
-			}
-		}
-		
-		{
-			ParseNode stringList  = node.findFirstNode( "stringList" );
-			if( stringList != null )
-			{
-				for( Object temp : stringList.getChildren() )
-				{
-					if( temp instanceof Token )
-					{
-						Token token = (Token) temp;
-						if( token.getType() == ARONLexer.String )
-						{
-							String text = token.getText();
-							Object result = method.invoke( list, text );
-						}
-					}
-				}
-			}
-		}
-		
-		{
-			List<ParseNode> childList = node.findNodes( "childList/child" );
-			for( ParseNode child : childList )
+			List<ParseNode> children = childList.findNodes( "child" );
+			for( ParseNode child : children )
 			{
 				Object ugh = processChild( child );
-				Object result = method.invoke( list, ugh );
+				collection.add( ugh );
 			}
+			return;
+		}
+
+		
+		ParseNode first  = node.findFirstNode( "*" );
+		for( Object child : first.getChildren() )
+		{
+			Object value = null;
+
+			Token token = (Token) child;
+			String text = token.getText();
+			switch( token.getType() )
+			{
+				case ARONLexer.Integer:
+					value = Integer.parseInt( text );
+					break;
+				
+				case ARONLexer.Float:
+					value = Float.parseFloat( text );
+					break;
+					
+				case ARONLexer.Timestamp:
+					value = parseDate( text );
+					break;
+					
+				case ARONLexer.Boolean:
+					value = Boolean.parseBoolean( text );
+					break;
+					
+				case ARONLexer.String:
+					value = text;
+					break;
+
+				// Don't convert, add whitespace, comments, etc
+				default:
+					continue;
+					
+			}
+			
+			collection.add( value );
 		}
 	}
 	
-	public void processAssoc( Object instance, String bean, ParseNode assoc )
+	public void processMap( Object instance, String bean, ParseNode assoc )
 		throws 
+			ARONException,
 			IllegalArgumentException, NoSuchMethodException, IllegalAccessException, 
 			InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
 		Object map = getter( instance, bean );
-		if( map instanceof Map )
-		{
-			for( Method method : map.getClass().getMethods() )
-			{
-				if( method.getName().equals( "put" ))
-				{
-					Class<?>[] types = method.getParameterTypes();
-					if( 
-						types.length == 2 
-						&& types[0].isAssignableFrom( Object.class )
-						&& types[1].isAssignableFrom( Object.class )
-					)
-					{
-						List<ParseNode> entries = assoc.findNodes( "property" );
-						for( ParseNode entry : entries )
-						{
-							String key = entry.findFirstString( "Identifier" );
-							ParseNode child = entry.findFirstNode( "child" );
-							Object value = processChild( child );
-							Object result = method.invoke( map, key, value );
-						}	
-						return;
-					}
-				}
-			}
-			throw new NoSuchMethodException( instance.getClass().getName() + ".put(java.lang.Object,java.lang.Object)" );
-		}
-		else
+		if( !( map instanceof Map ))
 		{
 			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Map";
 			throw new IllegalArgumentException( msg );
 		}
+			
+		List<ParseNode> pairs = assoc.findNodes( "pair" );
+		for( ParseNode pair : pairs )
+		{
+			ParseNode key = pair.findFirstNode( "key" );
+			String text = key.getToken( 0 ).getText();
+			ParseNode value = pair.findFirstNode( "value" );
+			processValue( map, text, value );
+		}	
 	}
 
 	public Class<?> resolveClass( String name )
