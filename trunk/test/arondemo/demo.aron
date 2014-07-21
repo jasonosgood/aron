@@ -4,14 +4,16 @@ import arondemo.Fruit
 
 parent:Fruit 
 (
-	/*
+	eggplant true
+	banana -100.0
+	
 	iyokan Fruit ( apple "grannysmith" )
 	grape
 	[
 		item1:Fruit ( apple "braeburn" )
 		item2:Fruit ( apple "jazz" )
 	]
-		*/
+		
 #	kale [ 1 2 3 ]
 	kale []
 	
@@ -20,31 +22,22 @@ parent:Fruit
 	nectarine [ 2001-01-01 2002-01-01 2003-01-01 ]
 	orange [ "abc" "def" "ghi" ]
 	
-)
-/*
-(
-
-	apple "abc\"\r\n\t\\"
-	banana -100.0
-	cherry -100
-	dewberry 2000-01-01
-	eggplant true
-	fig xyzzy:Fruit
-	grape
-	[
-		item1:Fruit
-		item2:Fruit
-	]
 	honeydew
 	{
 		key1 Fruit ( apple "def" )
 		key2 Fruit ( apple "ghi" )
+		"key3" Fruit ( apple "jkl" )
 	}
+	
+
+	apple "abc\"\r\n\t\\"
+	cherry -100
+	dewberry 2000-01-01
+	fig xyzzy:Fruit
 
 #	iyokan @parent
 	iyokan Fruit ( apple "grannysmith" )
 	jasmine winter
 )
-*/
 
 # end of file

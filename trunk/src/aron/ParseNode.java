@@ -92,7 +92,11 @@ public class
 	}
 	
 	public String toString() {
-		return _ruleName;
+//		return _ruleName;
+		
+		return radar();
+		
+		
 //		if ( _ruleName instanceof Token ) {
 //			Token t = (Token)_ruleName;
 //			if ( t.getType() == Token.EOF ) {
@@ -305,5 +309,22 @@ public class
 //		}
 		return result;
 	}
+	
+	public String radar()
+	{
+		Token token = getToken( 0 );
+		int line = -1;
+		int pos = -1;
+		if( token != null )
+		{
+			line = token.getLine();
+			pos = token.getCharPositionInLine();
+		}
+		String text = toInputString();
+		return String.format( "error %d:%d %s", line, pos, text );
+
+	}
+	
+	
 	
 }

@@ -148,9 +148,17 @@ public class
 		
 		Class<? extends Object> type = obj.getClass();
 		
+		// Skip ARON's native support for Java types
+		if( type.isPrimitive() || Number.class.isAssignableFrom( type )) return;
+		if( type == Boolean.class ) return;
+		if( type == String.class ) return;
+		if( type == Character.class ) return;
+		if( type == Date.class ) return;
+		
 		if( _classStack.contains( type )) return;
 		_classStack.push( type );
 		
+		// Primitive array (vs ArrayList)
 		if( type.isArray() )
 		{
 			int len = java.lang.reflect.Array.getLength( obj );
@@ -159,8 +167,10 @@ public class
 				Object item = java.lang.reflect.Array.get( obj, nth );
 				listClasses( item, list );
 			}
+			return;
 		}
-		else if( Collection.class.isAssignableFrom( type ) )
+		
+		if( Collection.class.isAssignableFrom( type ) )
 		{
 			Collection<?> c = (Collection<?>) obj;
 			if( c.size() >  0 )
@@ -171,7 +181,8 @@ public class
 				}
 			}
 		}
-		else if( Map.class.isAssignableFrom( type ) )
+		
+		if( Map.class.isAssignableFrom( type ) )
 		{
 			// TODO: Support non-String values?
 			for( Map.Entry entry : ((Map<?, ?>) obj).entrySet()) 
@@ -181,32 +192,9 @@ public class
 				listClasses( entry.getValue(), list );
 			}
 		}
-		else if( type.isPrimitive() || Number.class.isAssignableFrom( type ))
-		{
-//			return;
-		}
-		else if( type == Boolean.class )
-		{
-//			return;
-		}
-		else if( type == String.class )
-		{
-//			return;
-		}
-		else if( type == Character.class )
-		{
-//			return;
-		}
-		else if( type == Date.class )
-		{
-//			return;
-		}
-		else if( Enum.class.isAssignableFrom( type ))
-		{
-			list.add( type );
-//			return;
-		}
-		else
+
+		// Exclude instances of java.util.*
+		if( !type.getName().startsWith( "java.util." ))
 		{
 			list.add( type );
 			
@@ -233,6 +221,7 @@ public class
 				}
 			}
 		}
+		
 		_classStack.pop();
 	}
 
@@ -446,7 +435,6 @@ public class
 				int modifiers = field.getModifiers();
 				if( Modifier.isTransient( modifiers ) ) continue;
 				if( Modifier.isStatic( modifiers ) ) continue;
-//				if( Modifier.isPrivate( modifiers ))
 				if( field.isSynthetic() ) continue;
 				
 				if( !field.isAccessible() ) 

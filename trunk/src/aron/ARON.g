@@ -66,15 +66,17 @@ child
   ;
 
 property
-  : Identifier 
-  	( value
-    | child
-    | list
-    | assoc
-    )
+  : Identifier value
   ;
   
 value
+  : scalar
+  | child
+  | list
+  | map
+  ;
+  
+scalar
   : Boolean
   | Integer
   | Float
@@ -84,7 +86,7 @@ value
   | 'null'
   ;
 
-// TODO: List of assoc, list of list
+// TODO: List of map, list of list
 list
   : emptyList
   | '['
@@ -109,12 +111,21 @@ booleanList : ( Boolean )+ ;
 stringList : ( String )+ ;
 childList : ( child )+ ;
   
-assoc
-  : '{' ( property )* '}'
+map
+  : '{' ( pair )* '}'
+  ;
+  
+pair
+  : key value
+  ;
+  
+key
+  : Identifier 
+  | String 
   ;
 
 override
-  : path method ( value | child | list | assoc )
+  : path method value
   ;
 
 path
