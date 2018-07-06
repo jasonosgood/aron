@@ -33,10 +33,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-import org.antlr.runtime.ANTLRReaderStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 
 // TODO: Report missing bean method
 
@@ -105,38 +106,39 @@ public class ARONReader
 
 		_uri = uri;
 		InputStream in = uri.toURL().openStream();
-		InputStreamReader reader = new InputStreamReader( in );
-		return read( reader );
+//		InputStreamReader reader = new InputStreamReader( in );
+		return read( in );
 		
 	}
 	
-	private LabelNode read( Reader reader )
+	private LabelNode read( InputStream in )
 		throws Exception
 	{
 		LabelNode labelRoot = new LabelNode( null, null );
 		_labelStack.push( labelRoot );
 
 		ParseTreeBuilder builder = new ParseTreeBuilder();
-		CharStream cs = new ANTLRReaderStream( reader );
+		CharStream cs = CharStreams.fromStream( in );
 		ARONLexer lexer = new ARONLexer( cs );
 		CommonTokenStream tokens = new CommonTokenStream( lexer );
-		ARONParser parser = new ARONParser( tokens, builder );
+		ARONParser parser = new ARONParser( tokens );
+		in.close();
 
-		parser.root();
-		reader.close();
+		ARONParser.RootContext t = parser.root();
 
-		boolean displayTree = false;
-		if( displayTree )
-		{
-			System.out.println( builder.getTree().toParseTree() );
-		}
-		
-		ParseNode parseRoot = builder.getTree();
-		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
-		ParseNode.addLexType( "Label", ARONLexer.Label );
-		ParseNode.addLexType( "Reference", ARONLexer.Reference );
-		process( parseRoot );
-		
+//		boolean displayTree = false;
+//		if( displayTree )
+//		{
+//			System.out.println(t.toStringTree(parser));
+////			System.out.println( builder.getTree().toParseTree() );
+//		}
+//
+//		ParseNode parseRoot = builder.getTree();
+//		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
+//		ParseNode.addLexType( "Label", ARONLexer.Label );
+//		ParseNode.addLexType( "Reference", ARONLexer.Reference );
+//		process( parseRoot );
+//
 		return _labelStack.get( 0 );
 	}
 	
@@ -253,24 +255,24 @@ public class ARONReader
 		
 		for( Object object : pathNode.getChildren() )
 		{
-			Token token = (Token) object;
-			String text = token.getText();
-			String label = text.substring( 1 );
-			LabelNode root = _labelStack.get( 0 );
-			Object found = root.find( label );
-			if( found == null )
-			{
-				String msg = String.format( "Reference to label '%s' not found (line: %d:%d)", label, token.getLine(), token.getCharPositionInLine() );
-				throw new IllegalArgumentException( msg );
-			}
-
-
-			ParseNode methodNode = node.findFirstNode( "method" );
-			String method = methodNode.toInputString();
-			method = method.substring( 1 );
-			
-			ParseNode value = node.findFirstNode( "value" );
-    		processValue( found, method, value );
+//			Token token = (Token) object;
+//			String text = token.getText();
+//			String label = text.substring( 1 );
+//			LabelNode root = _labelStack.get( 0 );
+//			Object found = root.find( label );
+//			if( found == null )
+//			{
+//				String msg = String.format( "Reference to label '%s' not found (line: %d:%d)", label, token.getLine(), token.getCharPositionInLine() );
+//				throw new IllegalArgumentException( msg );
+//			}
+//
+//
+//			ParseNode methodNode = node.findFirstNode( "method" );
+//			String method = methodNode.toInputString();
+//			method = method.substring( 1 );
+//
+//			ParseNode value = node.findFirstNode( "value" );
+//    		processValue( found, method, value );
 		}
 	}
 	
@@ -447,48 +449,48 @@ public class ARONReader
 	public Object processScalar( ParseNode value ) 
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		Token token = value.getToken( 0 );
-		String text = token.getText();
-		switch( token.getType() )
-		{
-			case ARONLexer.Boolean:
-			{
-    			Boolean x = Boolean.valueOf( text );
-    			return x;
-			}	
-			case ARONLexer.String:
-			{
-				return text;
-			}	
-			case ARONLexer.Float:
-			{
-				Float x = Float.valueOf( text );
-    			return x;
-			}	
-			case ARONLexer.Integer:
-			{
-				Integer x = Integer.valueOf( text );
-    			return x;
-			}	
-			case ARONLexer.Timestamp:
-			{
-				Date x = parseDate( text );
-    			return x;
-			}
-			case ARONLexer.Reference:
-			{
-				String label = text.substring( 1 );
-				LabelNode root = _labelStack.get( 0 );
-				Object found = root.find( label );
-				if( found == null )
-				{
-					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
-				}
-				return found;
-			}
-			default:
+//		Token token = value.getToken( 0 );
+//		String text = token.getText();
+//		switch( token.getType() )
+//		{
+//			case ARONLexer.Boolean:
+//			{
+//    			Boolean x = Boolean.valueOf( text );
+//    			return x;
+//			}
+//			case ARONLexer.String:
+//			{
+//				return text;
+//			}
+//			case ARONLexer.Float:
+//			{
+//				Float x = Float.valueOf( text );
+//    			return x;
+//			}
+//			case ARONLexer.Integer:
+//			{
+//				Integer x = Integer.valueOf( text );
+//    			return x;
+//			}
+//			case ARONLexer.Timestamp:
+//			{
+//				Date x = parseDate( text );
+//    			return x;
+//			}
+//			case ARONLexer.Reference:
+//			{
+//				String label = text.substring( 1 );
+//				LabelNode root = _labelStack.get( 0 );
+//				Object found = root.find( label );
+//				if( found == null )
+//				{
+//					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
+//				}
+//				return found;
+//			}
+//			default:
 				return null;
-		}
+//		}
 	}
 
 	// TODO: initialize null list references
@@ -536,39 +538,39 @@ public class ARONReader
 		ParseNode first  = node.findFirstNode( "*" );
 		for( Object child : first.getChildren() )
 		{
-			Object value = null;
-
-			Token token = (Token) child;
-			String text = token.getText();
-			switch( token.getType() )
-			{
-				case ARONLexer.Integer:
-					value = Integer.parseInt( text );
-					break;
-				
-				case ARONLexer.Float:
-					value = Float.parseFloat( text );
-					break;
-					
-				case ARONLexer.Timestamp:
-					value = parseDate( text );
-					break;
-					
-				case ARONLexer.Boolean:
-					value = Boolean.parseBoolean( text );
-					break;
-					
-				case ARONLexer.String:
-					value = text;
-					break;
-
-				// Don't convert, add whitespace, comments, etc
-				default:
-					continue;
-					
-			}
-			
-			collection.add( value );
+//			Object value = null;
+//
+//			Token token = (Token) child;
+//			String text = token.getText();
+//			switch( token.getType() )
+//			{
+//				case ARONLexer.Integer:
+//					value = Integer.parseInt( text );
+//					break;
+//
+//				case ARONLexer.Float:
+//					value = Float.parseFloat( text );
+//					break;
+//
+//				case ARONLexer.Timestamp:
+//					value = parseDate( text );
+//					break;
+//
+//				case ARONLexer.Boolean:
+//					value = Boolean.parseBoolean( text );
+//					break;
+//
+//				case ARONLexer.String:
+//					value = text;
+//					break;
+//
+//				// Don't convert, add whitespace, comments, etc
+//				default:
+//					continue;
+//
+//			}
+//
+//			collection.add( value );
 		}
 	}
 	
