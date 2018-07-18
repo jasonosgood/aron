@@ -1,4 +1,4 @@
-// Generated from /Users/jasonosgood/Projects/aron/src/aron/ARON.g4 by ANTLR 4.7
+// Generated from /Users/jasonosgood/Desktop/Projects/aron/src/aron/ARON.g4 by ANTLR 4.7
 package aron;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -23,12 +23,12 @@ public class ARONParser extends Parser {
 		LBRACK=21, RBRACK=22;
 	public static final int
 		RULE_root = 0, RULE_imports = 1, RULE_klass = 2, RULE_includes = 3, RULE_url = 4, 
-		RULE_child = 5, RULE_property = 6, RULE_value = 7, RULE_scalar = 8, RULE_list = 9, 
+		RULE_kid = 5, RULE_property = 6, RULE_value = 7, RULE_scalar = 8, RULE_list = 9, 
 		RULE_emptyList = 10, RULE_integerList = 11, RULE_floatList = 12, RULE_timestampList = 13, 
 		RULE_booleanList = 14, RULE_stringList = 15, RULE_childList = 16, RULE_map = 17, 
 		RULE_pair = 18, RULE_key = 19, RULE_override = 20, RULE_path = 21, RULE_method = 22;
 	public static final String[] ruleNames = {
-		"root", "imports", "klass", "includes", "url", "child", "property", "value", 
+		"root", "imports", "klass", "includes", "url", "kid", "property", "value", 
 		"scalar", "list", "emptyList", "integerList", "floatList", "timestampList", 
 		"booleanList", "stringList", "childList", "map", "pair", "key", "override", 
 		"path", "method"
@@ -107,11 +107,11 @@ public class ARONParser extends Parser {
 		public ImportsContext imports(int i) {
 			return getRuleContext(ImportsContext.class,i);
 		}
-		public List<ChildContext> child() {
-			return getRuleContexts(ChildContext.class);
+		public List<KidContext> kid() {
+			return getRuleContexts(KidContext.class);
 		}
-		public ChildContext child(int i) {
-			return getRuleContext(ChildContext.class,i);
+		public KidContext kid(int i) {
+			return getRuleContext(KidContext.class,i);
 		}
 		public List<OverrideContext> override() {
 			return getRuleContexts(OverrideContext.class);
@@ -123,14 +123,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_root; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterRoot(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitRoot(this);
-		}
 	}
 
 	public final RootContext root() throws RecognitionException {
@@ -177,7 +169,7 @@ public class ARONParser extends Parser {
 				{
 				{
 				setState(59);
-				child();
+				kid();
 				}
 				}
 				setState(64);
@@ -221,14 +213,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_imports; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterImports(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitImports(this);
-		}
 	}
 
 	public final ImportsContext imports() throws RecognitionException {
@@ -263,14 +247,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_klass; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterKlass(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitKlass(this);
-		}
 	}
 
 	public final KlassContext klass() throws RecognitionException {
@@ -319,14 +295,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_includes; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterIncludes(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitIncludes(this);
-		}
 	}
 
 	public final IncludesContext includes() throws RecognitionException {
@@ -358,14 +326,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_url; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterUrl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitUrl(this);
-		}
 	}
 
 	public final UrlContext url() throws RecognitionException {
@@ -389,7 +349,7 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ChildContext extends ParserRuleContext {
+	public static class KidContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ARONParser.Identifier, 0); }
 		public TerminalNode Label() { return getToken(ARONParser.Label, 0); }
 		public TerminalNode LPAREN() { return getToken(ARONParser.LPAREN, 0); }
@@ -400,23 +360,15 @@ public class ARONParser extends Parser {
 		public PropertyContext property(int i) {
 			return getRuleContext(PropertyContext.class,i);
 		}
-		public ChildContext(ParserRuleContext parent, int invokingState) {
+		public KidContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_child; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterChild(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitChild(this);
-		}
+		@Override public int getRuleIndex() { return RULE_kid; }
 	}
 
-	public final ChildContext child() throws RecognitionException {
-		ChildContext _localctx = new ChildContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_child);
+	public final KidContext kid() throws RecognitionException {
+		KidContext _localctx = new KidContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_kid);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -481,14 +433,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_property; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterProperty(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitProperty(this);
-		}
 	}
 
 	public final PropertyContext property() throws RecognitionException {
@@ -518,8 +462,8 @@ public class ARONParser extends Parser {
 		public ScalarContext scalar() {
 			return getRuleContext(ScalarContext.class,0);
 		}
-		public ChildContext child() {
-			return getRuleContext(ChildContext.class,0);
+		public KidContext kid() {
+			return getRuleContext(KidContext.class,0);
 		}
 		public ListContext list() {
 			return getRuleContext(ListContext.class,0);
@@ -531,14 +475,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_value; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterValue(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitValue(this);
-		}
 	}
 
 	public final ValueContext value() throws RecognitionException {
@@ -566,7 +502,7 @@ public class ARONParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(107);
-				child();
+				kid();
 				}
 				break;
 			case LBRACK:
@@ -609,14 +545,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_scalar; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterScalar(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitScalar(this);
-		}
 	}
 
 	public final ScalarContext scalar() throws RecognitionException {
@@ -677,14 +605,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_list; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitList(this);
-		}
 	}
 
 	public final ListContext list() throws RecognitionException {
@@ -775,14 +695,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_emptyList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterEmptyList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitEmptyList(this);
-		}
 	}
 
 	public final EmptyListContext emptyList() throws RecognitionException {
@@ -817,14 +729,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_integerList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterIntegerList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitIntegerList(this);
-		}
 	}
 
 	public final IntegerListContext integerList() throws RecognitionException {
@@ -870,14 +774,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_floatList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterFloatList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitFloatList(this);
-		}
 	}
 
 	public final FloatListContext floatList() throws RecognitionException {
@@ -923,14 +819,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_timestampList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterTimestampList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitTimestampList(this);
-		}
 	}
 
 	public final TimestampListContext timestampList() throws RecognitionException {
@@ -976,14 +864,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_booleanList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterBooleanList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitBooleanList(this);
-		}
 	}
 
 	public final BooleanListContext booleanList() throws RecognitionException {
@@ -1029,14 +909,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_stringList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterStringList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitStringList(this);
-		}
 	}
 
 	public final StringListContext stringList() throws RecognitionException {
@@ -1074,24 +946,16 @@ public class ARONParser extends Parser {
 	}
 
 	public static class ChildListContext extends ParserRuleContext {
-		public List<ChildContext> child() {
-			return getRuleContexts(ChildContext.class);
+		public List<KidContext> kid() {
+			return getRuleContexts(KidContext.class);
 		}
-		public ChildContext child(int i) {
-			return getRuleContext(ChildContext.class,i);
+		public KidContext kid(int i) {
+			return getRuleContext(KidContext.class,i);
 		}
 		public ChildListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_childList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterChildList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitChildList(this);
-		}
 	}
 
 	public final ChildListContext childList() throws RecognitionException {
@@ -1108,7 +972,7 @@ public class ARONParser extends Parser {
 				{
 				{
 				setState(155);
-				child();
+				kid();
 				}
 				}
 				setState(158); 
@@ -1141,14 +1005,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_map; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterMap(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitMap(this);
-		}
 	}
 
 	public final MapContext map() throws RecognitionException {
@@ -1200,14 +1056,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pair; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterPair(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitPair(this);
-		}
 	}
 
 	public final PairContext pair() throws RecognitionException {
@@ -1240,14 +1088,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_key; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterKey(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitKey(this);
-		}
 	}
 
 	public final KeyContext key() throws RecognitionException {
@@ -1294,14 +1134,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_override; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterOverride(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitOverride(this);
-		}
 	}
 
 	public final OverrideContext override() throws RecognitionException {
@@ -1338,14 +1170,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_path; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterPath(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitPath(this);
-		}
 	}
 
 	public final PathContext path() throws RecognitionException {
@@ -1391,14 +1215,6 @@ public class ARONParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_method; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterMethod(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitMethod(this);
-		}
 	}
 
 	public final MethodContext method() throws RecognitionException {

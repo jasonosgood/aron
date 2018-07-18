@@ -1,4 +1,4 @@
-// Generated from /Users/jasonosgood/Projects/aron/src/aron/ARON.g4 by ANTLR 4.7
+// Generated from /Users/jasonosgood/Desktop/Projects/aron/src/aron/ARON.g4 by ANTLR 4.7
 package aron;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -58,15 +58,15 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitUrl(ARONParser.UrlContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#child}.
+	 * Enter a parse tree produced by {@link ARONParser#kid}.
 	 * @param ctx the parse tree
 	 */
-	void enterChild(ARONParser.ChildContext ctx);
+	void enterKid(ARONParser.KidContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#child}.
+	 * Exit a parse tree produced by {@link ARONParser#kid}.
 	 * @param ctx the parse tree
 	 */
-	void exitChild(ARONParser.ChildContext ctx);
+	void exitKid(ARONParser.KidContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#property}.
 	 * @param ctx the parse tree

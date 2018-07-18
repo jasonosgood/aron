@@ -25,7 +25,7 @@ root
   '# ARON 0.1'
   ( includes )*
   ( imports )*
-  ( child )*
+  ( kid )*
   ( override )*
   EOF
   ;
@@ -49,7 +49,7 @@ url
   : Url
   ;
   
-child
+kid
   : ( Label )? Identifier ( LPAREN ( property )* RPAREN )?
   ;
 
@@ -59,7 +59,7 @@ property
   
 value
   : scalar
-  | child
+  | kid
   | list
   | map
   ;
@@ -97,7 +97,7 @@ floatList : ( Float )+ ;
 timestampList : ( Timestamp )+ ;
 booleanList : ( Boolean )+ ;
 stringList : ( String )+ ;
-childList : ( child )+ ;
+childList : ( kid )+ ;
   
 map
   : LBRACE ( pair )* RBRACE
