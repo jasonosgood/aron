@@ -4,6 +4,8 @@ import arondemo.Fruit
 
 parent:Fruit
 (
+	jasmine winter
+
 	eggplant true
 	banana -100.0
 
