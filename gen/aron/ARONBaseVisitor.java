@@ -24,20 +24,6 @@ public class ARONBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements A
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitImports(ARONParser.ImportsContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitKlass(ARONParser.KlassContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitIncludes(ARONParser.IncludesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -45,14 +31,28 @@ public class ARONBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements A
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUrl(ARONParser.UrlContext ctx) { return visitChildren(ctx); }
+	@Override public T visitImports(ARONParser.ImportsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitKid(ARONParser.KidContext ctx) { return visitChildren(ctx); }
+	@Override public T visitChild(ARONParser.ChildContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCombo(ARONParser.ComboContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitLabel(ARONParser.LabelContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -81,13 +81,6 @@ public class ARONBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements A
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitList(ARONParser.ListContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEmptyList(ARONParser.EmptyListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -164,7 +157,7 @@ public class ARONBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements A
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPath(ARONParser.PathContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReference(ARONParser.ReferenceContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

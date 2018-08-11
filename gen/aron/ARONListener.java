@@ -18,26 +18,6 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitRoot(ARONParser.RootContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#imports}.
-	 * @param ctx the parse tree
-	 */
-	void enterImports(ARONParser.ImportsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#imports}.
-	 * @param ctx the parse tree
-	 */
-	void exitImports(ARONParser.ImportsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#klass}.
-	 * @param ctx the parse tree
-	 */
-	void enterKlass(ARONParser.KlassContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#klass}.
-	 * @param ctx the parse tree
-	 */
-	void exitKlass(ARONParser.KlassContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ARONParser#includes}.
 	 * @param ctx the parse tree
 	 */
@@ -48,25 +28,45 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitIncludes(ARONParser.IncludesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#url}.
+	 * Enter a parse tree produced by {@link ARONParser#imports}.
 	 * @param ctx the parse tree
 	 */
-	void enterUrl(ARONParser.UrlContext ctx);
+	void enterImports(ARONParser.ImportsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#url}.
+	 * Exit a parse tree produced by {@link ARONParser#imports}.
 	 * @param ctx the parse tree
 	 */
-	void exitUrl(ARONParser.UrlContext ctx);
+	void exitImports(ARONParser.ImportsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#kid}.
+	 * Enter a parse tree produced by {@link ARONParser#child}.
 	 * @param ctx the parse tree
 	 */
-	void enterKid(ARONParser.KidContext ctx);
+	void enterChild(ARONParser.ChildContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#kid}.
+	 * Exit a parse tree produced by {@link ARONParser#child}.
 	 * @param ctx the parse tree
 	 */
-	void exitKid(ARONParser.KidContext ctx);
+	void exitChild(ARONParser.ChildContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ARONParser#combo}.
+	 * @param ctx the parse tree
+	 */
+	void enterCombo(ARONParser.ComboContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ARONParser#combo}.
+	 * @param ctx the parse tree
+	 */
+	void exitCombo(ARONParser.ComboContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ARONParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel(ARONParser.LabelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ARONParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel(ARONParser.LabelContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#property}.
 	 * @param ctx the parse tree
@@ -107,16 +107,6 @@ public interface ARONListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitList(ARONParser.ListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#emptyList}.
-	 * @param ctx the parse tree
-	 */
-	void enterEmptyList(ARONParser.EmptyListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#emptyList}.
-	 * @param ctx the parse tree
-	 */
-	void exitEmptyList(ARONParser.EmptyListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#integerList}.
 	 * @param ctx the parse tree
@@ -218,15 +208,15 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitOverride(ARONParser.OverrideContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#path}.
+	 * Enter a parse tree produced by {@link ARONParser#reference}.
 	 * @param ctx the parse tree
 	 */
-	void enterPath(ARONParser.PathContext ctx);
+	void enterReference(ARONParser.ReferenceContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#path}.
+	 * Exit a parse tree produced by {@link ARONParser#reference}.
 	 * @param ctx the parse tree
 	 */
-	void exitPath(ARONParser.PathContext ctx);
+	void exitReference(ARONParser.ReferenceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#method}.
 	 * @param ctx the parse tree

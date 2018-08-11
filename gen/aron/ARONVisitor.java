@@ -17,35 +17,35 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRoot(ARONParser.RootContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#imports}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitImports(ARONParser.ImportsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#klass}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitKlass(ARONParser.KlassContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link ARONParser#includes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIncludes(ARONParser.IncludesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#url}.
+	 * Visit a parse tree produced by {@link ARONParser#imports}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUrl(ARONParser.UrlContext ctx);
+	T visitImports(ARONParser.ImportsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#kid}.
+	 * Visit a parse tree produced by {@link ARONParser#child}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitKid(ARONParser.KidContext ctx);
+	T visitChild(ARONParser.ChildContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ARONParser#combo}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCombo(ARONParser.ComboContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ARONParser#label}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLabel(ARONParser.LabelContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#property}.
 	 * @param ctx the parse tree
@@ -70,12 +70,6 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitList(ARONParser.ListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#emptyList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEmptyList(ARONParser.EmptyListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#integerList}.
 	 * @param ctx the parse tree
@@ -137,11 +131,11 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOverride(ARONParser.OverrideContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#path}.
+	 * Visit a parse tree produced by {@link ARONParser#reference}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPath(ARONParser.PathContext ctx);
+	T visitReference(ARONParser.ReferenceContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#method}.
 	 * @param ctx the parse tree

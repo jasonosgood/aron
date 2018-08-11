@@ -12,7 +12,5 @@ extends
 	public ARONException( ParserRuleContext node, Exception e )
 	{
 		super( node.toStringTree(), e );
-		
 	}
-
 }

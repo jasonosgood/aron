@@ -2,17 +2,20 @@ package aron;
 /**
 	ARON - A Righteous Object Notation
   
-	Copyright (c) 2002, 2011 Jason Aaron Osgood, All rights reserved.
+	Copyright (c) 2002, 2011, 2018 Jason Aaron Osgood, All rights reserved.
 
 	Appropriate open source license will go here.
 
 	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
 	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
+ 	Updated: 07/05/2018 Jason Osgood <jason@jasonosgood.com>
+
  */
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -26,7 +29,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
@@ -35,8 +37,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import static aron.ARONParser.*;
@@ -129,19 +129,6 @@ public class ARONReader
 		RootContext t = parser.root();
 		process( t );
 
-//		boolean displayTree = false;
-//		if( displayTree )
-//		{
-//			System.out.println(t.toStringTree(parser));
-////			System.out.println( builder.getTree().toParseTree() );
-//		}
-//
-//		ParseNode parseRoot = builder.getTree();
-//		ParseNode.addLexType( "Identifier", ARONLexer.Identifier );
-//		ParseNode.addLexType( "Label", ARONLexer.Label );
-//		ParseNode.addLexType( "Reference", ARONLexer.Reference );
-//		process( parseRoot );
-//
 		return _labelStack.get( 0 );
 	}
 	
@@ -158,7 +145,7 @@ public class ARONReader
 
 		label = label.substring( 0, label.length() - 1 );
 		LabelNode child = new LabelNode( label, instance );
-			LabelNode parent = _labelStack.peek();
+		LabelNode parent = _labelStack.peek();
 		parent.addChild( child );
 		_labelStack.push( child );
 	}
@@ -168,23 +155,21 @@ public class ARONReader
 	{
 		for( IncludesContext include : rc.includes() )
 		{
-			String url = include.getText();
+			String url = include.Url().getText();
 			System.out.println( "include: " + url );
             includes( url );
 		}
 
 		for( ImportsContext imports : rc.imports() )
 		{
-			KlassContext kc = imports.klass();
-			String name = kc.getText();
-			System.out.println( "import: " + name );
+			ComboContext id = imports.combo();
+			String name = id.getText();
 			imports( name );
-
 		}
 
-		for( KidContext kid : rc.kid() )
+		for( ChildContext child : rc.child() )
 		{
-			processChild( kid );
+			processChild( child );
 		}
 		
 		for( OverrideContext override : rc.override() )
@@ -222,29 +207,26 @@ public class ARONReader
 		_shortNames.put( shortie, clazz );
 	}
 
-	public Object processChild( KidContext kid )
+	public Object processChild( ChildContext context )
 		throws 
 			ARONException,
 			ClassNotFoundException, InstantiationException, IllegalAccessException, 
 			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
-		String name = kid.Identifier().toString();
-		String label = kid.Label() != null ? kid.Label().toString() : null;
+		String name = context.combo().getText();
+		String label = context.label() != null ? context.label().getText() : null;
 
 		Class<?> clazz = resolveClass( name );
 
 		// TODO: Need to first verify a zero param constructor exists
-		Object child = clazz.newInstance();
-//		https://stackoverflow.com/questions/9886266/is-there-a-way-to-instantiate-a-class-by-name-in-java?noredirect=1&lq=1
-//		Class<?> clazz = Class.forName("com.foo.MyClass");
-//		Constructor<?> constructor = clazz.getConstructor(String.class, Integer.class);
-//		Object instance = constructor.newInstance("stringparam", 42);
+		Constructor<?> constructor = clazz.getConstructor();
+		Object child = constructor.newInstance();
 
 		register( label, child );
 
-		for( PropertyContext prop : kid.property() )
+		for( PropertyContext prop : context.property() )
 		{
-			String method = prop.Identifier().toString();
+			String method = prop.combo().getText();
 			ValueContext value = prop.value();
 			processValue( child, method, value );
 		}
@@ -254,39 +236,21 @@ public class ARONReader
 		return child;
 	}
 	
-	public void override( OverrideContext node )
+	public void override( OverrideContext context )
 		throws Exception
 	{
-		PathContext path = node.path();
-		System.out.println( "override:" + node.toString() );
+		String label = context.reference().Word().getText();
+		String method = context.method().Word().getText();
+		ValueContext vc = context.value();
 
-//		for( Object object : pathNode.getChildren() )
-//		{
-////			Token token = (Token) object;
-////			String text = token.getText();
-////			String label = text.substring( 1 );
-////			LabelNode root = _labelStack.get( 0 );
-////			Object found = root.find( label );
-////			if( found == null )
-////			{
-////				String msg = String.format( "Reference to label '%s' not found (line: %d:%d)", label, token.getLine(), token.getCharPositionInLine() );
-////				throw new IllegalArgumentException( msg );
-////			}
-////
-////
-////			ParseNode methodNode = node.findFirstNode( "method" );
-////			String method = methodNode.toInputString();
-////			method = method.substring( 1 );
-////
-////			ParseNode value = node.findFirstNode( "value" );
-////    		processValue( found, method, value );
-//		}
+		LabelNode root = _labelStack.get( 0 );
+		Object found = root.find( label );
+
+		processValue( found, method, vc );
 	}
 	
 	public void processValue( Object bean, String method, ValueContext value )
 		throws ARONException
-//			ClassNotFoundException, InstantiationException, IllegalAccessException, 
-//			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
 		try
 		{
@@ -298,19 +262,20 @@ public class ARONReader
 					setter( bean, method, scalar );
 					break;
 
-				case RULE_kid:
+				case RULE_child:
 	    			try
 	    			{
-	        			Object grandchild = processChild( (KidContext) child );
+	        			Object grandchild = processChild( (ChildContext) child );
 	    				setter( bean, method, grandchild );
 	    			}
 	    			catch( Exception ee )
 	    			{
-//	    	        	String literal = temp.findFirstString( "Identifier" );
-//	    	        	if( !enumSetter( bean, method, literal ))
-//	    	        	{
+	    				// Not a child, might be an enum
+						String literal = ( (ChildContext) child ).combo().getText();
+	    	        	if( !enumSetter( bean, method, literal ))
+	    	        	{
 	    	        		throw ee;
-//	    	        	}
+	    	        	}
 	    			}
 	    			break;
 
@@ -333,8 +298,7 @@ public class ARONReader
 		}
 	}
 
-//	public void setter( Object bean, String property, Class<?> type, Object value ) 
-	public void setter( Object bean, String property,  Object value ) 
+	public void setter( Object bean, String property,  Object value )
 		throws 
 			NoSuchMethodException, IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException
@@ -350,7 +314,6 @@ public class ARONReader
 		if( value != null ) {
 			type = value.getClass();
 		}
-
 
 		String[] names = new String[]
 		{
@@ -425,7 +388,7 @@ public class ARONReader
 						{
 							throw new EnumConstantNotPresentException( enumType, literal );
 						}
-						Object result = method.invoke( instance, value );
+						Object ignored = method.invoke( instance, value );
 						return true;
 					}
 					break;
@@ -455,48 +418,54 @@ public class ARONReader
 	public Object processScalar( ScalarContext value )
 		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
 	{
-		Token token = ((TerminalNode) value.children.get( 0 )).getSymbol();
-		String text = token.getText();
-		switch( token.getType() )
+		if( value.Boolean() != null )
 		{
-			case ARONLexer.Boolean:
-			{
-    			Boolean x = java.lang.Boolean.valueOf( text );
-    			return x;
-			}
-			case ARONLexer.String:
-			{
-				return text;
-			}
-			case ARONLexer.Float:
-			{
-				Float x =  java.lang.Float.valueOf( text );
-    			return x;
-			}
-			case ARONLexer.Integer:
-			{
-				Integer x =  java.lang.Integer.valueOf( text );
-    			return x;
-			}
-			case ARONLexer.Timestamp:
-			{
-				Date x = parseDate( text );
-    			return x;
-			}
-			case ARONLexer.Reference:
-			{
-				String label = text.substring( 1 );
-				LabelNode root = _labelStack.get( 0 );
-				Object found = root.find( label );
-				if( found == null )
-				{
-					throw new IllegalArgumentException( "Reference to label '" + text + "' not found" );
-				}
-				return found;
-			}
-			default:
-				return null;
+			String text = value.Boolean().getText();
+			Boolean x = java.lang.Boolean.valueOf( text );
+			return x;
 		}
+
+		if( value.Integer() != null )
+		{
+			String text = value.Integer().getText();
+			Integer x =  java.lang.Integer.valueOf( text );
+			return x;
+		}
+
+		if( value.Float() != null )
+		{
+			String text = value.Float().getText();
+			Float x =  java.lang.Float.valueOf( text );
+			return x;
+		}
+
+		if( value.String() != null )
+		{
+			String x = value.String().getText();
+			x = x.substring( 1, x.length() - 1 );
+			return x;
+		}
+
+		if( value.Timestamp() != null )
+		{
+			String text = value.Timestamp().getText();
+			Date x = parseDate( text );
+			return x;
+		}
+
+		if( value.reference() != null )
+		{
+			String label = value.reference().Word().getText();
+			LabelNode root = _labelStack.get( 0 );
+			Object found = root.find( label );
+			if( found == null )
+			{
+				throw new IllegalArgumentException( "Reference to label '" + label + "' not found" );
+			}
+			return found;
+		}
+
+		return null;
 	}
 
 	// TODO: initialize null list references
@@ -506,114 +475,128 @@ public class ARONReader
 			NoSuchMethodException, IllegalArgumentException, IllegalAccessException, 
 			InvocationTargetException, ClassNotFoundException, InstantiationException
 	{
-//		Object temp = getter( bean, property );
-//
-//		if( temp == null )
-//		{
-//			throw new NullPointerException( bean.getClass().getName() + ".get" + capitalize( property ) + "() returned null" );
-//		}
-//
-//		if( !( temp instanceof Collection ))
-//		{
-//			String msg = bean.getClass().getName() + ".get" + capitalize( property ) + "() does not return a subclass of java.util.Collection";
-//			throw new IllegalArgumentException( msg );
-//		}
-//
-//		Collection collection = (Collection) temp;
-//
-//		ParseNode emptyList  = node.findFirstNode( "emptyList" );
-//		if( emptyList != null )
-//		{
-//			collection.clear();
-//			return;
-//		}
-//
-//		ParseNode childList = node.findFirstNode( "childList" );
-//		if( childList != null )
-//		{
-//			List<ParseNode> children = childList.findNodes( "child" );
-//			for( ParseNode child : children )
-//			{
-//				Object ugh = processChild( child );
-//				collection.add( ugh );
-//			}
-//			return;
-//		}
-//
-//
-//		ParseNode first  = node.findFirstNode( "*" );
-//		for( Object child : first.getChildren() )
-//		{
-////			Object value = null;
-////
-////			Token token = (Token) child;
-////			String text = token.getText();
-////			switch( token.getType() )
-////			{
-////				case ARONLexer.Integer:
-////					value = Integer.parseInt( text );
-////					break;
-////
-////				case ARONLexer.Float:
-////					value = Float.parseFloat( text );
-////					break;
-////
-////				case ARONLexer.Timestamp:
-////					value = parseDate( text );
-////					break;
-////
-////				case ARONLexer.Boolean:
-////					value = Boolean.parseBoolean( text );
-////					break;
-////
-////				case ARONLexer.String:
-////					value = text;
-////					break;
-////
-////				// Don't convert, add whitespace, comments, etc
-////				default:
-////					continue;
-////
-////			}
-////
-////			collection.add( value );
-//		}
+		Object temp = getter( bean, property );
+
+		if( temp == null )
+		{
+			throw new NullPointerException( bean.getClass().getName() + ".get" + capitalize( property ) + "() returned null" );
+		}
+
+		if( !( temp instanceof Collection ))
+		{
+			String msg = bean.getClass().getName() + ".get" + capitalize( property ) + "() does not return a subclass of java.util.Collection";
+			throw new IllegalArgumentException( msg );
+		}
+
+		Collection collection = (Collection) temp;
+
+		// empty list clears existing collection
+		if( node.children.size() == 2 )
+		{
+			collection.clear();
+			return;
+		}
+
+		ParserRuleContext child = (ParserRuleContext) node.getChild( 1 );
+		switch( child.getRuleIndex() )
+		{
+			case RULE_integerList:
+			{
+				IntegerListContext childList = node.integerList();
+				for( TerminalNode tn : childList.Integer() )
+				{
+					String text = tn.getText();
+					Integer value = java.lang.Integer.parseInt( text );
+					collection.add( value );
+				}
+				break;
+			}
+
+			case RULE_floatList:
+			{
+				FloatListContext childList = node.floatList();
+				for( TerminalNode tn : childList.Float() )
+				{
+					String text = tn.getText();
+					Float value = java.lang.Float.parseFloat( text );
+					collection.add( value );
+				}
+				break;
+			}
+
+			case RULE_timestampList:
+			{
+				TimestampListContext timestampList = node.timestampList();
+				for( TerminalNode tn : timestampList.Timestamp() )
+				{
+					String text = tn.getText();
+					Date value =  parseDate( text );
+					collection.add( value );
+				}
+				break;
+			}
+
+			case RULE_booleanList:
+			{
+				BooleanListContext booleanList = node.booleanList();
+				for( TerminalNode tn : booleanList.Boolean() )
+				{
+					String text = tn.getText();
+					Boolean value = java.lang.Boolean.parseBoolean( text );
+					collection.add( value );
+				}
+				break;
+			}
+
+			case RULE_stringList:
+			{
+				StringListContext booleanList = node.stringList();
+				for( TerminalNode tn : booleanList.String() )
+				{
+					String value = tn.getText();
+					collection.add( value );
+				}
+				break;
+			}
+
+			case RULE_childList:
+			{
+				ChildListContext childList = node.childList();
+				for( ChildContext kid : childList.child() )
+				{
+					Object ugh = processChild( kid );
+					collection.add( ugh );
+				}
+				break;
+			}
+		}
 	}
 	
 	public void processMap( Object instance, String bean, MapContext assoc )
 		throws 
 			ARONException,
 			IllegalArgumentException, NoSuchMethodException, IllegalAccessException, 
-			InvocationTargetException, ClassNotFoundException, InstantiationException
+			InvocationTargetException
 	{
-//		Object map = getter( instance, bean );
-//		if( !( map instanceof Map ))
-//		{
-//			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Map";
-//			throw new IllegalArgumentException( msg );
-//		}
-//
-//		List<ParseNode> pairs = assoc.findNodes( "pair" );
-//		for( ParseNode pair : pairs )
-//		{
-//			ParseNode key = pair.findFirstNode( "key" );
-//			String text = key.getToken( 0 ).getText();
-//			ParseNode value = pair.findFirstNode( "value" );
-//			processValue( map, text, value );
-//		}	
+		Object map = getter( instance, bean );
+		if( !( map instanceof Map ))
+		{
+			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Map";
+			throw new IllegalArgumentException( msg );
+		}
+
+		for( PairContext p : assoc.pair() )
+		{
+			String text = p.key().getText();
+			processValue( map, text, p.value() );
+		}
 	}
 
 	public Class<?> resolveClass( String name )
 		throws ClassNotFoundException
 	{
-		Class<?> result = null;
-		
 		// First see if we can get a hit on the short name
-		Object hit = _shortNames.get( name );
-		if( hit != null )
-		{
-			result = (Class<?>) hit;
-		}
+		Class<?> result = _shortNames.get( name );
 
 		if( result == null )
 		{

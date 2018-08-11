@@ -15,51 +15,33 @@
 
 grammar ARON;
 
-options 
-{
-  language  = Java;
-}
-
 root
   :
-  '# ARON 0.1'
+  '# ARON 0.2'
   ( includes )*
   ( imports )*
-  ( kid )*
+  ( child )*
   ( override )*
   EOF
   ;
 
-imports
-  : 'import' klass
+includes : 'include' Url ;
+
+imports : 'import' combo ;
+
+child
+  : label? combo ( LPAREN property* RPAREN )?
   ;
 
-// "//root/imports/klass"
-klass
-  : Identifier ( '.' Identifier )*
-  ;
+combo : Word ( '.' Word )* ;
 
-  
-includes
-  : 'include' url
-  ;
+label : Word ':' ;
 
-// "root/includes/url"
-url
-  : Url
-  ;
-  
-kid
-  : ( Label )? Identifier ( LPAREN ( property )* RPAREN )?
-  ;
-
-property
-  : Identifier value
-  ;
+property : combo value ;
   
 value
   : scalar
-  | kid
+  | child
   | list
   | map
   ;
@@ -70,15 +52,14 @@ scalar
   | Float
   | String
   | Timestamp
-  | Reference
+  | reference
   | 'null'
   ;
 
 // TODO: List of map, list of list
 list
-  : emptyList
-  | LBRACK
-    ( integerList 
+  : LBRACK
+    ( integerList
     | floatList
     | timestampList
     | booleanList
@@ -87,42 +68,30 @@ list
     )?
     RBRACK
   ;
-  
-emptyList
-  : LBRACK RBRACK
-  ;
 
 integerList : ( Integer )+ ;
 floatList : ( Float )+ ;
 timestampList : ( Timestamp )+ ;
 booleanList : ( Boolean )+ ;
 stringList : ( String )+ ;
-childList : ( kid )+ ;
-  
+childList : ( child )+ ;
+
 map
-  : LBRACE ( pair )* RBRACE
+  : LBRACE pair* RBRACE
   ;
   
-pair
-  : key value
-  ;
+pair : key value ;
   
 key
-  : Identifier 
+  : Word
   | String 
   ;
 
-override
-  : path method value
-  ;
+override : reference method value ;
 
-path
-  : ( Reference )+
-  ;
+reference : '@' Word ;
 
-method
-  : ( '.' Identifier )+
-  ;
+method : '.' Word ;
 
 Boolean
   : 'true'
@@ -139,7 +108,10 @@ Digit
   : [0-9]
   ;
 
-fragment Letter : [a-zA-Z] ;
+fragment
+Letter
+  : [a-zA-Z]
+  ;
 
 Integer 
   : ('-')? ( Digit )+ 
@@ -173,26 +145,16 @@ Timestamp
     )?
   ;
 
-Identifier 
-  : Letter ( Letter | Digit | '_' )*
+Url : ( '.' | '/' ) ( '/' ( Letter | Digit | '.' )* )* ;
+
+Word
+  : Letter ( Letter | Digit )*
   ;
 
-Label 
-  : Letter ( Letter | Digit )* ':'
-  ;
-  
-Reference
-  : '@' Letter ( Letter | Digit )*
-  ;
-
-Url
-  : '/' ( Letter | Digit | '/' | '.' )*
-  ;
-  
-//LineComment
+LineComment
 //  : '#' .*? '\n' ->  channel(HIDDEN)
-////  : '#' ~('\n'|'\r')* ->  channel(HIDDEN)
-//  ;
+  : '#' ~('\n'|'\r')* ->  channel(HIDDEN)
+  ;
 
 BlockComment
   : '/*' .*? '*/' ->  channel(HIDDEN)
@@ -203,16 +165,9 @@ Whitespace
   : [ ,\t\r\n]+ -> skip
   ;
 
-LPAREN:             '(' ;
-RPAREN:             ')' ;
-LBRACE:             '{' ;
-RBRACE:             '}' ;
-LBRACK:             '[' ;
-RBRACK:             ']' ;
-//SEMI:               ';' ;
-//COMMA:              ',' ;
-//DOT:                '.' ;
-//PREAMBLE: '# ARON 0.1\n' ;
-//IMPORT:   'import' ;
-//INCLUDE:  'include' ;
-//NULL:     'null' ;
+LPAREN : '(' ;
+RPAREN : ')' ;
+LBRACE : '{' ;
+RBRACE : '}' ;
+LBRACK : '[' ;
+RBRACK : ']' ;

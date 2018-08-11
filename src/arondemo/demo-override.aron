@@ -1,6 +1,7 @@
-# ARON 0.1
+# ARON 0.2
 
-include demo.aron
+include ./demo.aron
+
 import arondemo.Fruit
 
 lovely:Fruit
@@ -23,3 +24,6 @@ crush:Fruit
 # @parent.grape [ Fruit ( apple "fuji" ) ]
 # @parent.jasmine summer
 @parent.kale [4 5]
+@parent.apple "pie"
+@parent.cherry 999
+
