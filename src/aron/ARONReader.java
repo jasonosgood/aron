@@ -8,7 +8,7 @@ package aron;
 
 	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
 	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
- 	Updated: 07/05/2018 Jason Osgood <jason@jasonosgood.com>
+ 	Updated: 2018/07/05 Jason Osgood <jason@jasonosgood.com>
 
  */
 
@@ -52,7 +52,7 @@ public class ARONReader
 	
 	private ArrayList<String> _importDefs;
 	private HashMap<String, Class<?>> _shortNames;
-	private ArrayList<SimpleDateFormat> _formatters = new ArrayList<SimpleDateFormat>();
+	private ArrayList<SimpleDateFormat> _formatters = new ArrayList();
 
 	public ARONReader()
 	{
@@ -62,8 +62,8 @@ public class ARONReader
 	public ARONReader( int nestLevel )
 	{
 		setNestLevel( nestLevel );
-		_importDefs = new ArrayList<String>( 4 );
-		_shortNames = new HashMap<String, Class<?>>();
+		_importDefs = new ArrayList( 4 );
+		_shortNames = new HashMap();
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssX", Locale.ROOT ));
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ROOT ));
@@ -72,7 +72,7 @@ public class ARONReader
 		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd", Locale.ROOT ));
 	}
 
-	URI _uri = null;
+	private URI _uri = null;
 	
 	public LabelNode read( File file )
 		throws Exception
@@ -109,32 +109,43 @@ public class ARONReader
 
 		_uri = uri;
 		InputStream in = uri.toURL().openStream();
-//		InputStreamReader reader = new InputStreamReader( in );
 		return read( in );
-		
 	}
-	
-	private LabelNode read( InputStream in )
+
+	public LabelNode read( InputStream in )
+		throws Exception
+	{
+		CharStream cs = CharStreams.fromStream( in );
+		LabelNode root = read( cs );
+		return root;
+	}
+
+	public static LabelNode read( String str )
+		throws Exception
+	{
+		CharStream cs = CharStreams.fromString( str );
+		LabelNode root = new ARONReader().read( cs );
+		return root;
+	}
+
+	private LabelNode read( CharStream cs )
 		throws Exception
 	{
 		LabelNode labelRoot = new LabelNode( null, null );
 		_labelStack.push( labelRoot );
-
-		CharStream cs = CharStreams.fromStream( in );
 		ARONLexer lexer = new ARONLexer( cs );
 		CommonTokenStream tokens = new CommonTokenStream( lexer );
 		ARONParser parser = new ARONParser( tokens );
-		in.close();
 
 		RootContext t = parser.root();
 		process( t );
 
 		return _labelStack.get( 0 );
 	}
-	
-	public int _anon = 0;
 
-	private Stack<LabelNode> _labelStack = new Stack<LabelNode>();
+	private int _anon = 0;
+
+	private Stack<LabelNode> _labelStack = new Stack();
 	
 	public void register( String label, Object instance )
 	{
@@ -143,7 +154,6 @@ public class ARONReader
 			label = "unlabeled" + _anon++;
 		}
 
-		label = label.substring( 0, label.length() - 1 );
 		LabelNode child = new LabelNode( label, instance );
 		LabelNode parent = _labelStack.peek();
 		parent.addChild( child );
@@ -214,7 +224,7 @@ public class ARONReader
 			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
 		String name = context.combo().getText();
-		String label = context.label() != null ? context.label().getText() : null;
+		String label = context.label() != null ? context.label().Word().getText() : null;
 
 		Class<?> clazz = resolveClass( name );
 
@@ -345,7 +355,6 @@ public class ARONReader
 
 							default:
 								break;
-
 						}
 
 						if( oof.isAssignableFrom( type ) || value == null )
@@ -416,7 +425,7 @@ public class ARONReader
 	}
 		
 	public Object processScalar( ScalarContext value )
-		throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+		throws IllegalArgumentException
 	{
 		if( value.Boolean() != null )
 		{
@@ -625,7 +634,6 @@ public class ARONReader
 					int nth = result.toString().lastIndexOf( (int) '.' );
 					String shortie = result.toString().substring( nth + 1 );
 					_shortNames.put( shortie, result );
-
 				}
 				catch( ClassNotFoundException cnfe ) {}
 			}
