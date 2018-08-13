@@ -499,86 +499,73 @@ public class ARONReader
 
 		Collection collection = (Collection) temp;
 
-		// empty list clears existing collection
-		if( node.children.size() == 2 )
+		if( node.Boolean() != null )
 		{
-			collection.clear();
+			for( TerminalNode tn : node.Boolean() )
+			{
+				String text = tn.getText();
+				Boolean value = java.lang.Boolean.parseBoolean( text );
+				collection.add( value );
+			}
 			return;
 		}
 
-		ParserRuleContext child = (ParserRuleContext) node.getChild( 1 );
-		switch( child.getRuleIndex() )
+		if( node.Integer() != null )
 		{
-			case RULE_integerList:
+			for( TerminalNode tn : node.Integer() )
 			{
-				IntegerListContext childList = node.integerList();
-				for( TerminalNode tn : childList.Integer() )
-				{
-					String text = tn.getText();
-					Integer value = java.lang.Integer.parseInt( text );
-					collection.add( value );
-				}
-				break;
+				String text = tn.getText();
+				Integer value = java.lang.Integer.parseInt( text );
+				collection.add( value );
 			}
-
-			case RULE_floatList:
-			{
-				FloatListContext childList = node.floatList();
-				for( TerminalNode tn : childList.Float() )
-				{
-					String text = tn.getText();
-					Float value = java.lang.Float.parseFloat( text );
-					collection.add( value );
-				}
-				break;
-			}
-
-			case RULE_timestampList:
-			{
-				TimestampListContext timestampList = node.timestampList();
-				for( TerminalNode tn : timestampList.Timestamp() )
-				{
-					String text = tn.getText();
-					Date value =  parseDate( text );
-					collection.add( value );
-				}
-				break;
-			}
-
-			case RULE_booleanList:
-			{
-				BooleanListContext booleanList = node.booleanList();
-				for( TerminalNode tn : booleanList.Boolean() )
-				{
-					String text = tn.getText();
-					Boolean value = java.lang.Boolean.parseBoolean( text );
-					collection.add( value );
-				}
-				break;
-			}
-
-			case RULE_stringList:
-			{
-				StringListContext booleanList = node.stringList();
-				for( TerminalNode tn : booleanList.String() )
-				{
-					String value = tn.getText();
-					collection.add( value );
-				}
-				break;
-			}
-
-			case RULE_childList:
-			{
-				ChildListContext childList = node.childList();
-				for( ChildContext kid : childList.child() )
-				{
-					Object ugh = processChild( kid );
-					collection.add( ugh );
-				}
-				break;
-			}
+			return;
 		}
+
+		if( node.Float() != null )
+		{
+			for( TerminalNode tn : node.Float() )
+			{
+				String text = tn.getText();
+				Float value = java.lang.Float.parseFloat( text );
+				collection.add( value );
+			}
+			return;
+		}
+
+		if( node.String() != null )
+		{
+			for( TerminalNode tn : node.String() )
+			{
+				String value = tn.getText();
+				collection.add( value );
+			}
+			return;
+		}
+
+		if( node.Timestamp() != null )
+		{
+			for( TerminalNode tn : node.Timestamp() )
+			{
+				String text = tn.getText();
+				Date value =  parseDate( text );
+				collection.add( value );
+			}
+			return;
+		}
+
+		if( node.child() != null )
+		{
+			for( ChildContext kid : node.child() )
+			{
+				Object ugh = processChild( kid );
+				collection.add( ugh );
+			}
+			return;
+		}
+
+		// empty list clears existing collection
+		collection.clear();
+		return;
 	}
 	
 	public void processMap( Object instance, String bean, MapContext assoc )

@@ -108,66 +108,6 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitList(ARONParser.ListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#integerList}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntegerList(ARONParser.IntegerListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#integerList}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntegerList(ARONParser.IntegerListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#floatList}.
-	 * @param ctx the parse tree
-	 */
-	void enterFloatList(ARONParser.FloatListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#floatList}.
-	 * @param ctx the parse tree
-	 */
-	void exitFloatList(ARONParser.FloatListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#timestampList}.
-	 * @param ctx the parse tree
-	 */
-	void enterTimestampList(ARONParser.TimestampListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#timestampList}.
-	 * @param ctx the parse tree
-	 */
-	void exitTimestampList(ARONParser.TimestampListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#booleanList}.
-	 * @param ctx the parse tree
-	 */
-	void enterBooleanList(ARONParser.BooleanListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#booleanList}.
-	 * @param ctx the parse tree
-	 */
-	void exitBooleanList(ARONParser.BooleanListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#stringList}.
-	 * @param ctx the parse tree
-	 */
-	void enterStringList(ARONParser.StringListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#stringList}.
-	 * @param ctx the parse tree
-	 */
-	void exitStringList(ARONParser.StringListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#childList}.
-	 * @param ctx the parse tree
-	 */
-	void enterChildList(ARONParser.ChildListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#childList}.
-	 * @param ctx the parse tree
-	 */
-	void exitChildList(ARONParser.ChildListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ARONParser#map}.
 	 * @param ctx the parse tree
 	 */

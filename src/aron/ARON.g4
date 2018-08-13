@@ -18,10 +18,10 @@ grammar ARON;
 root
   :
   '# ARON 0.2'
-  ( includes )*
-  ( imports )*
-  ( child )*
-  ( override )*
+  includes*
+  imports*
+  child*
+  override*
   EOF
   ;
 
@@ -59,22 +59,15 @@ scalar
 // TODO: List of map, list of list
 list
   : LBRACK
-    ( integerList
-    | floatList
-    | timestampList
-    | booleanList
-    | stringList
-    | childList
+    ( Boolean+
+    | Integer+
+    | Float+
+    | String+
+    | Timestamp+
+    | child+
     )?
     RBRACK
   ;
-
-integerList : ( Integer )+ ;
-floatList : ( Float )+ ;
-timestampList : ( Timestamp )+ ;
-booleanList : ( Boolean )+ ;
-stringList : ( String )+ ;
-childList : ( child )+ ;
 
 map
   : LBRACE pair* RBRACE
@@ -100,7 +93,7 @@ Boolean
 
 fragment
 Exponent 
-  : ('e'|'E') ('+'|'-')? ( Digit )+ 
+  : ('e'|'E') ('+'|'-')? Digit+
   ;
 
 fragment
@@ -114,13 +107,13 @@ Letter
   ;
 
 Integer 
-  : ('-')? ( Digit )+ 
+  : '-'? Digit+
   ;
   
 Float
-  : ('-')? ( Digit )+ '.' ( Digit )* Exponent?
-  | '.' ( Digit )+ Exponent?
-  | ( Digit )+ Exponent
+  : '-'? Digit+ '.' Digit* Exponent?
+  | '.' Digit+ Exponent?
+  | Digit+ Exponent
   ;
 
 String
