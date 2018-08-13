@@ -3,9 +3,7 @@ package aron;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.runtime.Token;
-
-public class 
+public class
 	LabelNode 
 {
 	private String _label;
@@ -90,7 +88,6 @@ public class
 	
 	public String toString()
 	{
-		
 		return String.format( "label: %s  object: [%s]  children count: %d", _label, _object, _children.size() );
 	}
 }

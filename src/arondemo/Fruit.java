@@ -11,17 +11,15 @@ package arondemo;
 	Updated: 10/01/2011 Jason Osgood <jason@jasonosgood.com> 
 */
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 
 public class Fruit
 {
-	
 	String apple;
 	float banana = 2.0f;
 	int cherry;
@@ -102,7 +100,7 @@ public class Fruit
 	{
 		this.jasmine = jasmine;
 	}
-	
+
 	public Season getJasmine() { return jasmine; }
 	
 	public List<Integer> getKale()
@@ -115,4 +113,32 @@ public class Fruit
 	public List<Date> getNectarine() { return nectarine; }
 	public List<String> getOrange() { return orange; }
 
+	@Override
+	public boolean equals( Object o )
+	{
+		if( this == o ) return true;
+		if( o == null || getClass() != o.getClass() ) return false;
+		Fruit fruit = (Fruit) o;
+		return Float.compare( fruit.banana, banana ) == 0 &&
+			cherry == fruit.cherry &&
+			eggplant == fruit.eggplant &&
+			Objects.equals( apple, fruit.apple ) &&
+			Objects.equals( dewberry, fruit.dewberry ) &&
+			Objects.equals( fig, fruit.fig ) &&
+			Objects.equals( grape, fruit.grape ) &&
+			Objects.equals( honeydew, fruit.honeydew ) &&
+			Objects.equals( iyokan, fruit.iyokan ) &&
+			jasmine == fruit.jasmine &&
+			Objects.equals( kale, fruit.kale ) &&
+			Objects.equals( lime, fruit.lime ) &&
+			Objects.equals( mango, fruit.mango ) &&
+			Objects.equals( nectarine, fruit.nectarine ) &&
+			Objects.equals( orange, fruit.orange );
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash( apple, banana, cherry, dewberry, eggplant, fig, grape, honeydew, iyokan, jasmine, kale, lime, mango, nectarine, orange );
+	}
 }
