@@ -1,16 +1,16 @@
 package aron;
 
-public class 
+import org.antlr.v4.runtime.ParserRuleContext;
+
+public class
 	ARONException 
 extends 
 	Exception
 {
 	private static final long	serialVersionUID	= 1L;
 	
-	public ARONException( ParseNode node, Exception e )
+	public ARONException( ParserRuleContext node, Exception e )
 	{
-		super( node.radar(), e );
-		
+		super( node.toStringTree(), e );
 	}
-
 }

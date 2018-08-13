@@ -3,20 +3,20 @@ package aron;
 /**
 	ARON - A Righteous Object Notation
 	
-	Copyright (c) 2002, 2011 Jason Aaron Osgood, All rights reserved.
+	Copyright (c) 2002, 2011, 2018 Jason Aaron Osgood, All rights reserved.
 	
 	Appropriate open source license will go here.
 	
 	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
-	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
+	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com>
+	Updated: 2018/07/05 Jason Osgood <jason@jasonosgood.com>
+
  */
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.security.AccessControlException;
@@ -32,7 +32,6 @@ import java.util.Stack;
 import java.lang.Number;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 // TODO: empty lists must write brackets, eg "property []" 
@@ -40,47 +39,6 @@ import java.lang.reflect.Modifier;
 public class 
 	ARONWriter 
 {
-	public static void main( String[] args ) 
-		throws Exception
-	{
-		OutputStreamWriter ugh = new OutputStreamWriter(System.out);
-		ARONWriter w = new ARONWriter( ugh );
-		
-		
-		String filename = "./test/cronk/test1.aron";
-		File file = new File( filename );
-		ARONReader aron = new ARONReader();
-		
-		aron.read( file );
-//		Object derp = aron.getRoot();
-	/*	
-		w.write( null );
-		w.write( 123 );
-		w.write( "a\"b\n\r\tc" );
-		int[] a = { 1, 2, 99 };
-		w.write( a );
-		w.write( true );
-		w.write( false );
-		w.write( 'c' );
-		
-		ArrayList<String> l = new ArrayList<String>();
-		l.add( "x" );
-		l.add( "y" );
-		l.add( "z" );
-		w.write( l );
-		
-		HashMap m = new HashMap();
-		m.put( "a", "apple" );
-		m.put( "b", "banana" );
-		m.put( "c", "cherry" );
-		w.write( m );
-		w.write( new Date() );
-		Cronk cronk = new Cronk();
- */
-//		w.write( derp );
-		ugh.close();
-	}
-
 	private Writer _writer = null;
 	
 	public ARONWriter( Writer writer )
@@ -102,15 +60,16 @@ public class
 	}
 	
 	private Stack<Object> _objectStack = new Stack<Object>();
-	public void write( Object value ) 
-		throws IOException
+
+	public void write( Object value )
+		throws IOException, IllegalAccessException
 	{
 		if( value == null )
 		{
 			throw new NullPointerException( "value" );
 		}
 		
-		_writer.write( "# ARON 0.1" );
+		_writer.write( "# ARON 0.2" );
 		Set<Class> imports = getClassesUsed( value );
 		if( imports.size() > 0 )
 		{
@@ -135,6 +94,7 @@ public class
 	}
 
 	public Set<Class> getClassesUsed( Object obj )
+		throws IllegalAccessException
 	{
 		HashSet<Class> list = new HashSet<Class>();
 		listClasses( obj, list );
@@ -143,6 +103,7 @@ public class
 	
 	Stack<Class> _classStack = new Stack<Class>();
 	public void listClasses( Object obj, Set<Class> list )
+		throws IllegalAccessException
 	{
 		if( obj == null ) return;
 		
@@ -154,7 +115,7 @@ public class
 		if( type == String.class ) return;
 		if( type == Character.class ) return;
 		if( type == Date.class ) return;
-		
+		if( Enum.class.isAssignableFrom( type )) return;
 		if( _classStack.contains( type )) return;
 		_classStack.push( type );
 		
@@ -201,23 +162,10 @@ public class
 			List<Field> fields = getFields( type );
 			for( Field field : fields )
 			{
-				try 
+				Object spork = field.get( obj );
+				if( spork != null )
 				{
-					Object spork = field.get( obj );
-					if( spork != null )
-					{
-						listClasses( spork, list );
-					}
-				} 
-				catch( IllegalArgumentException e ) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-				catch( IllegalAccessException e ) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					listClasses( spork, list );
 				}
 			}
 		}
@@ -338,58 +286,20 @@ public class
 		{
 			_writer.write( type.getSimpleName() );
 			List<Field> fields = getFields( type );
-			Object vanilla = null;
 			try
 			{
 				Constructor<?> c = type.getDeclaredConstructor();
 				c.setAccessible( true );
-				vanilla = c.newInstance();
-			}
-			catch( NoSuchMethodException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch( SecurityException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch( InstantiationException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch( IllegalAccessException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch( IllegalArgumentException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch( InvocationTargetException e )
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				Object vanilla = c.newInstance();
 
-			newline( tabs );
-			_writer.write( '(' );
-			tabs++;
-			for( Field field : fields )
-			{
-				try 
+				newline( tabs );
+				_writer.write( '(' );
+				tabs++;
+				for( Field field : fields )
 				{
 					Object spork = field.get( obj );
-					boolean dirty = true;
-					if( vanilla != null )
-					{
-						Object dung = field.get( vanilla );
-						dirty = !equals( spork, dung );
-					}
+					Object dung = field.get( vanilla );
+					boolean dirty = !equals( spork, dung );
 					if( dirty )
 					{
 						newline( tabs );
@@ -397,26 +307,18 @@ public class
 						_writer.write( ' ' );
 						write( spork, tabs );
 					}
-				} 
-				catch( IllegalArgumentException e ) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-				catch( IllegalAccessException e ) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-			}
-			tabs--;
+				tabs--;
 
-			newline( tabs );
-			_writer.write( ')' );
+				newline( tabs );
+				_writer.write( ')' );
+			}
+			catch( Exception e )
+			{
+			}
 		}
 		
 		_objectStack.pop();
-
 	}
 	
 	public static boolean equals( Object x, Object y ) 
@@ -502,6 +404,11 @@ public class
 			return sw.toString();
 		} 
 		catch( IOException e ) 
+		{
+			e.printStackTrace();
+			return "error";
+		}
+		catch( IllegalAccessException e )
 		{
 			e.printStackTrace();
 			return "error";
