@@ -1,7 +1,6 @@
 package arondemo;
 
 import java.io.File;
-import java.util.Map;
 
 import aron.ARONReader;
 import aron.ARONWriter;
