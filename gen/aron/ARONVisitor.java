@@ -71,42 +71,6 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitList(ARONParser.ListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#integerList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntegerList(ARONParser.IntegerListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#floatList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFloatList(ARONParser.FloatListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#timestampList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTimestampList(ARONParser.TimestampListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#booleanList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBooleanList(ARONParser.BooleanListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#stringList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringList(ARONParser.StringListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#childList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitChildList(ARONParser.ChildListContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link ARONParser#map}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
