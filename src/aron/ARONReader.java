@@ -29,82 +29,76 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Stack;
+import java.util.TimeZone;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import static aron.ARONParser.*;
+import static aron.unescape.unescape;
 
 // TODO: Report missing bean method
 
 public class ARONReader
 {
-	// Increment for each 'include'
-	private int _nestLevel = -1;
-	public int getNestLevel() { return _nestLevel; }
-	public void setNestLevel( int nestLevel ) { _nestLevel = nestLevel; }
-	
 	private ArrayList<String> _importDefs;
 	private HashMap<String, Class<?>> _shortNames;
-	private ArrayList<SimpleDateFormat> _formatters = new ArrayList();
+
+	// Not statics, because SDF is not threadsafe and George would complain
+	private  List<SimpleDateFormat> _formatters;
+	{
+		var patterns = new String[] {
+			"yyyy-MM-dd'T'HH:mm:ss.SSSX",
+			"yyyy-MM-dd'T'HH:mm:ssX",
+			"yyyy-MM-dd'T'HH:mm:ss.SSS",
+			"yyyy-MM-dd'T'HH:mm:ss",
+			"yyyy-MM-dd'T'HH:mm",
+			"yyyy-MM-dd"
+		};
+
+		_formatters = new ArrayList<>();
+
+		for( String p : patterns )
+		{
+			var sdf = new SimpleDateFormat( p, Locale.ROOT );
+			sdf.setTimeZone( TimeZone.getTimeZone( "UTC" ));
+			_formatters.add( sdf );
+		}
+	};
 
 	public ARONReader()
 	{
-		this( 0 );
-	}
-
-	public ARONReader( int nestLevel )
-	{
-		setNestLevel( nestLevel );
 		_importDefs = new ArrayList( 4 );
 		_shortNames = new HashMap();
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssX", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm", Locale.ROOT ));
-		_formatters.add( new SimpleDateFormat( "yyyy-MM-dd", Locale.ROOT ));
 	}
 
 	private URI _uri = null;
 	
-	public LabelNode read( File file )
+	public Document read( File file )
 		throws Exception
 	{
-		URI uri = file.toURI();
+		URI uri = file.getCanonicalFile().toURI();
 		return read( uri );
 	}
  
-	public LabelNode read( URL url )
+	public Document read( URL url )
 		throws Exception
 	{
 		URI uri = url.toURI();
 		return read( uri );
 	}
-	
-	public LabelNode read( URI uri )
+
+	public URI source;
+
+	public Document read( URI uri )
 		throws Exception
 	{
-		int level = getNestLevel();
-		if( level > 0 )
-		{
-			while( level > 0 )
-			{
-				System.out.print( "  " );
-				level--;
-			}
-			System.out.print( "including " );
-		}
-		else
-		{
-			System.out.print( "reading " );
-		}
+		source = uri;
 		System.out.println( uri );
 
 		_uri = uri;
@@ -112,80 +106,64 @@ public class ARONReader
 		return read( in );
 	}
 
-	public LabelNode read( InputStream in )
+	public Document read( InputStream in )
 		throws Exception
 	{
 		CharStream cs = CharStreams.fromStream( in );
-		LabelNode root = read( cs );
+		Document root = read( cs );
 		return root;
 	}
 
-	public static LabelNode read( String str )
+	public static Document read( String str )
 		throws Exception
 	{
 		CharStream cs = CharStreams.fromString( str );
-		LabelNode root = new ARONReader().read( cs );
+		Document root = new ARONReader().read( cs );
 		return root;
 	}
 
-	private LabelNode read( CharStream cs )
+	private Document read( CharStream cs )
 		throws Exception
 	{
-		LabelNode labelRoot = new LabelNode( null, null );
-		_labelStack.push( labelRoot );
+		doc = new Document( source );
 		ARONLexer lexer = new ARONLexer( cs );
 		CommonTokenStream tokens = new CommonTokenStream( lexer );
 		ARONParser parser = new ARONParser( tokens );
 
-		RootContext t = parser.root();
-		process( t );
-
-		return _labelStack.get( 0 );
+		DocumentContext t = parser.document();
+		return process( t );
 	}
 
-	private int _anon = 0;
+	Document doc;
 
-	private Stack<LabelNode> _labelStack = new Stack();
-	
-	public void register( String label, Object instance )
-	{
-		if( label == null )
-		{
-			label = "unlabeled" + _anon++;
-		}
-
-		LabelNode child = new LabelNode( label, instance );
-		LabelNode parent = _labelStack.peek();
-		parent.addChild( child );
-		_labelStack.push( child );
-	}
-
-	public void process( RootContext rc )
+	public Document process( DocumentContext rc )
 		throws Exception
 	{
-		for( IncludesContext include : rc.includes() )
+		for( IncludeContext include : rc.include() )
 		{
 			String url = include.Url().getText();
 			System.out.println( "include: " + url );
             includes( url );
 		}
 
-		for( ImportsContext imports : rc.imports() )
+		for( ImportDeclContext imports : rc.importDecl() )
 		{
-			ComboContext id = imports.combo();
+			ClassNameContext id = imports.className();
 			String name = id.getText();
 			imports( name );
 		}
 
-		for( ChildContext child : rc.child() )
+		for( MapContext child : rc.map() )
 		{
-			processChild( child );
+			processMap( doc, "child", child );
 		}
 		
 		for( OverrideContext override : rc.override() )
 		{
 			override( override );
 		}
+
+		return doc;
 	}
 
 	public void includes( String url )
@@ -196,11 +174,9 @@ public class ARONReader
 		File file = sibling.toFile();	
 		if( file.exists() )
 		{
-			int nestLevel = getNestLevel() + 1;
-			ARONReader aron = new ARONReader( nestLevel );
-			LabelNode childRoot = aron.read( file );
-			LabelNode root = _labelStack.get( 0 );
-			root.getChildren().addAll( childRoot.getChildren() );
+			ARONReader aron = new ARONReader();
+			Document include = aron.read( file );
+			doc.addInclude( include );
 		}
 		else
 		{
@@ -217,98 +193,174 @@ public class ARONReader
 		_shortNames.put( shortie, clazz );
 	}
 
-	public Object processChild( ChildContext context )
+	/*
+		interface Map & no className -> new LinkedHashMap
+		Map subclass & no className -> new Map subclass
+		interface (or abstract) & className -> new className
+		class & no className -> new class
+	 */
+	String defaultMapClassName = "java.util.LinkedHashMap";
+
+	// TODO: support fields
+	// TODO: support array as field
+	public void processMap( Object parent, String property, MapContext context )
 		throws 
 			ARONException,
 			ClassNotFoundException, InstantiationException, IllegalAccessException, 
 			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
 	{
-		String name = context.combo().getText();
-		String label = context.label() != null ? context.label().Word().getText() : null;
+		var defaultMapClass = resolveClass( defaultMapClassName );
 
-		Class<?> clazz = resolveClass( name );
+		String[] names = likelySetterNames( property );
 
-		// TODO: Need to first verify a zero param constructor exists
-		Constructor<?> constructor = clazz.getConstructor();
-		Object child = constructor.newInstance();
+		var methods = new ArrayList<Method>();
 
-		register( label, child );
-
-		for( PropertyContext prop : context.property() )
+		for( Method m : parent.getClass().getMethods() )
 		{
-			String method = prop.combo().getText();
-			ValueContext value = prop.value();
-			processValue( child, method, value );
+			for( String name : names )
+			{
+				if( m.getName().equals( name ) && m.getParameterTypes().length == 1 )
+				{
+					methods.add( m );
+				}
+			}
 		}
 
-		_labelStack.pop();
+		Method method = null;
+		Class<?> childClass = null;
+		if( methods.size() > 0 )
+		{
+			// Explicit class name
+			if( context.className() != null )
+			{
+				var childClassName = context.className().getText();
+				var temp = resolveClass( childClassName );
 
-		return child;
+				for( Method m : methods )
+				{
+					Class<?> paramClass = m.getParameterTypes()[0];
+					if( paramClass.isAssignableFrom( temp ))
+					{
+						method = m;
+						childClass = temp;
+						break;
+					}
+				}
+			}
+			// Infer class name
+			else
+			{
+				// Just grab the first one
+				var tempMethod = methods.get( 0 );
+				var tempType = tempMethod.getParameterTypes()[0];
+				// TODO: Verify not abstract
+				// https://stackoverflow.com/questions/19249448/how-do-i-get-only-instantiable-classes-with-reflections#19249616
+				if( tempType != Object.class && !tempType.isInterface() )
+				{
+					method = tempMethod;
+					childClass = tempType;
+				}
+			}
+
+			// Otherwise use default
+			if( childClass == null )
+			{
+				for( Method setter : methods )
+				{
+					Class<?> paramClass = setter.getParameterTypes()[0];
+					if( paramClass.isAssignableFrom( defaultMapClass ))
+					{
+						method = setter;
+						childClass = defaultMapClass;
+						break;
+					}
+				}
+			}
+
+			if( method != null && childClass != null )
+			{
+				// TODO: Need to first verify a zero param constructor exists
+				Constructor<?> constructor = childClass.getConstructor();
+				var child = constructor.newInstance();
+
+				Object ignore = method.invoke( parent, child );
+
+				String alias = context.alias() != null ? context.alias().Word().getText() : null;
+				doc.putAlias( alias, child );
+
+				for( PairContext pair : context.pair() )
+				{
+					String key = pair.key().getText();
+					ValueContext value = pair.value();
+					processValue( child, key, value );
+				}
+			}
+			else
+			{
+				// TODO: Throw not found exception
+			}
+		}
 	}
-	
+
+	public String[] likelySetterNames( String property )
+	{
+		return new String[]
+			{
+				property,
+				"set" + capitalize( property ),
+				"set" + property.toUpperCase(),
+				capitalize( property ),
+				property.toUpperCase(),
+				"add" + capitalize( property ),
+				"add" + property.toUpperCase()
+			};
+	}
+
 	public void override( OverrideContext context )
 		throws Exception
 	{
-		String label = context.reference().Word().getText();
-		String method = context.method().Word().getText();
+		String alias = context.reference().Word().getText();
+		String key = context.key().Word().getText();
 		ValueContext vc = context.value();
 
-		LabelNode root = _labelStack.get( 0 );
-		Object found = root.find( label );
+		Object found = doc.getAlias( alias );
 
-		processValue( found, method, vc );
+		if( found != null )
+		{
+			processValue( found, key, vc );
+		}
 	}
 	
 	public void processValue( Object bean, String method, ValueContext value )
-		throws ARONException
+		throws
+			ARONException,
+			ClassNotFoundException,
+			NoSuchMethodException,
+			InvocationTargetException,
+			InstantiationException,
+			IllegalAccessException
 	{
-		try
+		if( value.map() != null )
 		{
-			ParserRuleContext child = (ParserRuleContext) value.getChild( 0 );
-			switch( child.getRuleIndex() )
-			{
-				case RULE_scalar:
-					Object scalar = processScalar( (ScalarContext) child );
-					setter( bean, method, scalar );
-					break;
-
-				case RULE_child:
-	    			try
-	    			{
-	        			Object grandchild = processChild( (ChildContext) child );
-	    				setter( bean, method, grandchild );
-	    			}
-	    			catch( Exception ee )
-	    			{
-	    				// Not a child, might be an enum
-						String literal = ( (ChildContext) child ).combo().getText();
-	    	        	if( !enumSetter( bean, method, literal ))
-	    	        	{
-	    	        		throw ee;
-	    	        	}
-	    			}
-	    			break;
-
-				case RULE_list:
-					processList( bean, method, (ListContext) child );
-	    			break;
-
-				case RULE_map:
-					processMap( bean, method, (MapContext) child );
-					break;
-
-				default:
-					// this probably can't ever happen
-					throw new IllegalArgumentException( "unrecognized value subrule " + child.toStringTree() );
-			}
+			processMap( bean, method, value.map() );
+			return;
 		}
-		catch( Exception e )
+
+		if( value.scalar() != null )
 		{
-			throw new ARONException( value, e );
+			Object scalar = processScalar( value.scalar() );
+			setter( bean, method, scalar );
+			return;
+		}
+
+		if( value.list() != null )
+		{
+			processList( bean, method, value.list() );
+			return;
 		}
 	}
 
-	public void setter( Object bean, String property,  Object value )
+	public void setter( Object bean, String property, Object value )
 		throws 
 			NoSuchMethodException, IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException
@@ -325,11 +377,7 @@ public class ARONReader
 			type = value.getClass();
 		}
 
-		String[] names = new String[]
-		{
-			"set" + capitalize( property ),
-			"set" + property.toUpperCase()
-		};
+		String[] names = likelySetterNames( property );
 
 		for( Method method : bean.getClass().getMethods() )
 		{
@@ -339,29 +387,23 @@ public class ARONReader
 				{
 					for( Class<?> oof : method.getParameterTypes() )
 					{
-						switch( oof.getName() )
+						oof = toBoxingClass( oof );
+
+						if( oof.isEnum() )
 						{
-							case "int":
-								oof = Integer.class;
-								break;
-
-							case "float":
-								oof = Float.class;
-								break;
-
-							case "boolean":
-								oof = Boolean.class;
-								break;
-
-							default:
-								break;
+							Class<? extends Enum> enumType = (Class<? extends Enum>) oof;
+							final Enum<?> theOneAndOnly = Enum.valueOf(enumType, (String) value);
+							Object ignored = method.invoke( bean, theOneAndOnly );
+							return;
 						}
 
+						// Types are compatible OR we're just setting to null
 						if( oof.isAssignableFrom( type ) || value == null )
 						{
 							Object result = method.invoke( bean, value );
 							return;
 						}
+
 						break;
 					}
 				}
@@ -371,44 +413,29 @@ public class ARONReader
 		throw new NoSuchMethodException( bean.getClass().getName() + "." + names[0] + "(" + type.getName() + ")" );
 	}
 
-	public boolean enumSetter( Object instance, String bean, String literal ) 
-		throws 
-			EnumConstantNotPresentException, IllegalArgumentException, 
-			IllegalAccessException, InvocationTargetException
+	public Class<?> toBoxingClass( Class<?> oof )
 	{
-		String name = "set" + capitalize( bean );
-		
-		for( Method method : instance.getClass().getMethods() )
+		switch( oof.getName() )
 		{
-			if( method.getName().equals( name ))
-			{
-				for( Class<?> paramType : method.getParameterTypes() )
-				{
-					if( paramType.isEnum() )
-					{
-						Class<? extends Enum> enumType = (Class<? extends Enum>) paramType;
-						
-						Object value = null;
-						try
-						{
-							value = Enum.valueOf( enumType, literal );
-						}
-						catch( IllegalArgumentException e )
-						{
-							throw new EnumConstantNotPresentException( enumType, literal );
-						}
-						Object ignored = method.invoke( instance, value );
-						return true;
-					}
-					break;
-				}
-			}
+			case "int":
+				oof = Integer.class;
+				break;
+
+			case "float":
+				oof = Float.class;
+				break;
+
+			case "boolean":
+				oof = Boolean.class;
+				break;
+
+			default:
+				break;
 		}
-		
-		return false;
+		return oof;
 	}
 
-	public Object getter( Object instance, String bean ) 
+	public Object getter( Object instance, String bean )
 		throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
 	{
 		String name = "get" + capitalize( bean );
@@ -452,7 +479,8 @@ public class ARONReader
 		{
 			String x = value.String().getText();
 			x = x.substring( 1, x.length() - 1 );
-			return x;
+			String y = unescape( x );
+			return y;
 		}
 
 		if( value.Timestamp() != null )
@@ -464,14 +492,19 @@ public class ARONReader
 
 		if( value.reference() != null )
 		{
-			String label = value.reference().Word().getText();
-			LabelNode root = _labelStack.get( 0 );
-			Object found = root.find( label );
+			String alias = value.reference().Word().getText();
+			Object found = doc.getAlias( alias );
 			if( found == null )
 			{
-				throw new IllegalArgumentException( "Reference to label '" + label + "' not found" );
+				throw new IllegalArgumentException( "Alias '" + alias + "' not found" );
 			}
 			return found;
+		}
+
+		if( value.enumName() != null )
+		{
+			String name = value.enumName().Word().getText();
+			return name;
 		}
 
 		return null;
@@ -479,10 +512,14 @@ public class ARONReader
 
 	// TODO: initialize null list references
 	public void processList( Object bean, String property, ListContext node )
-		throws 
-			ARONException,
-			NoSuchMethodException, IllegalArgumentException, IllegalAccessException, 
-			InvocationTargetException, ClassNotFoundException, InstantiationException
+		throws
+		NoSuchMethodException,
+		IllegalArgumentException,
+		IllegalAccessException,
+		InvocationTargetException,
+		InstantiationException,
+		ARONException,
+		ClassNotFoundException
 	{
 		Object temp = getter( bean, property );
 
@@ -499,7 +536,7 @@ public class ARONReader
 
 		Collection collection = (Collection) temp;
 
-		if( node.Boolean() != null )
+		if( !node.Boolean().isEmpty() )
 		{
 			for( TerminalNode tn : node.Boolean() )
 			{
@@ -510,7 +547,7 @@ public class ARONReader
 			return;
 		}
 
-		if( node.Integer() != null )
+		if( !node.Integer().isEmpty() )
 		{
 			for( TerminalNode tn : node.Integer() )
 			{
@@ -521,7 +558,7 @@ public class ARONReader
 			return;
 		}
 
-		if( node.Float() != null )
+		if( !node.Float().isEmpty() )
 		{
 			for( TerminalNode tn : node.Float() )
 			{
@@ -532,17 +569,19 @@ public class ARONReader
 			return;
 		}
 
-		if( node.String() != null )
+		if( !node.String().isEmpty() )
 		{
 			for( TerminalNode tn : node.String() )
 			{
 				String value = tn.getText();
-				collection.add( value );
+				value = value.substring( 1, value.length() - 1 );
+				String y = unescape( value );
+				collection.add( y );
 			}
 			return;
 		}
 
-		if( node.Timestamp() != null )
+		if( !node.Timestamp().isEmpty() )
 		{
 			for( TerminalNode tn : node.Timestamp() )
 			{
@@ -553,12 +592,11 @@ public class ARONReader
 			return;
 		}
 
-		if( node.child() != null )
+		if( !node.map().isEmpty() )
 		{
-			for( ChildContext kid : node.child() )
+			for( MapContext kid : node.map() )
 			{
-				Object ugh = processChild( kid );
-				collection.add( ugh );
+				processMap( collection, "add", kid );
 			}
 			return;
 		}
@@ -568,26 +606,6 @@ public class ARONReader
 		return;
 	}
 	
-	public void processMap( Object instance, String bean, MapContext assoc )
-		throws 
-			ARONException,
-			IllegalArgumentException, NoSuchMethodException, IllegalAccessException, 
-			InvocationTargetException
-	{
-		Object map = getter( instance, bean );
-		if( !( map instanceof Map ))
-		{
-			String msg = instance.getClass().getName() + ".get" + bean + "() does not return a java.util.Map";
-			throw new IllegalArgumentException( msg );
-		}
-
-		for( PairContext p : assoc.pair() )
-		{
-			String text = p.key().getText();
-			processValue( map, text, p.value() );
-		}
-	}
-
 	public Class<?> resolveClass( String name )
 		throws ClassNotFoundException
 	{
@@ -654,10 +672,5 @@ public class ARONReader
 			}
 		}
 		throw new DateFormatException( text );
-    }
-    
-    public String toString()
-    {
-    	return _uri == null ? "<inputstream>" : _uri.toString();
     }
 }

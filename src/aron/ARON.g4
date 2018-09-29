@@ -15,37 +15,36 @@
 
 grammar ARON;
 
-root
-  :
-  '# ARON 0.2'
-  includes*
-  imports*
-  child*
+document :
+  include*
+  importDecl*
+  map*
   override*
   EOF
   ;
 
-includes : 'include' Url ;
+include : 'include' Url ;
 
-imports : 'import' combo ;
+importDecl : 'import' className ;
 
-child
-  : label? combo ( LPAREN property* RPAREN )?
+map : alias? className? '{' pair* '}' ;
+
+alias : '@' Word ;
+
+className : Word ( '.' Word )* ;
+
+pair
+  : key ':'? value ','?
+//  | key { this.notifyErrorListeners( "key " + $key.text + " is missing a value", $start  ); }
+  | key { this.notifyErrorListeners( $start, "key " + $key.text + " is missing a value", null ); }
   ;
 
-combo : Word ( '.' Word )* ;
-
-label : Word ':' ;
-
-property : combo value ;
-  
 value
-  : scalar
-  | child
+  : map
+  | scalar
   | list
-  | map
   ;
-  
+
 scalar
   : Boolean
   | Integer
@@ -53,51 +52,46 @@ scalar
   | String
   | Timestamp
   | reference
+  | enumName
   | 'null'
   ;
 
-// TODO: List of map, list of list
+// TODO: add aliases & classnames for rule list (just like for rule map)
+// TODO: list of list
+// TODO: clever way to clear collection when empty list
+// TODO: Add optional comma separators
 list
-  : LBRACK
+  : '['
     ( Boolean+
     | Integer+
     | Float+
     | String+
     | Timestamp+
-    | child+
+    | map+
     )?
-    RBRACK
+    ']'
   ;
 
-map
-  : LBRACE pair* RBRACE
-  ;
-  
-pair : key value ;
-  
 key
   : Word
-  | String 
+  | String
   ;
 
-override : reference method value ;
+enumName : Word ;
 
-reference : '@' Word ;
+override : reference key value ;
 
-method : '.' Word ;
+reference : '#' Word ;
 
-Boolean
-  : 'true'
-  | 'false'
-  ;
+Boolean : 'true' | 'false' ;
 
 fragment
-Exponent 
+Exponent
   : ('e'|'E') ('+'|'-')? Digit+
   ;
 
 fragment
-Digit 
+Digit
   : [0-9]
   ;
 
@@ -106,10 +100,10 @@ Letter
   : [a-zA-Z]
   ;
 
-Integer 
+Integer
   : '-'? Digit+
   ;
-  
+
 Float
   : '-'? Digit+ '.' Digit* Exponent?
   | '.' Digit+ Exponent?
@@ -125,15 +119,19 @@ Escape
   : '\\' [btnr"\\]
   ;
 
-// ISO 8601 - Complete timestamp yyyy-MM-ddThh:mm:ss+hh:mm
-Timestamp 
-  : Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit 
-    ( 
+// ISO 8601 - Timestamps, eg yyyy-MM-ddThh:mm:ss+hh:mm
+Timestamp
+  : Digit Digit Digit Digit '-' Digit Digit '-' Digit Digit
+    (
 	    'T'
-	    Digit Digit ':' Digit Digit 
+	    Digit Digit ':' Digit Digit
 	    (
 		    ':' Digit Digit
-		    ( '+' Digit Digit ':' Digit Digit )? // optional timezone
+		    ( '.' Digit Digit Digit )? // optional fractional
+		    ( // optional...
+		    	( '+' Digit Digit ':' Digit Digit ) // timezone offset
+		    	| 'Z' // or UTC
+			)?
 	    )?
     )?
   ;
@@ -141,26 +139,17 @@ Timestamp
 Url : ( '.' | '/' ) ( '/' ( Letter | Digit | '.' )* )* ;
 
 Word
-  : Letter ( Letter | Digit )*
+  : ( Letter | Digit )+
   ;
 
 LineComment
-//  : '#' .*? '\n' ->  channel(HIDDEN)
-  : '#' ~('\n'|'\r')* ->  channel(HIDDEN)
+  : '//' ~('\n'|'\r')* ->  channel(HIDDEN)
   ;
 
 BlockComment
   : '/*' .*? '*/' ->  channel(HIDDEN)
   ;
 
-// ARON treats comma as whitespace
-Whitespace 
-  : [ ,\t\r\n]+ -> skip
+Whitespace
+  : [ \t\r\n]+ -> skip
   ;
-
-LPAREN : '(' ;
-RPAREN : ')' ;
-LBRACE : '{' ;
-RBRACE : '}' ;
-LBRACK : '[' ;
-RBRACK : ']' ;

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class
-	LabelNode 
+AliasNode
 {
 	private String _label;
 	private Object _object;
 	
-	public LabelNode( String label, Object object )
+	public AliasNode( String label, Object object )
 	{
 		_label = label;
 		_object = object;
@@ -19,14 +19,14 @@ public class
 	
 	public Object getObject() { return _object; }
 	
-	private ArrayList<LabelNode> _children = new ArrayList<LabelNode>();
+	private ArrayList<AliasNode> _children = new ArrayList<AliasNode>();
 	
-	public List<LabelNode> getChildren()
+	public List<AliasNode> getChildren()
 	{
 		return _children;
 	}
 	
-	public void addChild( LabelNode child )
+	public void addChild( AliasNode child )
 	{
 		if( child == null )
 		{
@@ -35,7 +35,8 @@ public class
 		
 		_children.add( child );
 	}
-	
+
+	// TODO: Decide to keep nested alias (or not) and if yes migrate find method to Document
 	// TODO: validate expression
 	public Object find( String expression )
 	{
@@ -57,7 +58,7 @@ public class
 		}
 		
 		Object result = null; 
-		LabelNode found = find( this, query, 0 );
+		AliasNode found = find( this, query, 0 );
 		if( found != null )
 		{
 			result = found.getObject();
@@ -65,11 +66,11 @@ public class
 		return result;
 	}
 
-	protected LabelNode find( LabelNode parent, ArrayList<String> query, int nth )
+	protected AliasNode find( AliasNode parent, ArrayList<String> query, int nth )
 	{
 		String spot = query.get( nth );
 		
-		for( LabelNode child : parent._children )
+		for( AliasNode child : parent._children )
 		{
 			if( spot.equals( child._label ))
 			{
@@ -86,8 +87,8 @@ public class
 		return null;
 	}
 	
-	public String toString()
-	{
-		return String.format( "label: %s  object: [%s]  children count: %d", _label, _object, _children.size() );
-	}
+//	public String toString()
+//	{
+//		return String.format( "label: %s  object: [%s]  children count: %d", _label, _object, _children.size() );
+//	}
 }

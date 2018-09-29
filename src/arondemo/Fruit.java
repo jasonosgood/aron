@@ -33,9 +33,10 @@ public class Fruit
 	ArrayList<Integer> kale = new ArrayList<Integer>();
 	ArrayList<Float> lime = new ArrayList<Float>();
 	ArrayList<Boolean> mango = new ArrayList<Boolean>();
-	ArrayList<Date> nectarine = new ArrayList<Date>();
-	ArrayList<String> orange = new ArrayList<String>();
-	
+	ArrayList<Date> nectarine = new ArrayList<>();
+	ArrayList<String> orange = new ArrayList<>();
+	List<Map> plum = new ArrayList<>();
+
 	public Fruit()
 	{
 		kale.add( 100 );
@@ -112,6 +113,7 @@ public class Fruit
 	public List<Boolean> getMango() { return mango; }
 	public List<Date> getNectarine() { return nectarine; }
 	public List<String> getOrange() { return orange; }
+	public List<Map> getPlum() { return plum; }
 
 	@Override
 	public boolean equals( Object o )
@@ -133,12 +135,16 @@ public class Fruit
 			Objects.equals( lime, fruit.lime ) &&
 			Objects.equals( mango, fruit.mango ) &&
 			Objects.equals( nectarine, fruit.nectarine ) &&
-			Objects.equals( orange, fruit.orange );
+			Objects.equals( orange, fruit.orange ) &&
+			Objects.equals( plum, fruit.plum );
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash( apple, banana, cherry, dewberry, eggplant, fig, grape, honeydew, iyokan, jasmine, kale, lime, mango, nectarine, orange );
+		return Objects.hash(
+			apple, banana, cherry, dewberry, eggplant, fig, grape, honeydew, iyokan,
+			jasmine, kale, lime, mango, nectarine, orange, plum
+		);
 	}
 }

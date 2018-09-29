@@ -1,29 +1,36 @@
-# ARON 0.2
-
 include ./demo.aron
 
 import arondemo.Fruit
 
-lovely:Fruit
-(
+@lovely Fruit
+{
 	apple "lovely"
-)
+}
 
-crush:Fruit
-(
+@crush Fruit
+{
 	apple "crush"
-)
+}
 
-# @parent.apple "123456"
+#parent iyokan #lovely
+#parent iyokan #crush
 
-@parent.iyokan @lovely
-@parent.iyokan @crush
+#parent.iyokan null
+#parent.grape []
+#parent.grape [ Fruit { apple "fuji" } ]
+#parent.jasmine summer
 
-# @parent.iyokan null
-# @parent.grape []
-# @parent.grape [ Fruit ( apple "fuji" ) ]
-# @parent.jasmine summer
-@parent.kale [4 5]
-@parent.apple "pie"
-@parent.cherry 999
+#parent kale [4 5]
+#parent apple "pie"
+#parent cherry 999
 
+
+/*
+
+thinking about supporting this fancy syntax for overrides.
+
+#parent {
+	apple "pie"
+	cherry 999
+}
+*/
