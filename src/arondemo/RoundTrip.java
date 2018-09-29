@@ -1,35 +1,39 @@
 package arondemo;
 
-/**
-	ARON - A Righteous Object Notation
-	
-	Copyright (c) 2002, 2011, 2018 Jason Aaron Osgood, All rights reserved.
-	
-	Appropriate open source license will go here.
-	
-	Created: 2002/06/08 Jason Osgood <mrosgood@yahoo.com>
-	Rewritten: 2011/10/01 Jason Osgood <jason@jasonosgood.com> 
- */
-
 import aron.ARONReader;
 import aron.ARONWriter;
-import aron.LabelNode;
+import aron.Document;
+
+import java.io.File;
+import java.io.StringWriter;
+import java.util.Date;
 
 public class
 	RoundTrip
 {
-	public static void main( String[] args )
+	public static final void main( String[] args )
 		throws Exception
 	{
-		Fruit originalFruit = new Fruit();
-		originalFruit.apple = "fuji";
+		File pwd = new File( "." );
+		String filename = "./src/arondemo/demo.aron";
+		File file = new File( filename );
+		System.out.println( "root1: " + file.getCanonicalPath() );
+		System.out.println( "root2: " + file.getAbsolutePath() );
 
-		String originalData = ARONWriter.toString( originalFruit );
-		LabelNode root = ARONReader.read( originalData );
-		Fruit copyFruit = (Fruit) root.find( "unlabeled0" );
-		String copyData = ARONWriter.toString( copyFruit );
+		ARONReader aron = new ARONReader();
+		Document root = aron.read( file );
+		Fruit parent = (Fruit) root.children.get( 0 );
+		System.out.println();
 
-		System.out.println( "fruit equals: " + originalFruit.equals( copyFruit ));
-		System.out.println( "data equals: " + originalData.equals( copyData ));
+		StringWriter sw = new StringWriter();
+		ARONWriter writer = new ARONWriter( sw );
+		writer.write( parent );
+//		System.out.println( sw.toString() );
+
+		ARONReader aron2 = new ARONReader();
+		Document root2 = aron2.read( sw.toString() );
+		Fruit parent2 = (Fruit) root2.children.get( 0 );
+
+		System.out.println( "fruit equals: " + parent2.equals( parent2 ));
 	}
 }

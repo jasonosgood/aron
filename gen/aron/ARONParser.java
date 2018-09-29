@@ -18,29 +18,26 @@ public class ARONParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		Boolean=10, Integer=11, Float=12, String=13, Timestamp=14, Url=15, Word=16, 
-		LineComment=17, BlockComment=18, Whitespace=19, LBRACE=20, RBRACE=21, 
-		LBRACK=22, RBRACK=23;
+		T__9=10, Boolean=11, Integer=12, Float=13, String=14, Timestamp=15, Url=16, 
+		Word=17, LineComment=18, BlockComment=19, Whitespace=20;
 	public static final int
-		RULE_root = 0, RULE_includes = 1, RULE_imports = 2, RULE_child = 3, RULE_combo = 4, 
-		RULE_label = 5, RULE_property = 6, RULE_value = 7, RULE_scalar = 8, RULE_list = 9, 
-		RULE_map = 10, RULE_pair = 11, RULE_key = 12, RULE_override = 13, RULE_reference = 14, 
-		RULE_method = 15;
+		RULE_document = 0, RULE_include = 1, RULE_importDecl = 2, RULE_map = 3, 
+		RULE_alias = 4, RULE_className = 5, RULE_pair = 6, RULE_value = 7, RULE_scalar = 8, 
+		RULE_list = 9, RULE_key = 10, RULE_enumName = 11, RULE_override = 12, 
+		RULE_reference = 13;
 	public static final String[] ruleNames = {
-		"root", "includes", "imports", "child", "combo", "label", "property", 
-		"value", "scalar", "list", "map", "pair", "key", "override", "reference", 
-		"method"
+		"document", "include", "importDecl", "map", "alias", "className", "pair", 
+		"value", "scalar", "list", "key", "enumName", "override", "reference"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'# ARON 0.2'", "'include'", "'import'", "'('", "')'", "'.'", "':'", 
-		"'null'", "'@'", null, null, null, null, null, null, null, null, null, 
-		null, "'{'", "'}'", "'['", "']'"
+		null, "'include'", "'import'", "'{'", "'}'", "'@'", "'.'", "'null'", "'['", 
+		"']'", "'#'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, null, null, null, null, null, "Boolean", 
+		null, null, null, null, null, null, null, null, null, null, null, "Boolean", 
 		"Integer", "Float", "String", "Timestamp", "Url", "Word", "LineComment", 
-		"BlockComment", "Whitespace", "LBRACE", "RBRACE", "LBRACK", "RBRACK"
+		"BlockComment", "Whitespace"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -91,25 +88,25 @@ public class ARONParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class RootContext extends ParserRuleContext {
+	public static class DocumentContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ARONParser.EOF, 0); }
-		public List<IncludesContext> includes() {
-			return getRuleContexts(IncludesContext.class);
+		public List<IncludeContext> include() {
+			return getRuleContexts(IncludeContext.class);
 		}
-		public IncludesContext includes(int i) {
-			return getRuleContext(IncludesContext.class,i);
+		public IncludeContext include(int i) {
+			return getRuleContext(IncludeContext.class,i);
 		}
-		public List<ImportsContext> imports() {
-			return getRuleContexts(ImportsContext.class);
+		public List<ImportDeclContext> importDecl() {
+			return getRuleContexts(ImportDeclContext.class);
 		}
-		public ImportsContext imports(int i) {
-			return getRuleContext(ImportsContext.class,i);
+		public ImportDeclContext importDecl(int i) {
+			return getRuleContext(ImportDeclContext.class,i);
 		}
-		public List<ChildContext> child() {
-			return getRuleContexts(ChildContext.class);
+		public List<MapContext> map() {
+			return getRuleContexts(MapContext.class);
 		}
-		public ChildContext child(int i) {
-			return getRuleContext(ChildContext.class,i);
+		public MapContext map(int i) {
+			return getRuleContext(MapContext.class,i);
 		}
 		public List<OverrideContext> override() {
 			return getRuleContexts(OverrideContext.class);
@@ -117,91 +114,89 @@ public class ARONParser extends Parser {
 		public OverrideContext override(int i) {
 			return getRuleContext(OverrideContext.class,i);
 		}
-		public RootContext(ParserRuleContext parent, int invokingState) {
+		public DocumentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_root; }
+		@Override public int getRuleIndex() { return RULE_document; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterRoot(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterDocument(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitRoot(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitDocument(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitRoot(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitDocument(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final RootContext root() throws RecognitionException {
-		RootContext _localctx = new RootContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_root);
+	public final DocumentContext document() throws RecognitionException {
+		DocumentContext _localctx = new DocumentContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_document);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
-			match(T__0);
-			setState(36);
+			setState(31);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==T__0) {
+				{
+				{
+				setState(28);
+				include();
+				}
+				}
+				setState(33);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(37);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__1) {
 				{
 				{
-				setState(33);
-				includes();
+				setState(34);
+				importDecl();
 				}
 				}
-				setState(38);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
-			setState(42);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==T__2) {
-				{
-				{
 				setState(39);
-				imports();
-				}
-				}
-				setState(44);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(48);
+			setState(43);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==Word) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << Word))) != 0)) {
 				{
 				{
+				setState(40);
+				map();
+				}
+				}
 				setState(45);
-				child();
-				}
-				}
-				setState(50);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(54);
+			setState(49);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__8) {
+			while (_la==T__9) {
 				{
 				{
-				setState(51);
+				setState(46);
 				override();
 				}
 				}
-				setState(56);
+				setState(51);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(57);
+			setState(52);
 			match(EOF);
 			}
 		}
@@ -216,36 +211,36 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class IncludesContext extends ParserRuleContext {
+	public static class IncludeContext extends ParserRuleContext {
 		public TerminalNode Url() { return getToken(ARONParser.Url, 0); }
-		public IncludesContext(ParserRuleContext parent, int invokingState) {
+		public IncludeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_includes; }
+		@Override public int getRuleIndex() { return RULE_include; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterIncludes(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterInclude(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitIncludes(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitInclude(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitIncludes(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitInclude(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final IncludesContext includes() throws RecognitionException {
-		IncludesContext _localctx = new IncludesContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_includes);
+	public final IncludeContext include() throws RecognitionException {
+		IncludeContext _localctx = new IncludeContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_include);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(59);
-			match(T__1);
-			setState(60);
+			setState(54);
+			match(T__0);
+			setState(55);
 			match(Url);
 			}
 		}
@@ -260,39 +255,39 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ImportsContext extends ParserRuleContext {
-		public ComboContext combo() {
-			return getRuleContext(ComboContext.class,0);
+	public static class ImportDeclContext extends ParserRuleContext {
+		public ClassNameContext className() {
+			return getRuleContext(ClassNameContext.class,0);
 		}
-		public ImportsContext(ParserRuleContext parent, int invokingState) {
+		public ImportDeclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_imports; }
+		@Override public int getRuleIndex() { return RULE_importDecl; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterImports(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterImportDecl(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitImports(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitImportDecl(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitImports(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitImportDecl(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ImportsContext imports() throws RecognitionException {
-		ImportsContext _localctx = new ImportsContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_imports);
+	public final ImportDeclContext importDecl() throws RecognitionException {
+		ImportDeclContext _localctx = new ImportDeclContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_importDecl);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
-			match(T__2);
-			setState(63);
-			combo();
+			setState(57);
+			match(T__1);
+			setState(58);
+			className();
 			}
 		}
 		catch (RecognitionException re) {
@@ -306,83 +301,83 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ChildContext extends ParserRuleContext {
-		public ComboContext combo() {
-			return getRuleContext(ComboContext.class,0);
+	public static class MapContext extends ParserRuleContext {
+		public AliasContext alias() {
+			return getRuleContext(AliasContext.class,0);
 		}
-		public LabelContext label() {
-			return getRuleContext(LabelContext.class,0);
+		public ClassNameContext className() {
+			return getRuleContext(ClassNameContext.class,0);
 		}
-		public List<PropertyContext> property() {
-			return getRuleContexts(PropertyContext.class);
+		public List<PairContext> pair() {
+			return getRuleContexts(PairContext.class);
 		}
-		public PropertyContext property(int i) {
-			return getRuleContext(PropertyContext.class,i);
+		public PairContext pair(int i) {
+			return getRuleContext(PairContext.class,i);
 		}
-		public ChildContext(ParserRuleContext parent, int invokingState) {
+		public MapContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_child; }
+		@Override public int getRuleIndex() { return RULE_map; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterChild(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterMap(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitChild(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitMap(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitChild(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitMap(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ChildContext child() throws RecognitionException {
-		ChildContext _localctx = new ChildContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_child);
+	public final MapContext map() throws RecognitionException {
+		MapContext _localctx = new MapContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_map);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(66);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
-			case 1:
-				{
-				setState(65);
-				label();
-				}
-				break;
-			}
-			setState(68);
-			combo();
-			setState(77);
+			setState(61);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__3) {
+			if (_la==T__4) {
 				{
-				setState(69);
-				match(T__3);
-				setState(73);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==Word) {
-					{
-					{
-					setState(70);
-					property();
-					}
-					}
-					setState(75);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				setState(76);
-				match(T__4);
+				setState(60);
+				alias();
 				}
 			}
 
+			setState(64);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==Word) {
+				{
+				setState(63);
+				className();
+				}
+			}
+
+			setState(66);
+			match(T__2);
+			setState(70);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==String || _la==Word) {
+				{
+				{
+				setState(67);
+				pair();
+				}
+				}
+				setState(72);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(73);
+			match(T__3);
 			}
 		}
 		catch (RecognitionException re) {
@@ -396,52 +391,96 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ComboContext extends ParserRuleContext {
+	public static class AliasContext extends ParserRuleContext {
+		public TerminalNode Word() { return getToken(ARONParser.Word, 0); }
+		public AliasContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_alias; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterAlias(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitAlias(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitAlias(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final AliasContext alias() throws RecognitionException {
+		AliasContext _localctx = new AliasContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_alias);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(75);
+			match(T__4);
+			setState(76);
+			match(Word);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ClassNameContext extends ParserRuleContext {
 		public List<TerminalNode> Word() { return getTokens(ARONParser.Word); }
 		public TerminalNode Word(int i) {
 			return getToken(ARONParser.Word, i);
 		}
-		public ComboContext(ParserRuleContext parent, int invokingState) {
+		public ClassNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_combo; }
+		@Override public int getRuleIndex() { return RULE_className; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterCombo(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterClassName(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitCombo(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitClassName(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitCombo(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitClassName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ComboContext combo() throws RecognitionException {
-		ComboContext _localctx = new ComboContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_combo);
+	public final ClassNameContext className() throws RecognitionException {
+		ClassNameContext _localctx = new ClassNameContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_className);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
+			setState(78);
 			match(Word);
-			setState(84);
+			setState(83);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__5) {
 				{
 				{
-				setState(80);
+				setState(79);
 				match(T__5);
-				setState(81);
+				setState(80);
 				match(Word);
 				}
 				}
-				setState(86);
+				setState(85);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -458,86 +497,57 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
-	public static class LabelContext extends ParserRuleContext {
-		public TerminalNode Word() { return getToken(ARONParser.Word, 0); }
-		public LabelContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_label; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterLabel(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitLabel(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitLabel(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final LabelContext label() throws RecognitionException {
-		LabelContext _localctx = new LabelContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_label);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(87);
-			match(Word);
-			setState(88);
-			match(T__6);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PropertyContext extends ParserRuleContext {
-		public ComboContext combo() {
-			return getRuleContext(ComboContext.class,0);
+	public static class PairContext extends ParserRuleContext {
+		public KeyContext key;
+		public KeyContext key() {
+			return getRuleContext(KeyContext.class,0);
 		}
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
-		public PropertyContext(ParserRuleContext parent, int invokingState) {
+		public PairContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_property; }
+		@Override public int getRuleIndex() { return RULE_pair; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterProperty(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterPair(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitProperty(this);
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitPair(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitProperty(this);
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitPair(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final PropertyContext property() throws RecognitionException {
-		PropertyContext _localctx = new PropertyContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_property);
+	public final PairContext pair() throws RecognitionException {
+		PairContext _localctx = new PairContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_pair);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(90);
-			combo();
-			setState(91);
-			value();
+			setState(92);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(86);
+				key();
+				setState(87);
+				value();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(89);
+				((PairContext)_localctx).key = key();
+				 this.notifyErrorListeners( _localctx.start, "key " + (((PairContext)_localctx).key!=null?_input.getText(((PairContext)_localctx).key.start,((PairContext)_localctx).key.stop):null) + " is missing a value", null ); 
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -552,17 +562,14 @@ public class ARONParser extends Parser {
 	}
 
 	public static class ValueContext extends ParserRuleContext {
+		public MapContext map() {
+			return getRuleContext(MapContext.class,0);
+		}
 		public ScalarContext scalar() {
 			return getRuleContext(ScalarContext.class,0);
 		}
-		public ChildContext child() {
-			return getRuleContext(ChildContext.class,0);
-		}
 		public ListContext list() {
 			return getRuleContext(ListContext.class,0);
-		}
-		public MapContext map() {
-			return getRuleContext(MapContext.class,0);
 		}
 		public ValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -589,43 +596,28 @@ public class ARONParser extends Parser {
 		try {
 			setState(97);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__7:
-			case T__8:
-			case Boolean:
-			case Integer:
-			case Float:
-			case String:
-			case Timestamp:
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(93);
-				scalar();
-				}
-				break;
-			case Word:
-				enterOuterAlt(_localctx, 2);
-				{
 				setState(94);
-				child();
-				}
-				break;
-			case LBRACK:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(95);
-				list();
-				}
-				break;
-			case LBRACE:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(96);
 				map();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(95);
+				scalar();
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(96);
+				list();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -647,6 +639,9 @@ public class ARONParser extends Parser {
 		public TerminalNode Timestamp() { return getToken(ARONParser.Timestamp, 0); }
 		public ReferenceContext reference() {
 			return getRuleContext(ReferenceContext.class,0);
+		}
+		public EnumNameContext enumName() {
+			return getRuleContext(EnumNameContext.class,0);
 		}
 		public ScalarContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -671,7 +666,7 @@ public class ARONParser extends Parser {
 		ScalarContext _localctx = new ScalarContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_scalar);
 		try {
-			setState(106);
+			setState(107);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case Boolean:
@@ -709,18 +704,25 @@ public class ARONParser extends Parser {
 				match(Timestamp);
 				}
 				break;
-			case T__8:
+			case T__9:
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(104);
 				reference();
 				}
 				break;
-			case T__7:
+			case Word:
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(105);
-				match(T__7);
+				enumName();
+				}
+				break;
+			case T__6:
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(106);
+				match(T__6);
 				}
 				break;
 			default:
@@ -739,8 +741,6 @@ public class ARONParser extends Parser {
 	}
 
 	public static class ListContext extends ParserRuleContext {
-		public TerminalNode LBRACK() { return getToken(ARONParser.LBRACK, 0); }
-		public TerminalNode RBRACK() { return getToken(ARONParser.RBRACK, 0); }
 		public List<TerminalNode> Boolean() { return getTokens(ARONParser.Boolean); }
 		public TerminalNode Boolean(int i) {
 			return getToken(ARONParser.Boolean, i);
@@ -761,11 +761,11 @@ public class ARONParser extends Parser {
 		public TerminalNode Timestamp(int i) {
 			return getToken(ARONParser.Timestamp, i);
 		}
-		public List<ChildContext> child() {
-			return getRuleContexts(ChildContext.class);
+		public List<MapContext> map() {
+			return getRuleContexts(MapContext.class);
 		}
-		public ChildContext child(int i) {
-			return getRuleContext(ChildContext.class,i);
+		public MapContext map(int i) {
+			return getRuleContext(MapContext.class,i);
 		}
 		public ListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -793,24 +793,24 @@ public class ARONParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
-			match(LBRACK);
-			setState(139);
+			setState(109);
+			match(T__7);
+			setState(140);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case Boolean:
 				{
-				setState(110); 
+				setState(111); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(109);
+					setState(110);
 					match(Boolean);
 					}
 					}
-					setState(112); 
+					setState(113); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==Boolean );
@@ -818,17 +818,17 @@ public class ARONParser extends Parser {
 				break;
 			case Integer:
 				{
-				setState(115); 
+				setState(116); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(114);
+					setState(115);
 					match(Integer);
 					}
 					}
-					setState(117); 
+					setState(118); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==Integer );
@@ -836,17 +836,17 @@ public class ARONParser extends Parser {
 				break;
 			case Float:
 				{
-				setState(120); 
+				setState(121); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(119);
+					setState(120);
 					match(Float);
 					}
 					}
-					setState(122); 
+					setState(123); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==Float );
@@ -854,17 +854,17 @@ public class ARONParser extends Parser {
 				break;
 			case String:
 				{
-				setState(125); 
+				setState(126); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(124);
+					setState(125);
 					match(String);
 					}
 					}
-					setState(127); 
+					setState(128); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==String );
@@ -872,162 +872,49 @@ public class ARONParser extends Parser {
 				break;
 			case Timestamp:
 				{
-				setState(130); 
+				setState(131); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(129);
+					setState(130);
 					match(Timestamp);
 					}
 					}
-					setState(132); 
+					setState(133); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==Timestamp );
 				}
 				break;
+			case T__2:
+			case T__4:
 			case Word:
 				{
-				setState(135); 
+				setState(136); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(134);
-					child();
+					setState(135);
+					map();
 					}
 					}
-					setState(137); 
+					setState(138); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==Word );
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__4) | (1L << Word))) != 0) );
 				}
 				break;
-			case RBRACK:
+			case T__8:
 				break;
 			default:
 				break;
 			}
-			setState(141);
-			match(RBRACK);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class MapContext extends ParserRuleContext {
-		public TerminalNode LBRACE() { return getToken(ARONParser.LBRACE, 0); }
-		public TerminalNode RBRACE() { return getToken(ARONParser.RBRACE, 0); }
-		public List<PairContext> pair() {
-			return getRuleContexts(PairContext.class);
-		}
-		public PairContext pair(int i) {
-			return getRuleContext(PairContext.class,i);
-		}
-		public MapContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_map; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterMap(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitMap(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitMap(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final MapContext map() throws RecognitionException {
-		MapContext _localctx = new MapContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_map);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(143);
-			match(LBRACE);
-			setState(147);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==String || _la==Word) {
-				{
-				{
-				setState(144);
-				pair();
-				}
-				}
-				setState(149);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
-			setState(150);
-			match(RBRACE);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PairContext extends ParserRuleContext {
-		public KeyContext key() {
-			return getRuleContext(KeyContext.class,0);
-		}
-		public ValueContext value() {
-			return getRuleContext(ValueContext.class,0);
-		}
-		public PairContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_pair; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterPair(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitPair(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitPair(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final PairContext pair() throws RecognitionException {
-		PairContext _localctx = new PairContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_pair);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(152);
-			key();
-			setState(153);
-			value();
+			setState(142);
+			match(T__8);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1065,12 +952,12 @@ public class ARONParser extends Parser {
 
 	public final KeyContext key() throws RecognitionException {
 		KeyContext _localctx = new KeyContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_key);
+		enterRule(_localctx, 20, RULE_key);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155);
+			setState(144);
 			_la = _input.LA(1);
 			if ( !(_la==String || _la==Word) ) {
 			_errHandler.recoverInline(this);
@@ -1093,12 +980,54 @@ public class ARONParser extends Parser {
 		return _localctx;
 	}
 
+	public static class EnumNameContext extends ParserRuleContext {
+		public TerminalNode Word() { return getToken(ARONParser.Word, 0); }
+		public EnumNameContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_enumName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterEnumName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitEnumName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitEnumName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final EnumNameContext enumName() throws RecognitionException {
+		EnumNameContext _localctx = new EnumNameContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_enumName);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(146);
+			match(Word);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static class OverrideContext extends ParserRuleContext {
 		public ReferenceContext reference() {
 			return getRuleContext(ReferenceContext.class,0);
 		}
-		public MethodContext method() {
-			return getRuleContext(MethodContext.class,0);
+		public KeyContext key() {
+			return getRuleContext(KeyContext.class,0);
 		}
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
@@ -1124,15 +1053,15 @@ public class ARONParser extends Parser {
 
 	public final OverrideContext override() throws RecognitionException {
 		OverrideContext _localctx = new OverrideContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_override);
+		enterRule(_localctx, 24, RULE_override);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(157);
+			setState(148);
 			reference();
-			setState(158);
-			method();
-			setState(159);
+			setState(149);
+			key();
+			setState(150);
 			value();
 			}
 		}
@@ -1170,57 +1099,13 @@ public class ARONParser extends Parser {
 
 	public final ReferenceContext reference() throws RecognitionException {
 		ReferenceContext _localctx = new ReferenceContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_reference);
+		enterRule(_localctx, 26, RULE_reference);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(161);
-			match(T__8);
-			setState(162);
-			match(Word);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class MethodContext extends ParserRuleContext {
-		public TerminalNode Word() { return getToken(ARONParser.Word, 0); }
-		public MethodContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_method; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).enterMethod(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ARONListener ) ((ARONListener)listener).exitMethod(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ARONVisitor ) return ((ARONVisitor<? extends T>)visitor).visitMethod(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final MethodContext method() throws RecognitionException {
-		MethodContext _localctx = new MethodContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_method);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(164);
-			match(T__5);
-			setState(165);
+			setState(152);
+			match(T__9);
+			setState(153);
 			match(Word);
 			}
 		}
@@ -1236,56 +1121,52 @@ public class ARONParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31\u00aa\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26\u009e\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2"+
-		"\7\2%\n\2\f\2\16\2(\13\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\2\7\2\61\n\2\f"+
-		"\2\16\2\64\13\2\3\2\7\2\67\n\2\f\2\16\2:\13\2\3\2\3\2\3\3\3\3\3\3\3\4"+
-		"\3\4\3\4\3\5\5\5E\n\5\3\5\3\5\3\5\7\5J\n\5\f\5\16\5M\13\5\3\5\5\5P\n\5"+
-		"\3\6\3\6\3\6\7\6U\n\6\f\6\16\6X\13\6\3\7\3\7\3\7\3\b\3\b\3\b\3\t\3\t\3"+
-		"\t\3\t\5\td\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\nm\n\n\3\13\3\13\6\13q\n"+
-		"\13\r\13\16\13r\3\13\6\13v\n\13\r\13\16\13w\3\13\6\13{\n\13\r\13\16\13"+
-		"|\3\13\6\13\u0080\n\13\r\13\16\13\u0081\3\13\6\13\u0085\n\13\r\13\16\13"+
-		"\u0086\3\13\6\13\u008a\n\13\r\13\16\13\u008b\5\13\u008e\n\13\3\13\3\13"+
-		"\3\f\3\f\7\f\u0094\n\f\f\f\16\f\u0097\13\f\3\f\3\f\3\r\3\r\3\r\3\16\3"+
-		"\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\21\3\21\3\21\3\21\2\2\22\2\4"+
-		"\6\b\n\f\16\20\22\24\26\30\32\34\36 \2\3\4\2\17\17\22\22\2\u00b7\2\"\3"+
-		"\2\2\2\4=\3\2\2\2\6@\3\2\2\2\bD\3\2\2\2\nQ\3\2\2\2\fY\3\2\2\2\16\\\3\2"+
-		"\2\2\20c\3\2\2\2\22l\3\2\2\2\24n\3\2\2\2\26\u0091\3\2\2\2\30\u009a\3\2"+
-		"\2\2\32\u009d\3\2\2\2\34\u009f\3\2\2\2\36\u00a3\3\2\2\2 \u00a6\3\2\2\2"+
-		"\"&\7\3\2\2#%\5\4\3\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\',\3\2"+
-		"\2\2(&\3\2\2\2)+\5\6\4\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\62\3"+
-		"\2\2\2.,\3\2\2\2/\61\5\b\5\2\60/\3\2\2\2\61\64\3\2\2\2\62\60\3\2\2\2\62"+
-		"\63\3\2\2\2\638\3\2\2\2\64\62\3\2\2\2\65\67\5\34\17\2\66\65\3\2\2\2\67"+
-		":\3\2\2\28\66\3\2\2\289\3\2\2\29;\3\2\2\2:8\3\2\2\2;<\7\2\2\3<\3\3\2\2"+
-		"\2=>\7\4\2\2>?\7\21\2\2?\5\3\2\2\2@A\7\5\2\2AB\5\n\6\2B\7\3\2\2\2CE\5"+
-		"\f\7\2DC\3\2\2\2DE\3\2\2\2EF\3\2\2\2FO\5\n\6\2GK\7\6\2\2HJ\5\16\b\2IH"+
-		"\3\2\2\2JM\3\2\2\2KI\3\2\2\2KL\3\2\2\2LN\3\2\2\2MK\3\2\2\2NP\7\7\2\2O"+
-		"G\3\2\2\2OP\3\2\2\2P\t\3\2\2\2QV\7\22\2\2RS\7\b\2\2SU\7\22\2\2TR\3\2\2"+
-		"\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2W\13\3\2\2\2XV\3\2\2\2YZ\7\22\2\2Z[\7"+
-		"\t\2\2[\r\3\2\2\2\\]\5\n\6\2]^\5\20\t\2^\17\3\2\2\2_d\5\22\n\2`d\5\b\5"+
-		"\2ad\5\24\13\2bd\5\26\f\2c_\3\2\2\2c`\3\2\2\2ca\3\2\2\2cb\3\2\2\2d\21"+
-		"\3\2\2\2em\7\f\2\2fm\7\r\2\2gm\7\16\2\2hm\7\17\2\2im\7\20\2\2jm\5\36\20"+
-		"\2km\7\n\2\2le\3\2\2\2lf\3\2\2\2lg\3\2\2\2lh\3\2\2\2li\3\2\2\2lj\3\2\2"+
-		"\2lk\3\2\2\2m\23\3\2\2\2n\u008d\7\30\2\2oq\7\f\2\2po\3\2\2\2qr\3\2\2\2"+
-		"rp\3\2\2\2rs\3\2\2\2s\u008e\3\2\2\2tv\7\r\2\2ut\3\2\2\2vw\3\2\2\2wu\3"+
-		"\2\2\2wx\3\2\2\2x\u008e\3\2\2\2y{\7\16\2\2zy\3\2\2\2{|\3\2\2\2|z\3\2\2"+
-		"\2|}\3\2\2\2}\u008e\3\2\2\2~\u0080\7\17\2\2\177~\3\2\2\2\u0080\u0081\3"+
-		"\2\2\2\u0081\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u008e\3\2\2\2\u0083"+
-		"\u0085\7\20\2\2\u0084\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u0084\3"+
-		"\2\2\2\u0086\u0087\3\2\2\2\u0087\u008e\3\2\2\2\u0088\u008a\5\b\5\2\u0089"+
-		"\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u0089\3\2\2\2\u008b\u008c\3\2"+
-		"\2\2\u008c\u008e\3\2\2\2\u008dp\3\2\2\2\u008du\3\2\2\2\u008dz\3\2\2\2"+
-		"\u008d\177\3\2\2\2\u008d\u0084\3\2\2\2\u008d\u0089\3\2\2\2\u008d\u008e"+
-		"\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u0090\7\31\2\2\u0090\25\3\2\2\2\u0091"+
-		"\u0095\7\26\2\2\u0092\u0094\5\30\r\2\u0093\u0092\3\2\2\2\u0094\u0097\3"+
-		"\2\2\2\u0095\u0093\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0098\3\2\2\2\u0097"+
-		"\u0095\3\2\2\2\u0098\u0099\7\27\2\2\u0099\27\3\2\2\2\u009a\u009b\5\32"+
-		"\16\2\u009b\u009c\5\20\t\2\u009c\31\3\2\2\2\u009d\u009e\t\2\2\2\u009e"+
-		"\33\3\2\2\2\u009f\u00a0\5\36\20\2\u00a0\u00a1\5 \21\2\u00a1\u00a2\5\20"+
-		"\t\2\u00a2\35\3\2\2\2\u00a3\u00a4\7\13\2\2\u00a4\u00a5\7\22\2\2\u00a5"+
-		"\37\3\2\2\2\u00a6\u00a7\7\b\2\2\u00a7\u00a8\7\22\2\2\u00a8!\3\2\2\2\24"+
-		"&,\628DKOVclrw|\u0081\u0086\u008b\u008d\u0095";
+		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\7\2 \n\2\f\2\16\2#\13\2"+
+		"\3\2\7\2&\n\2\f\2\16\2)\13\2\3\2\7\2,\n\2\f\2\16\2/\13\2\3\2\7\2\62\n"+
+		"\2\f\2\16\2\65\13\2\3\2\3\2\3\3\3\3\3\3\3\4\3\4\3\4\3\5\5\5@\n\5\3\5\5"+
+		"\5C\n\5\3\5\3\5\7\5G\n\5\f\5\16\5J\13\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3"+
+		"\7\7\7T\n\7\f\7\16\7W\13\7\3\b\3\b\3\b\3\b\3\b\3\b\5\b_\n\b\3\t\3\t\3"+
+		"\t\5\td\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\nn\n\n\3\13\3\13\6\13r\n"+
+		"\13\r\13\16\13s\3\13\6\13w\n\13\r\13\16\13x\3\13\6\13|\n\13\r\13\16\13"+
+		"}\3\13\6\13\u0081\n\13\r\13\16\13\u0082\3\13\6\13\u0086\n\13\r\13\16\13"+
+		"\u0087\3\13\6\13\u008b\n\13\r\13\16\13\u008c\5\13\u008f\n\13\3\13\3\13"+
+		"\3\f\3\f\3\r\3\r\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\2\2\20\2\4\6"+
+		"\b\n\f\16\20\22\24\26\30\32\34\2\3\4\2\20\20\23\23\2\u00ad\2!\3\2\2\2"+
+		"\48\3\2\2\2\6;\3\2\2\2\b?\3\2\2\2\nM\3\2\2\2\fP\3\2\2\2\16^\3\2\2\2\20"+
+		"c\3\2\2\2\22m\3\2\2\2\24o\3\2\2\2\26\u0092\3\2\2\2\30\u0094\3\2\2\2\32"+
+		"\u0096\3\2\2\2\34\u009a\3\2\2\2\36 \5\4\3\2\37\36\3\2\2\2 #\3\2\2\2!\37"+
+		"\3\2\2\2!\"\3\2\2\2\"\'\3\2\2\2#!\3\2\2\2$&\5\6\4\2%$\3\2\2\2&)\3\2\2"+
+		"\2\'%\3\2\2\2\'(\3\2\2\2(-\3\2\2\2)\'\3\2\2\2*,\5\b\5\2+*\3\2\2\2,/\3"+
+		"\2\2\2-+\3\2\2\2-.\3\2\2\2.\63\3\2\2\2/-\3\2\2\2\60\62\5\32\16\2\61\60"+
+		"\3\2\2\2\62\65\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64\66\3\2\2\2\65\63"+
+		"\3\2\2\2\66\67\7\2\2\3\67\3\3\2\2\289\7\3\2\29:\7\22\2\2:\5\3\2\2\2;<"+
+		"\7\4\2\2<=\5\f\7\2=\7\3\2\2\2>@\5\n\6\2?>\3\2\2\2?@\3\2\2\2@B\3\2\2\2"+
+		"AC\5\f\7\2BA\3\2\2\2BC\3\2\2\2CD\3\2\2\2DH\7\5\2\2EG\5\16\b\2FE\3\2\2"+
+		"\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2IK\3\2\2\2JH\3\2\2\2KL\7\6\2\2L\t\3\2"+
+		"\2\2MN\7\7\2\2NO\7\23\2\2O\13\3\2\2\2PU\7\23\2\2QR\7\b\2\2RT\7\23\2\2"+
+		"SQ\3\2\2\2TW\3\2\2\2US\3\2\2\2UV\3\2\2\2V\r\3\2\2\2WU\3\2\2\2XY\5\26\f"+
+		"\2YZ\5\20\t\2Z_\3\2\2\2[\\\5\26\f\2\\]\b\b\1\2]_\3\2\2\2^X\3\2\2\2^[\3"+
+		"\2\2\2_\17\3\2\2\2`d\5\b\5\2ad\5\22\n\2bd\5\24\13\2c`\3\2\2\2ca\3\2\2"+
+		"\2cb\3\2\2\2d\21\3\2\2\2en\7\r\2\2fn\7\16\2\2gn\7\17\2\2hn\7\20\2\2in"+
+		"\7\21\2\2jn\5\34\17\2kn\5\30\r\2ln\7\t\2\2me\3\2\2\2mf\3\2\2\2mg\3\2\2"+
+		"\2mh\3\2\2\2mi\3\2\2\2mj\3\2\2\2mk\3\2\2\2ml\3\2\2\2n\23\3\2\2\2o\u008e"+
+		"\7\n\2\2pr\7\r\2\2qp\3\2\2\2rs\3\2\2\2sq\3\2\2\2st\3\2\2\2t\u008f\3\2"+
+		"\2\2uw\7\16\2\2vu\3\2\2\2wx\3\2\2\2xv\3\2\2\2xy\3\2\2\2y\u008f\3\2\2\2"+
+		"z|\7\17\2\2{z\3\2\2\2|}\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\u008f\3\2\2\2\177"+
+		"\u0081\7\20\2\2\u0080\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0080\3\2"+
+		"\2\2\u0082\u0083\3\2\2\2\u0083\u008f\3\2\2\2\u0084\u0086\7\21\2\2\u0085"+
+		"\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2"+
+		"\2\2\u0088\u008f\3\2\2\2\u0089\u008b\5\b\5\2\u008a\u0089\3\2\2\2\u008b"+
+		"\u008c\3\2\2\2\u008c\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\u008f\3\2"+
+		"\2\2\u008eq\3\2\2\2\u008ev\3\2\2\2\u008e{\3\2\2\2\u008e\u0080\3\2\2\2"+
+		"\u008e\u0085\3\2\2\2\u008e\u008a\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u0090"+
+		"\3\2\2\2\u0090\u0091\7\13\2\2\u0091\25\3\2\2\2\u0092\u0093\t\2\2\2\u0093"+
+		"\27\3\2\2\2\u0094\u0095\7\23\2\2\u0095\31\3\2\2\2\u0096\u0097\5\34\17"+
+		"\2\u0097\u0098\5\26\f\2\u0098\u0099\5\20\t\2\u0099\33\3\2\2\2\u009a\u009b"+
+		"\7\f\2\2\u009b\u009c\7\23\2\2\u009c\35\3\2\2\2\24!\'-\63?BHU^cmsx}\u0082"+
+		"\u0087\u008c\u008e";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -8,75 +8,75 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface ARONListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#root}.
+	 * Enter a parse tree produced by {@link ARONParser#document}.
 	 * @param ctx the parse tree
 	 */
-	void enterRoot(ARONParser.RootContext ctx);
+	void enterDocument(ARONParser.DocumentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#root}.
+	 * Exit a parse tree produced by {@link ARONParser#document}.
 	 * @param ctx the parse tree
 	 */
-	void exitRoot(ARONParser.RootContext ctx);
+	void exitDocument(ARONParser.DocumentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#includes}.
+	 * Enter a parse tree produced by {@link ARONParser#include}.
 	 * @param ctx the parse tree
 	 */
-	void enterIncludes(ARONParser.IncludesContext ctx);
+	void enterInclude(ARONParser.IncludeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#includes}.
+	 * Exit a parse tree produced by {@link ARONParser#include}.
 	 * @param ctx the parse tree
 	 */
-	void exitIncludes(ARONParser.IncludesContext ctx);
+	void exitInclude(ARONParser.IncludeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#imports}.
+	 * Enter a parse tree produced by {@link ARONParser#importDecl}.
 	 * @param ctx the parse tree
 	 */
-	void enterImports(ARONParser.ImportsContext ctx);
+	void enterImportDecl(ARONParser.ImportDeclContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#imports}.
+	 * Exit a parse tree produced by {@link ARONParser#importDecl}.
 	 * @param ctx the parse tree
 	 */
-	void exitImports(ARONParser.ImportsContext ctx);
+	void exitImportDecl(ARONParser.ImportDeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#child}.
+	 * Enter a parse tree produced by {@link ARONParser#map}.
 	 * @param ctx the parse tree
 	 */
-	void enterChild(ARONParser.ChildContext ctx);
+	void enterMap(ARONParser.MapContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#child}.
+	 * Exit a parse tree produced by {@link ARONParser#map}.
 	 * @param ctx the parse tree
 	 */
-	void exitChild(ARONParser.ChildContext ctx);
+	void exitMap(ARONParser.MapContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#combo}.
+	 * Enter a parse tree produced by {@link ARONParser#alias}.
 	 * @param ctx the parse tree
 	 */
-	void enterCombo(ARONParser.ComboContext ctx);
+	void enterAlias(ARONParser.AliasContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#combo}.
+	 * Exit a parse tree produced by {@link ARONParser#alias}.
 	 * @param ctx the parse tree
 	 */
-	void exitCombo(ARONParser.ComboContext ctx);
+	void exitAlias(ARONParser.AliasContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#label}.
+	 * Enter a parse tree produced by {@link ARONParser#className}.
 	 * @param ctx the parse tree
 	 */
-	void enterLabel(ARONParser.LabelContext ctx);
+	void enterClassName(ARONParser.ClassNameContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#label}.
+	 * Exit a parse tree produced by {@link ARONParser#className}.
 	 * @param ctx the parse tree
 	 */
-	void exitLabel(ARONParser.LabelContext ctx);
+	void exitClassName(ARONParser.ClassNameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#property}.
+	 * Enter a parse tree produced by {@link ARONParser#pair}.
 	 * @param ctx the parse tree
 	 */
-	void enterProperty(ARONParser.PropertyContext ctx);
+	void enterPair(ARONParser.PairContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#property}.
+	 * Exit a parse tree produced by {@link ARONParser#pair}.
 	 * @param ctx the parse tree
 	 */
-	void exitProperty(ARONParser.PropertyContext ctx);
+	void exitPair(ARONParser.PairContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#value}.
 	 * @param ctx the parse tree
@@ -108,26 +108,6 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitList(ARONParser.ListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#map}.
-	 * @param ctx the parse tree
-	 */
-	void enterMap(ARONParser.MapContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#map}.
-	 * @param ctx the parse tree
-	 */
-	void exitMap(ARONParser.MapContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#pair}.
-	 * @param ctx the parse tree
-	 */
-	void enterPair(ARONParser.PairContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#pair}.
-	 * @param ctx the parse tree
-	 */
-	void exitPair(ARONParser.PairContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ARONParser#key}.
 	 * @param ctx the parse tree
 	 */
@@ -137,6 +117,16 @@ public interface ARONListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitKey(ARONParser.KeyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ARONParser#enumName}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnumName(ARONParser.EnumNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ARONParser#enumName}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnumName(ARONParser.EnumNameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#override}.
 	 * @param ctx the parse tree
@@ -157,14 +147,4 @@ public interface ARONListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReference(ARONParser.ReferenceContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#method}.
-	 * @param ctx the parse tree
-	 */
-	void enterMethod(ARONParser.MethodContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#method}.
-	 * @param ctx the parse tree
-	 */
-	void exitMethod(ARONParser.MethodContext ctx);
 }

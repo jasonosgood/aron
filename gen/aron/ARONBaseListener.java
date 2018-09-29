@@ -16,85 +16,85 @@ public class ARONBaseListener implements ARONListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRoot(ARONParser.RootContext ctx) { }
+	@Override public void enterDocument(ARONParser.DocumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRoot(ARONParser.RootContext ctx) { }
+	@Override public void exitDocument(ARONParser.DocumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIncludes(ARONParser.IncludesContext ctx) { }
+	@Override public void enterInclude(ARONParser.IncludeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIncludes(ARONParser.IncludesContext ctx) { }
+	@Override public void exitInclude(ARONParser.IncludeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImports(ARONParser.ImportsContext ctx) { }
+	@Override public void enterImportDecl(ARONParser.ImportDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImports(ARONParser.ImportsContext ctx) { }
+	@Override public void exitImportDecl(ARONParser.ImportDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterChild(ARONParser.ChildContext ctx) { }
+	@Override public void enterMap(ARONParser.MapContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitChild(ARONParser.ChildContext ctx) { }
+	@Override public void exitMap(ARONParser.MapContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCombo(ARONParser.ComboContext ctx) { }
+	@Override public void enterAlias(ARONParser.AliasContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCombo(ARONParser.ComboContext ctx) { }
+	@Override public void exitAlias(ARONParser.AliasContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLabel(ARONParser.LabelContext ctx) { }
+	@Override public void enterClassName(ARONParser.ClassNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLabel(ARONParser.LabelContext ctx) { }
+	@Override public void exitClassName(ARONParser.ClassNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProperty(ARONParser.PropertyContext ctx) { }
+	@Override public void enterPair(ARONParser.PairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProperty(ARONParser.PropertyContext ctx) { }
+	@Override public void exitPair(ARONParser.PairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -136,30 +136,6 @@ public class ARONBaseListener implements ARONListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMap(ARONParser.MapContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMap(ARONParser.MapContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPair(ARONParser.PairContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPair(ARONParser.PairContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterKey(ARONParser.KeyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +143,18 @@ public class ARONBaseListener implements ARONListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitKey(ARONParser.KeyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEnumName(ARONParser.EnumNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEnumName(ARONParser.EnumNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -191,18 +179,6 @@ public class ARONBaseListener implements ARONListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitReference(ARONParser.ReferenceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMethod(ARONParser.MethodContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMethod(ARONParser.MethodContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

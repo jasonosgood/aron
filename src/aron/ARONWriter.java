@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -33,6 +34,7 @@ import java.lang.Number;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.TimeZone;
 
 // TODO: empty lists must write brackets, eg "property []" 
 
@@ -40,7 +42,12 @@ public class
 	ARONWriter 
 {
 	private Writer _writer = null;
-	
+	SimpleDateFormat sdf;
+	{
+		sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ROOT );
+		sdf.setTimeZone( TimeZone.getTimeZone( "UTC" ));
+	}
+
 	public ARONWriter( Writer writer )
 	{
 		if( writer == null )
@@ -69,7 +76,7 @@ public class
 			throw new NullPointerException( "value" );
 		}
 		
-		_writer.write( "# ARON 0.2" );
+//		_writer.write( "# ARON 0.2" );
 		Set<Class> imports = getClassesUsed( value );
 		if( imports.size() > 0 )
 		{
@@ -173,9 +180,7 @@ public class
 		_classStack.pop();
 	}
 
-	SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
-	
-	protected void write( Object obj, int tabs ) 
+	protected void write( Object obj, int tabs )
 		throws IOException
 	{
 		if( obj == null ) 
@@ -293,7 +298,7 @@ public class
 				Object vanilla = c.newInstance();
 
 				newline( tabs );
-				_writer.write( '(' );
+				_writer.write( '{' );
 				tabs++;
 				for( Field field : fields )
 				{
@@ -311,7 +316,7 @@ public class
 				tabs--;
 
 				newline( tabs );
-				_writer.write( ')' );
+				_writer.write( '}' );
 			}
 			catch( Exception e )
 			{
@@ -379,7 +384,11 @@ public class
 				_writer.write( '\\' );
 				_writer.write( 't' );
 				break;
-			default: 
+			case '\\':
+				_writer.write( '\\' );
+				_writer.write( '\\' );
+				break;
+			default:
 				_writer.write( c );
 		}
 	}
@@ -387,6 +396,7 @@ public class
 	public void newline( int tabs )
 		throws IOException
 	{
+		_writer.write( '\r' );
 		_writer.write( '\n' );
 		for( int nth = 0; nth < tabs; nth++ )
 		{
