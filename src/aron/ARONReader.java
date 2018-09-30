@@ -139,18 +139,14 @@ public class ARONReader
 	public Document process( DocumentContext rc )
 		throws Exception
 	{
-		for( IncludeContext include : rc.include() )
+		for( IncludeContext ic : rc.include() )
 		{
-			String url = include.Url().getText();
-			System.out.println( "include: " + url );
-            includes( url );
+            includes( ic );
 		}
 
-		for( ImportDeclContext imports : rc.importDecl() )
+		for( ImportDeclContext idc : rc.importDecl() )
 		{
-			ClassNameContext id = imports.className();
-			String name = id.getText();
-			imports( name );
+			imports( idc );
 		}
 
 		for( MapContext child : rc.map() )
@@ -166,9 +162,12 @@ public class ARONReader
 		return doc;
 	}
 
-	public void includes( String url )
+	public void includes( IncludeContext ic )
 		throws Exception
 	{
+		String url = ic.Url().getText();
+		System.out.println( "include: " + url );
+
 		Path parent = Paths.get( _uri );
 		Path sibling = parent.resolveSibling( url );
 		File file = sibling.toFile();	
@@ -184,10 +183,12 @@ public class ARONReader
 		}
 	}
 
-	public void imports( String clazzName )
+	public void imports( ImportDeclContext imports )
 		throws ClassNotFoundException
 	{
-		Class<?> clazz = Class.forName( clazzName );
+		ClassNameContext id = imports.className();
+		String name = id.getText();
+		Class<?> clazz = Class.forName( name );
 		int nth = clazz.toString().lastIndexOf( (int) '.' );
 		String shortie = clazz.toString().substring( nth + 1 );
 		_shortNames.put( shortie, clazz );
@@ -201,21 +202,20 @@ public class ARONReader
 	 */
 	String defaultMapClassName = "java.util.LinkedHashMap";
 
-	// TODO: support fields
-	// TODO: support array as field
-	public void processMap( Object parent, String property, MapContext context )
-		throws 
-			ARONException,
-			ClassNotFoundException, InstantiationException, IllegalAccessException, 
-			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
+	class Setter
 	{
-		var defaultMapClass = resolveClass( defaultMapClassName );
+		Method method;
+		Class<?> type;
+	}
 
+	Setter findSetter( Object bean, String property, ClassNameContext cnc ) throws
+		ClassNotFoundException
+	{
 		String[] names = likelySetterNames( property );
 
-		var methods = new ArrayList<Method>();
+		List<Method> methods = new ArrayList<>();
 
-		for( Method m : parent.getClass().getMethods() )
+		for( Method m : bean.getClass().getMethods() )
 		{
 			for( String name : names )
 			{
@@ -226,94 +226,106 @@ public class ARONReader
 			}
 		}
 
-		Method method = null;
-		Class<?> childClass = null;
-		if( methods.size() > 0 )
+		Setter setter = null;
+
+		// Explicit class name
+		if( cnc != null )
 		{
-			// Explicit class name
-			if( context.className() != null )
+			var childClassName = cnc.getText();
+			var temp = resolveClass( childClassName );
+			setter = findExactMethod( methods, temp );
+		}
+
+		if( setter == null )
+		{
+			setter = inferMethod( methods );
+		}
+
+		// Use default className
+		if( setter == null )
+		{
+			var defaultMapClass = resolveClass( defaultMapClassName );
+			setter = findExactMethod( methods, defaultMapClass );
+		}
+
+		// TODO throw method not found exception
+		return setter;
+	}
+
+	Setter findExactMethod( List<Method> methods, Class<?> type )
+	{
+		for( Method m : methods )
+		{
+			Class<?> actual = m.getParameterTypes()[0];
+			if( actual.isAssignableFrom( type ))
 			{
-				var childClassName = context.className().getText();
-				var temp = resolveClass( childClassName );
-
-				for( Method m : methods )
-				{
-					Class<?> paramClass = m.getParameterTypes()[0];
-					if( paramClass.isAssignableFrom( temp ))
-					{
-						method = m;
-						childClass = temp;
-						break;
-					}
-				}
+				Setter match = new Setter();
+				match.method = m;
+				match.type = type;
+				return match;
 			}
-			// Infer class name
-			else
+		}
+		return null;
+	}
+
+	Setter inferMethod( List<Method> methods )
+	{
+		for( Method m : methods )
+		{
+			Class<?> actual = m.getParameterTypes()[0];
+			// TODO: Verify not abstract
+			// https://stackoverflow.com/questions/19249448/how-do-i-get-only-instantiable-classes-with-reflections#19249616
+			if( actual != Object.class && !actual.isInterface() )
 			{
-				// Just grab the first one
-				var tempMethod = methods.get( 0 );
-				var tempType = tempMethod.getParameterTypes()[0];
-				// TODO: Verify not abstract
-				// https://stackoverflow.com/questions/19249448/how-do-i-get-only-instantiable-classes-with-reflections#19249616
-				if( tempType != Object.class && !tempType.isInterface() )
-				{
-					method = tempMethod;
-					childClass = tempType;
-				}
+				Setter match = new Setter();
+				match.method = m;
+				match.type = actual;
+				return match;
 			}
+		}
+		return null;
+	}
 
-			// Otherwise use default
-			if( childClass == null )
-			{
-				for( Method setter : methods )
-				{
-					Class<?> paramClass = setter.getParameterTypes()[0];
-					if( paramClass.isAssignableFrom( defaultMapClass ))
-					{
-						method = setter;
-						childClass = defaultMapClass;
-						break;
-					}
-				}
-			}
+	// TODO: support fields
+	// TODO: support array as field
+	public void processMap( Object parent, String property, MapContext context )
+		throws 
+			ARONException,
+			ClassNotFoundException, InstantiationException, IllegalAccessException, 
+			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
+	{
 
-			if( method != null && childClass != null )
-			{
-				// TODO: Need to first verify a zero param constructor exists
-				Constructor<?> constructor = childClass.getConstructor();
-				var child = constructor.newInstance();
+		Setter setter = findSetter( parent, property, context.className() );
 
-				Object ignore = method.invoke( parent, child );
+		// TODO: verify a zero param constructor exists
+		Constructor<?> constructor = setter.type.getConstructor();
+		var child = constructor.newInstance();
 
-				String alias = context.alias() != null ? context.alias().Word().getText() : null;
-				doc.putAlias( alias, child );
+		Object ignore = setter.method.invoke( parent, child );
 
-				for( PairContext pair : context.pair() )
-				{
-					String key = pair.key().getText();
-					ValueContext value = pair.value();
-					processValue( child, key, value );
-				}
-			}
-			else
-			{
-				// TODO: Throw not found exception
-			}
+		String alias = context.alias() != null ? context.alias().Word().getText() : null;
+		doc.putAlias( alias, child );
+
+		for( PairContext pair : context.pair() )
+		{
+			String key = pair.key().getText();
+			ValueContext value = pair.value();
+			processValue( child, key, value );
 		}
 	}
 
 	public String[] likelySetterNames( String property )
 	{
 		return new String[]
-			{
-				property,
-				"set" + capitalize( property ),
-				"set" + property.toUpperCase(),
-				capitalize( property ),
-				property.toUpperCase(),
-				"add" + capitalize( property ),
-				"add" + property.toUpperCase()
-			};
+		{
+			property,
+			"set" + capitalize( property ),
+			"set" + property.toUpperCase(),
+			capitalize( property ),
+			property.toUpperCase(),
+			"add" + capitalize( property ),
+			"add" + property.toUpperCase()
+		};
 	}
 
 	public void override( OverrideContext context )
