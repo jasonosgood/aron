@@ -14,7 +14,8 @@ public class
 	{
 		File pwd = new File( "." );
 		System.out.println( "root: " + pwd.getCanonicalPath() );
-		String filename = "./src/arondemo/demo.aron";
+//		String filename = "./src/arondemo/demo.aron";
+		String filename = "./src/arondemo/demo2.aron";
 //		String filename = "./src/arondemo/demo-override.aron";
 		File file = new File( filename );
 
