@@ -29,11 +29,11 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitImportDecl(ARONParser.ImportDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#map}.
+	 * Visit a parse tree produced by {@link ARONParser#override}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMap(ARONParser.MapContext ctx);
+	T visitOverride(ARONParser.OverrideContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#alias}.
 	 * @param ctx the parse tree
@@ -46,6 +46,18 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitClassName(ARONParser.ClassNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ARONParser#map}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMap(ARONParser.MapContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ARONParser#list}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList(ARONParser.ListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#pair}.
 	 * @param ctx the parse tree
@@ -65,12 +77,6 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitScalar(ARONParser.ScalarContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ARONParser#list}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitList(ARONParser.ListContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link ARONParser#key}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -82,12 +88,6 @@ public interface ARONVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEnumName(ARONParser.EnumNameContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ARONParser#override}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOverride(ARONParser.OverrideContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ARONParser#reference}.
 	 * @param ctx the parse tree

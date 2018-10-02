@@ -38,15 +38,15 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitImportDecl(ARONParser.ImportDeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#map}.
+	 * Enter a parse tree produced by {@link ARONParser#override}.
 	 * @param ctx the parse tree
 	 */
-	void enterMap(ARONParser.MapContext ctx);
+	void enterOverride(ARONParser.OverrideContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ARONParser#map}.
+	 * Exit a parse tree produced by {@link ARONParser#override}.
 	 * @param ctx the parse tree
 	 */
-	void exitMap(ARONParser.MapContext ctx);
+	void exitOverride(ARONParser.OverrideContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#alias}.
 	 * @param ctx the parse tree
@@ -67,6 +67,26 @@ public interface ARONListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitClassName(ARONParser.ClassNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ARONParser#map}.
+	 * @param ctx the parse tree
+	 */
+	void enterMap(ARONParser.MapContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ARONParser#map}.
+	 * @param ctx the parse tree
+	 */
+	void exitMap(ARONParser.MapContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ARONParser#list}.
+	 * @param ctx the parse tree
+	 */
+	void enterList(ARONParser.ListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ARONParser#list}.
+	 * @param ctx the parse tree
+	 */
+	void exitList(ARONParser.ListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#pair}.
 	 * @param ctx the parse tree
@@ -98,16 +118,6 @@ public interface ARONListener extends ParseTreeListener {
 	 */
 	void exitScalar(ARONParser.ScalarContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ARONParser#list}.
-	 * @param ctx the parse tree
-	 */
-	void enterList(ARONParser.ListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#list}.
-	 * @param ctx the parse tree
-	 */
-	void exitList(ARONParser.ListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ARONParser#key}.
 	 * @param ctx the parse tree
 	 */
@@ -127,16 +137,6 @@ public interface ARONListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEnumName(ARONParser.EnumNameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ARONParser#override}.
-	 * @param ctx the parse tree
-	 */
-	void enterOverride(ARONParser.OverrideContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ARONParser#override}.
-	 * @param ctx the parse tree
-	 */
-	void exitOverride(ARONParser.OverrideContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ARONParser#reference}.
 	 * @param ctx the parse tree

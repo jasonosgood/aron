@@ -27,11 +27,27 @@ include : 'include' Url ;
 
 importDecl : 'import' className ;
 
-map : alias? className? '{' pair* '}' ;
+override : reference key value ;
 
 alias : '@' Word ;
 
 className : Word ( '.' Word )* ;
+
+map : alias? className? '{' pair* '}' ;
+
+// TODO: list of list
+list
+  : alias? className?
+	'['
+		( ( Boolean ','? )+
+		| ( Integer ','? )+
+		| ( Float ','? )+
+		| ( String ','? )+
+		| ( Timestamp ','? )+
+		| ( map ','? )+
+		)?
+	']'
+  ;
 
 pair
   : key ':'? value ','?
@@ -56,31 +72,12 @@ scalar
   | 'null'
   ;
 
-// TODO: add aliases & classnames for rule list (just like for rule map)
-// TODO: list of list
-// TODO: clever way to clear collection when empty list
-// TODO: Add optional comma separators
-list
-  : alias? className?
-	'['
-		( Boolean+
-		| Integer+
-		| Float+
-		| String+
-		| Timestamp+
-		| map+
-		)?
-	']'
-  ;
-
 key
   : Word
   | String
   ;
 
 enumName : Word ;
-
-override : reference key value ;
 
 reference : '#' Word ;
 
