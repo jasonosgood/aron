@@ -56,7 +56,9 @@ scalar
   | 'null'
   ;
 
+// TODO: add aliases & classnames for rule list (just like for rule map)
 // TODO: list of list
+// TODO: clever way to clear collection when empty list
 // TODO: Add optional comma separators
 list
   : alias? className?

@@ -28,6 +28,16 @@ public class Document
 		children.add( child );
 	}
 
+	public List<Object> getChildren()
+	{
+		return children;
+	}
+
+	public void setChildren( List<Object> list )
+	{
+		children = list;
+	}
+
 	public Map<String, Object> aliasMap = new HashMap<>();
 
 	public void putAlias( String alias, Object instance )
