@@ -28,7 +28,7 @@ public class
 		StringWriter sw = new StringWriter();
 		ARONWriter writer = new ARONWriter( sw );
 		writer.write( parent );
-//		System.out.println( sw.toString() );
+		System.out.println( sw.toString() );
 
 		ARONReader aron2 = new ARONReader();
 		Document root2 = aron2.read( sw.toString() );

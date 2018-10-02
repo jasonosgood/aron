@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
@@ -46,8 +48,8 @@ import static aron.unescape.unescape;
 
 public class ARONReader
 {
-	private ArrayList<String> _importDefs;
-	private HashMap<String, Class<?>> _shortNames;
+	private List<String> _importDefs;
+	private Map<String, Class<?>> _shortNames;
 
 	// Not statics, because SDF is not threadsafe and George would complain
 	private  List<SimpleDateFormat> _formatters;
@@ -73,8 +75,9 @@ public class ARONReader
 
 	public ARONReader()
 	{
-		_importDefs = new ArrayList( 4 );
-		_shortNames = new HashMap();
+
+		_importDefs = new ArrayList<>( 4 );
+		_shortNames = new HashMap<>();
 	}
 
 	private URI _uri = null;
@@ -149,14 +152,15 @@ public class ARONReader
 			imports( idc );
 		}
 
-		for( MapContext child : rc.map() )
+		for( MapContext mc : rc.map() )
 		{
-			processMap( doc, "child", child );
+			Object child = processMap( doc, "children", mc );
+			doc.getChildren().add( child );
 		}
 		
-		for( OverrideContext override : rc.override() )
+		for( OverrideContext oc : rc.override() )
 		{
-			override( override );
+			override( oc );
 		}
 
 		return doc;
@@ -200,127 +204,183 @@ public class ARONReader
 		interface (or abstract) & className -> new className
 		class & no className -> new class
 	 */
-	String defaultMapClassName = "java.util.LinkedHashMap";
+	Class<?> defaultMapClass = java.util.LinkedHashMap.class;
+	Class<?> defaultCollectionClass = java.util.ArrayList.class;
+	Class<?> currentClass = java.util.LinkedHashMap.class;
 
-	class Setter
+	public Object createChild( String alias, Class<?> c )
+		throws
+		NoSuchMethodException,
+		IllegalAccessException,
+		InvocationTargetException,
+		InstantiationException
 	{
-		Method method;
-		Class<?> type;
-	}
-
-	Setter findSetter( Object bean, String property, ClassNameContext cnc ) throws
-		ClassNotFoundException
-	{
-		String[] names = likelySetterNames( property );
-
-		List<Method> methods = new ArrayList<>();
-
-		for( Method m : bean.getClass().getMethods() )
+		if( c.isInterface() )
 		{
-			for( String name : names )
+			if( Map.class.isAssignableFrom( c ))
 			{
-				if( m.getName().equals( name ) && m.getParameterTypes().length == 1 )
-				{
-					methods.add( m );
-				}
+				c = defaultMapClass;
+			}
+			else if( Collection.class.isAssignableFrom( c ))
+			{
+				c = defaultCollectionClass;
 			}
 		}
 
-		Setter setter = null;
-
-		// Explicit class name
-		if( cnc != null )
-		{
-			var childClassName = cnc.getText();
-			var temp = resolveClass( childClassName );
-			setter = findExactMethod( methods, temp );
-		}
-
-		if( setter == null )
-		{
-			setter = inferMethod( methods );
-		}
-
-		// Use default className
-		if( setter == null )
-		{
-			var defaultMapClass = resolveClass( defaultMapClassName );
-			setter = findExactMethod( methods, defaultMapClass );
-		}
-
-		// TODO throw method not found exception
-		return setter;
-	}
-
-	Setter findExactMethod( List<Method> methods, Class<?> type )
-	{
-		for( Method m : methods )
-		{
-			Class<?> actual = m.getParameterTypes()[0];
-			if( actual.isAssignableFrom( type ))
-			{
-				Setter match = new Setter();
-				match.method = m;
-				match.type = type;
-				return match;
-			}
-		}
-		return null;
-	}
-
-	Setter inferMethod( List<Method> methods )
-	{
-		for( Method m : methods )
-		{
-			Class<?> actual = m.getParameterTypes()[0];
-			// TODO: Verify not abstract
-			// https://stackoverflow.com/questions/19249448/how-do-i-get-only-instantiable-classes-with-reflections#19249616
-			if( actual != Object.class && !actual.isInterface() )
-			{
-				Setter match = new Setter();
-				match.method = m;
-				match.type = actual;
-				return match;
-			}
-		}
-		return null;
+		// TODO: verify a zero param constructor exists
+		// TODO: verify instantiable (not interface, not abstract)
+		Constructor<?> constructor = c.getConstructor();
+		Object child = constructor.newInstance();
+		doc.putAlias( alias, child );
+		return child;
 	}
 
 	// TODO: support fields
 	// TODO: support array as field
-	public void processMap( Object parent, String property, MapContext context )
-		throws 
-			ARONException,
-			ClassNotFoundException, InstantiationException, IllegalAccessException, 
-			IllegalArgumentException, NoSuchMethodException, InvocationTargetException
+	public Object processMap( Object parent, String property, MapContext mc )
+		throws Exception
 	{
+		String alias = mc.alias() != null ? mc.alias().Word().getText() : null;
 
-		Setter setter = findSetter( parent, property, context.className() );
+		Class<?> c = null;
+		Class<?> savedClass = null;
 
-		// TODO: verify a zero param constructor exists
-		Constructor<?> constructor = setter.type.getConstructor();
-		var child = constructor.newInstance();
-
-		Object ignore = setter.method.invoke( parent, child );
-
-		String alias = context.alias() != null ? context.alias().Word().getText() : null;
-		doc.putAlias( alias, child );
-
-		for( PairContext pair : context.pair() )
+		if( mc.className() != null )
 		{
-			String key = pair.key().getText();
-			ValueContext value = pair.value();
-			processValue( child, key, value );
+			String className = mc.className().getText();
+			c = resolveClass( className );
 		}
+		else
+		{
+			Type t = inferClass( parent, property );
+			if( t != null )
+			{
+				if( t instanceof ParameterizedType )
+				{
+					c = (Class<?>) ((ParameterizedType) t).getRawType();
+					if( Map.class.isAssignableFrom( c ))
+					{
+						savedClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[1];
+					}
+					else if( Collection.class.isAssignableFrom( c ))
+					{
+						savedClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
+					}
+				}
+				else
+				{
+					c = (Class<?>) t;
+				}
+			}
+			else
+			{
+				c = currentClass;
+			}
+		}
+
+		Object child = createChild( alias, c );
+
+		if( savedClass != null )
+		{
+			Class<?> temp = savedClass;
+			savedClass = currentClass;
+			currentClass = temp;
+		}
+
+		for( PairContext pc : mc.pair() )
+		{
+			String key = pc.key().getText();
+			ValueContext vc = pc.value();
+			Object value = processValue( child, key, vc );
+			setter( child, key, value );
+		}
+
+		if( savedClass != null )
+		{
+			currentClass = savedClass;
+		}
+
+		return child;
+	}
+
+	public Type inferClass( Object parent, String property )
+	{
+		String[] getters = likelyGetterNames( property );
+
+		for( Method m : parent.getClass().getMethods() )
+		{
+			if( m.getGenericParameterTypes().length == 0 )
+			{
+				for( String name : getters )
+				{
+					if( m.getName().equals( name ))
+					{
+						ParameterizedType pt = (ParameterizedType) m.getGenericReturnType();
+						Class<?> raw = (Class<?>) pt.getRawType();
+						if( Map.class.isAssignableFrom( raw )) return pt;
+						if( Collection.class.isAssignableFrom( raw )) return pt;
+					}
+				}
+			}
+		}
+
+		String[] setters = likelySetterNames( property );
+
+		for( Method m : parent.getClass().getMethods() )
+		{
+			if( m.getGenericParameterTypes().length == 1 )
+			{
+				for( String name : setters )
+				{
+					if( m.getName().equals( name ))
+					{
+						Class<?> duh = m.getParameterTypes()[0];
+						if( duh != Object.class && !duh.isInterface() )
+						{
+							return duh;
+						}
+
+
+//						Type duh = m.getGenericParameterTypes()[0];
+////						if( duh != Object.class && !duh.isInterface() )
+//						{
+//							return duh;
+//						}
+
+//						Type[] duh = m.getGenericParameterTypes();
+//						ParameterizedType pt = (ParameterizedType) duh[0];
+//						Class<?> actual = (Class<?>) pt.getRawType();
+//						if( actual != Object.class && !actual.isInterface() )
+//						{
+//							return pt;
+//						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public String[] likelyGetterNames( String property )
+	{
+		return new String[]
+			{
+				property,
+				"get" + capitalize( property ),
+				"get" + property.toUpperCase(),
+				capitalize( property ),
+				property.toUpperCase()
+			};
 	}
 
 	public String[] likelySetterNames( String property )
 	{
 		return new String[]
 		{
-			property,
 			"set" + capitalize( property ),
 			"set" + property.toUpperCase(),
+			property,
 			capitalize( property ),
 			property.toUpperCase(),
 			"add" + capitalize( property ),
@@ -339,37 +399,29 @@ public class ARONReader
 
 		if( found != null )
 		{
-			processValue( found, key, vc );
+			Object value = processValue( found, key, vc );
+			setter( found, key, value );
 		}
 	}
 	
-	public void processValue( Object bean, String method, ValueContext value )
-		throws
-			ARONException,
-			ClassNotFoundException,
-			NoSuchMethodException,
-			InvocationTargetException,
-			InstantiationException,
-			IllegalAccessException
+	public Object processValue( Object bean, String method, ValueContext vc )
+		throws Exception
 	{
-		if( value.map() != null )
+		if( vc.map() != null )
 		{
-			processMap( bean, method, value.map() );
-			return;
+			return processMap( bean, method, vc.map() );
 		}
 
-		if( value.scalar() != null )
+		if( vc.scalar() != null )
 		{
-			Object scalar = processScalar( value.scalar() );
-			setter( bean, method, scalar );
-			return;
+			return processScalar( vc.scalar() );
 		}
 
-		if( value.list() != null )
+		if( vc.list() != null )
 		{
-			processList( bean, method, value.list() );
-			return;
+			return processList( bean, method, vc.list() );
 		}
+		return null;
 	}
 
 	public void setter( Object bean, String property, Object value )
@@ -384,35 +436,43 @@ public class ARONReader
 			return;
 		}
 
+		if( bean instanceof Collection )
+		{
+			Collection c = (Collection) bean;
+			c.add( value );
+			return;
+		}
+
 		Class type = null;
 		if( value != null ) {
 			type = value.getClass();
 		}
 
-		String[] names = likelySetterNames( property );
+		String[] setters = likelySetterNames( property );
 
-		for( Method method : bean.getClass().getMethods() )
+		for( Method m : bean.getClass().getMethods() )
 		{
-			for( String name : names )
+			if( m.getGenericParameterTypes().length == 1 )
 			{
-				if( method.getName().equals( name ))
+				for( String name : setters )
 				{
-					for( Class<?> oof : method.getParameterTypes() )
+					if( m.getName().equals( name ))
 					{
+						Class<?> oof = m.getParameterTypes()[0];
 						oof = toBoxingClass( oof );
 
 						if( oof.isEnum() )
 						{
 							Class<? extends Enum> enumType = (Class<? extends Enum>) oof;
 							final Enum<?> theOneAndOnly = Enum.valueOf(enumType, (String) value);
-							Object ignored = method.invoke( bean, theOneAndOnly );
+							Object ignored = m.invoke( bean, theOneAndOnly );
 							return;
 						}
 
 						// Types are compatible OR we're just setting to null
 						if( oof.isAssignableFrom( type ) || value == null )
 						{
-							Object result = method.invoke( bean, value );
+							Object result = m.invoke( bean, value );
 							return;
 						}
 
@@ -422,7 +482,7 @@ public class ARONReader
 			}
 		}
 
-		throw new NoSuchMethodException( bean.getClass().getName() + "." + names[0] + "(" + type.getName() + ")" );
+		throw new NoSuchMethodException( bean.getClass().getName() + "." + setters[0] + "(" + type.getName() + ")" );
 	}
 
 	public Class<?> toBoxingClass( Class<?> oof )
@@ -447,22 +507,6 @@ public class ARONReader
 		return oof;
 	}
 
-	public Object getter( Object instance, String bean )
-		throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
-		String name = "get" + capitalize( bean );
-		
-		for( Method method : instance.getClass().getMethods() )
-		{
-			if( method.getName().equals( name ))
-			{
-				return method.invoke( instance );
-			}
-		}
-		
-		throw new NoSuchMethodException( instance.getClass().getName() + "." + name + "()" );
-	}
-		
 	public Object processScalar( ScalarContext value )
 		throws IllegalArgumentException
 	{
@@ -523,104 +567,113 @@ public class ARONReader
 	}
 
 	// TODO: initialize null list references
-	public void processList( Object bean, String property, ListContext node )
+	public Collection processList( Object bean, String property, ListContext lc )
 		throws
-		NoSuchMethodException,
-		IllegalArgumentException,
-		IllegalAccessException,
-		InvocationTargetException,
-		InstantiationException,
-		ARONException,
-		ClassNotFoundException
+		Exception
 	{
-		Object temp = getter( bean, property );
+		String alias = lc.alias() != null ? lc.alias().Word().getText() : null;
 
-		if( temp == null )
+		Class<?> c = null;
+		Class<?> savedClass = null;
+
+		if( lc.className() != null )
 		{
-			throw new NullPointerException( bean.getClass().getName() + ".get" + capitalize( property ) + "() returned null" );
+			String className = lc.className().getText();
+			c = resolveClass( className );
 		}
-
-		if( !( temp instanceof Collection ))
+		else
 		{
-			String msg = bean.getClass().getName() + ".get" + capitalize( property ) + "() does not return a subclass of java.util.Collection";
-			throw new IllegalArgumentException( msg );
-		}
-
-		Collection collection = (Collection) temp;
-
-		if( !node.Boolean().isEmpty() )
-		{
-			for( TerminalNode tn : node.Boolean() )
+			Type t = inferClass( bean, property );
+			if( t != null )
 			{
-				String text = tn.getText();
-				Boolean value = java.lang.Boolean.parseBoolean( text );
-				collection.add( value );
+				if( t instanceof ParameterizedType )
+				{
+					c = (Class<?>) ((ParameterizedType) t).getRawType();
+					if( Map.class.isAssignableFrom( c ))
+					{
+						savedClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[1];
+					}
+					else if( Collection.class.isAssignableFrom( c ))
+					{
+						savedClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
+					}
+				}
+				else
+				{
+					c = (Class<?>) t;
+				}
 			}
-			return;
-		}
-
-		if( !node.Integer().isEmpty() )
-		{
-			for( TerminalNode tn : node.Integer() )
+			else
 			{
-				String text = tn.getText();
-				Integer value = java.lang.Integer.parseInt( text );
-				collection.add( value );
+				c = currentClass;
 			}
-			return;
 		}
 
-		if( !node.Float().isEmpty() )
+		Collection collection = (Collection) createChild( alias, c );
+
+		if( savedClass != null )
 		{
-			for( TerminalNode tn : node.Float() )
-			{
-				String text = tn.getText();
-				Float value = java.lang.Float.parseFloat( text );
-				collection.add( value );
-			}
-			return;
+			Class<?> temp = savedClass;
+			savedClass = currentClass;
+			currentClass = temp;
 		}
 
-		if( !node.String().isEmpty() )
+
+		for( TerminalNode tn : lc.Boolean() )
 		{
-			for( TerminalNode tn : node.String() )
-			{
-				String value = tn.getText();
-				value = value.substring( 1, value.length() - 1 );
-				String y = unescape( value );
-				collection.add( y );
-			}
-			return;
+			String text = tn.getText();
+			Boolean value = java.lang.Boolean.parseBoolean( text );
+			collection.add( value );
 		}
 
-		if( !node.Timestamp().isEmpty() )
+		for( TerminalNode tn : lc.Integer() )
 		{
-			for( TerminalNode tn : node.Timestamp() )
-			{
-				String text = tn.getText();
-				Date value =  parseDate( text );
-				collection.add( value );
-			}
-			return;
+			String text = tn.getText();
+			Integer value = java.lang.Integer.parseInt( text );
+			collection.add( value );
 		}
 
-		if( !node.map().isEmpty() )
+		for( TerminalNode tn : lc.Float() )
 		{
-			for( MapContext kid : node.map() )
-			{
-				processMap( collection, "add", kid );
-			}
-			return;
+			String text = tn.getText();
+			Float value = java.lang.Float.parseFloat( text );
+			collection.add( value );
 		}
 
-		// empty list clears existing collection
-		collection.clear();
-		return;
+		for( TerminalNode tn : lc.String() )
+		{
+			String value = tn.getText();
+			value = value.substring( 1, value.length() - 1 );
+			String y = unescape( value );
+			collection.add( y );
+		}
+
+		for( TerminalNode tn : lc.Timestamp() )
+		{
+			String text = tn.getText();
+			Date value =  parseDate( text );
+			collection.add( value );
+		}
+
+		for( MapContext mc : lc.map() )
+		{
+			Object value = processMap( collection, "add", mc );
+			collection.add( value );
+		}
+
+		if( savedClass != null )
+		{
+			currentClass = savedClass;
+		}
+
+		return collection;
 	}
 	
 	public Class<?> resolveClass( String name )
 		throws ClassNotFoundException
 	{
+		if( name == null ) return null;
+
 		// First see if we can get a hit on the short name
 		Class<?> result = _shortNames.get( name );
 
