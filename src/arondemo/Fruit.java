@@ -26,15 +26,15 @@ public class Fruit
 	Date dewberry;
 	boolean eggplant = true;
 	Fruit fig;
-	ArrayList<Fruit> grape = new ArrayList<Fruit>();
-	HashMap<String,Fruit> honeydew = new HashMap<String,Fruit>();
+	List<Fruit> grape = new ArrayList<>();
+	Map<String,Fruit> honeydew = new HashMap<>();
 	Fruit iyokan;
 	Season jasmine = Season.spring;
-	ArrayList<Integer> kale = new ArrayList<Integer>();
-	ArrayList<Float> lime = new ArrayList<Float>();
-	ArrayList<Boolean> mango = new ArrayList<Boolean>();
-	ArrayList<Date> nectarine = new ArrayList<>();
-	ArrayList<String> orange = new ArrayList<>();
+	List<Integer> kale = new ArrayList<>();
+	List<Float> lime = new ArrayList<>();
+	List<Boolean> mango = new ArrayList<>();
+	List<Date> nectarine = new ArrayList<>();
+	List<String> orange = new ArrayList<>();
 	List<Map> plum = new ArrayList<>();
 
 	public Fruit()
@@ -81,7 +81,10 @@ public class Fruit
 	public void setFig(Fruit fig) {
 		this.fig = fig;
 	}
-	
+
+	public void setGrape( List<Fruit> grape) {
+		this.grape = grape;
+	}
 	public List<Fruit> getGrape()
 	{
 		return grape;
@@ -91,7 +94,12 @@ public class Fruit
 	{
 		return honeydew;
 	}
-	
+
+	public void setHoneydew( Map<String,Fruit> map )
+	{
+		honeydew = map;
+	}
+
 	public void setIyokan( Fruit iyokan )
 	{
 		this.iyokan = iyokan;
@@ -103,16 +111,40 @@ public class Fruit
 	}
 
 	public Season getJasmine() { return jasmine; }
-	
+
+	public void setKale( List<Integer> kale )
+	{
+		this.kale = kale;
+	}
 	public List<Integer> getKale()
 	{
 		return kale;
 	}
-	
+
+	public void setLime( List<Float> lime )
+	{
+		this.lime = lime;
+	}
 	public List<Float> getLime() { return lime; }
+	public void setMango( List<Boolean> mango )
+	{
+		this.mango = mango;
+	}
 	public List<Boolean> getMango() { return mango; }
+	public void setNectarine( List<Date> nectarine )
+	{
+		this.nectarine = nectarine;
+	}
 	public List<Date> getNectarine() { return nectarine; }
+	public void setOrange( List<String> orange )
+	{
+		this.orange = orange;
+	}
 	public List<String> getOrange() { return orange; }
+	public void setPlum( List<Map> plum )
+	{
+		this.plum = plum;
+	}
 	public List<Map> getPlum() { return plum; }
 
 	@Override
